@@ -45,7 +45,8 @@ namespace NeerbyyWindowsPhone
 
         private void goToSignUp(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/SignUp.xaml", UriKind.Relative));
+           // NavigationService.Navigate(new Uri("/SignUp.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Home.xaml", UriKind.Relative));
         }
 
         private void goToRestorePassword(object sender, RoutedEventArgs e)
