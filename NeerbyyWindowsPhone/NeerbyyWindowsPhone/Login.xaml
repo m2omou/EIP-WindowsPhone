@@ -57,8 +57,9 @@
         		<PasswordBox x:Name="password"/>
         		<Button Click="tryToLogin" Content="Login" Background="#FF4065C9" BorderBrush="#002C2C2C" Foreground="White" FontFamily="Segoe WP Light"/>
                 <Button Content="Inscription" Click="goToSignUp" Foreground="White" BorderBrush="#002C2C2C" Background="#FF4065C9" FontFamily="Segoe WP Light"/>
-        		<Button Click="goToRestorePassword"  Content="J'ai oublié mon mot de passe" BorderBrush="Transparent" Background="#FF4065C9" FontFamily="Segoe WP Light"/>
-        	</StackPanel>
+                <Button Click="goToRestorePassword"  Content="J'ai oublié mon mot de passe" BorderBrush="Transparent" Background="#FF4065C9" FontFamily="Segoe WP Light"/>
+                <Button Click="goToMap"  Content="Je m'inscrit plus tard" BorderBrush="Transparent" Background="#FF4065C9" FontFamily="Segoe WP Light"/>
+            </StackPanel>
         </Grid>
 
         <!--Uncomment to see an alignment grid to help ensure your controls are
