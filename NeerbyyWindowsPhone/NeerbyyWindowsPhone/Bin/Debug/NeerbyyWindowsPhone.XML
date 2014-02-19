@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NeerbyyWindowsPhone</name>
+    </assembly>
+    <members>
+        <member name="M:NeerbyyWindowsPhone.App.#ctor">
+            <summary>
+            Constructor for the Application object.
+            </summary>
+        </member>
+        <member name="M:NeerbyyWindowsPhone.App.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:NeerbyyWindowsPhone.App.RootFrame">
+            <summary>
+            Provides easy access to the root frame of the Phone Application.
+            </summary>
+            <returns>The root frame of the Phone Application.</returns>
+        </member>
+        <member name="M:NeerbyyWindowsPhone.Home.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:NeerbyyWindowsPhone.LocalizedStrings">
+            <summary>
+            Provides access to string resources.
+            </summary>
+        </member>
+        <member name="T:NeerbyyWindowsPhone.Login">
+            <summary>
+            Vue de connexion et acces aux differentes vues
+            </summary>
+        </member>
+        <member name="M:NeerbyyWindowsPhone.Login.#ctor">
+            <summary>
+            Constructeur
+            </summary>
+        </member>
+        <member name="M:NeerbyyWindowsPhone.Login.tryToLogin(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Callback appelé pour tenter de se connecter à Neerbyy
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:NeerbyyWindowsPhone.Login.webClient_UploadStringCompleted(System.Object,System.Net.UploadStringCompletedEventArgs)">
+            <summary>
+            Callback de la requête asynchrone faite au server. Est appelé quand le serveur envoie sa réponse
+            </summary>
+            <param name="sender"></param>
+            <param name="e">Reponse du serveur</param>
+        </member>
+        <member name="M:NeerbyyWindowsPhone.Login.goToSignUp(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Callback afin d'accéder à la page d'inscription
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:NeerbyyWindowsPhone.Login.goToMap(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Fonction à n'utiliser que pendant le phase de développement afin d'accéder rapidement à la map
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:NeerbyyWindowsPhone.Login.goToRestorePassword(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Callback appelé pour récuper un mot de passe oublié
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:NeerbyyWindowsPhone.Login.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:NeerbyyWindowsPhone.RestorePassword.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:NeerbyyWindowsPhone.SignUp.webClient_UploadStringCompleted(System.Object,System.Net.UploadStringCompletedEventArgs)">
+            
+            
+             Callback une fois la création de l'utilisateur terminée
+             
+        </member>
+        <member name="M:NeerbyyWindowsPhone.SignUp.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:NeerbyyWindowsPhone.Resources.AppResources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:NeerbyyWindowsPhone.Resources.AppResources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:NeerbyyWindowsPhone.Resources.AppResources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:NeerbyyWindowsPhone.Resources.AppResources.ResourceFlowDirection">
+            <summary>
+              Looks up a localized string similar to LeftToRight.
+            </summary>
+        </member>
+        <member name="P:NeerbyyWindowsPhone.Resources.AppResources.ResourceLanguage">
+            <summary>
+              Looks up a localized string similar to us-EN.
+            </summary>
+        </member>
+        <member name="P:NeerbyyWindowsPhone.Resources.AppResources.ApplicationTitle">
+            <summary>
+              Looks up a localized string similar to MY APPLICATION.
+            </summary>
+        </member>
+        <member name="P:NeerbyyWindowsPhone.Resources.AppResources.AppBarButtonText">
+            <summary>
+              Looks up a localized string similar to button.
+            </summary>
+        </member>
+        <member name="P:NeerbyyWindowsPhone.Resources.AppResources.AppBarMenuItemText">
+            <summary>
+              Looks up a localized string similar to menu item.
+            </summary>
+        </member>
+    </members>
+</doc>

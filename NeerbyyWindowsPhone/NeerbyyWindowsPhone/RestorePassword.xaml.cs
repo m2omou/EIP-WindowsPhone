@@ -11,6 +11,9 @@ using System.Diagnostics;
 
 namespace NeerbyyWindowsPhone
 {
+    /// <summary>
+    /// Page pour récupérer son mot de passe
+    /// </summary>
     public partial class RestorePassword : PhoneApplicationPage
     {
         public RestorePassword()
@@ -18,6 +21,9 @@ namespace NeerbyyWindowsPhone
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Callback appelé une fois les informations rentrées par l'utilisateur
+        /// </summary>
         private void restorePassword(object sender, RoutedEventArgs e)
         {
             // Tentative de login
