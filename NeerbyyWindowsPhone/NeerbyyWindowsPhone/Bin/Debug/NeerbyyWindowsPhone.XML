@@ -20,6 +20,26 @@
             </summary>
             <returns>The root frame of the Phone Application.</returns>
         </member>
+        <member name="T:NeerbyyWindowsPhone.Home">
+            <summary>
+            Vue de la map et des lieux autour de notre position actuelle
+            </summary>
+        </member>
+        <member name="M:NeerbyyWindowsPhone.Home.CreatePushpin(System.String,System.String,System.Double,System.Double)">
+            <summary>
+            Fonction permettant l'affichage de pushpin sur la map avec les coordonnées passées en paramètre
+            </summary>
+        </member>
+        <member name="M:NeerbyyWindowsPhone.Home.#ctor">
+            <summary>
+            Constructeur de la vue
+            </summary>
+        </member>
+        <member name="M:NeerbyyWindowsPhone.Home.Pushpin_Tap(System.Object,System.Windows.Input.GestureEventArgs)">
+            <summary>
+            Callback appelé lorsque l'on choisi un lieu pour afficher ses postes
+            </summary>
+        </member>
         <member name="M:NeerbyyWindowsPhone.Home.InitializeComponent">
             <summary>
             InitializeComponent
@@ -80,16 +100,45 @@
             InitializeComponent
             </summary>
         </member>
+        <member name="T:NeerbyyWindowsPhone.Users">
+            <summary>
+            Modele utilisateur
+            </summary>
+        </member>
+        <member name="T:NeerbyyWindowsPhone.RestorePassword">
+            <summary>
+            Page pour récupérer son mot de passe
+            </summary>
+        </member>
+        <member name="M:NeerbyyWindowsPhone.RestorePassword.restorePassword(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Callback appelé une fois les informations rentrées par l'utilisateur
+            </summary>
+        </member>
         <member name="M:NeerbyyWindowsPhone.RestorePassword.InitializeComponent">
             <summary>
             InitializeComponent
             </summary>
         </member>
+        <member name="T:NeerbyyWindowsPhone.SignUp">
+            <summary>
+            Page pour s'inscrire à Neerbyy
+            </summary>
+        </member>
+        <member name="M:NeerbyyWindowsPhone.SignUp.#ctor">
+            <summary>
+            Constructeur
+            </summary>
+        </member>
+        <member name="M:NeerbyyWindowsPhone.SignUp.register(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Callback appelé pour créer le compte
+            </summary>
+        </member>
         <member name="M:NeerbyyWindowsPhone.SignUp.webClient_UploadStringCompleted(System.Object,System.Net.UploadStringCompletedEventArgs)">
-            
-            
-             Callback une fois la création de l'utilisateur terminée
-             
+            <summary>
+            Réponse asynchrone du serveur pour savoir si la création à fonctionné ou non
+            </summary>
         </member>
         <member name="M:NeerbyyWindowsPhone.SignUp.InitializeComponent">
             <summary>

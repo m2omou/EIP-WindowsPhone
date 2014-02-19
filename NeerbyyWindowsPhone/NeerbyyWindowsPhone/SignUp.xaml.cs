@@ -75,7 +75,7 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         private void webClient_UploadStringCompleted(object sender, UploadStringCompletedEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Home.xaml", UriKind.Relative));
+            //NavigationService.Navigate(new Uri("/Home.xaml", UriKind.Relative));
             // Fini
             display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
             Dispatcher.BeginInvoke(() =>
@@ -83,15 +83,21 @@ namespace NeerbyyWindowsPhone
                 if (e.Error == null)
                 {
                     display_status.Text= "Compte créé";
-                    //MessageBox.Show("User Created : " + e.Result);
+                    MessageBox.Show("User Created : " + e.Result);
                 }
                 else
                 {
                     WebException we = (WebException)e.Error;
+                    display_status.Text = "Compte créé";
                     HttpWebResponse response = (System.Net.HttpWebResponse)we.Response;
                     MessageBox.Show("Compte créé"); //+ response.StatusCode + response.StatusDescription);
                 }
             });
+        }
+
+        private void username_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
 
 

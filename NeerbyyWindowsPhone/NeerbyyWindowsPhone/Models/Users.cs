@@ -5,35 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-<<<<<<< HEAD
 namespace NeerbyyWindowsPhone
 {
 
     /// <summary>
     /// Modele utilisateur
     /// </summary>
-=======
-namespace Neerbyy
-{
-
-    /*
-     * Model User
-    */
->>>>>>> c398704265f914f6f3537ef5b9ad16a39a564797
     class Users
     {
         public int id { get; set; }
         public string username { get; set; }
-<<<<<<< HEAD
         public string email { get; set; }
         public string password { get; set; }
         [JsonIgnore]
-=======
-        public string firstname { get; set; }
-        public string lastname { get; set; }
-        public string email { get; set; }
-        public string password { get; set; }
->>>>>>> c398704265f914f6f3537ef5b9ad16a39a564797
         public string avatar { get; set; }
         [JsonIgnore]
         public string created_at { get; set; }
