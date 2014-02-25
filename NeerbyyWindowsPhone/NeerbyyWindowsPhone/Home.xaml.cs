@@ -23,6 +23,7 @@ namespace NeerbyyWindowsPhone
     {
         private MapLayer layer;
         private GeoCoordinate map_center;
+        private GeoCoordinate target;
         private double map_zoom;
         
         /// <summary>
@@ -33,6 +34,7 @@ namespace NeerbyyWindowsPhone
             InitializeComponent();
 
             map_center = new GeoCoordinate(39.9484462, 116.3371542);
+            target = new GeoCoordinate(-map_center.Latitude, -map_center.Longitude);
             map_zoom = 12;
             HomeMap.Center = map_center;
             HomeMap.ZoomLevel = map_zoom;
@@ -82,7 +84,8 @@ namespace NeerbyyWindowsPhone
         private void HomeMap_CenterChanged(object sender, MapCenterChangedEventArgs e)
         {
             String str = "New coordinate : " + HomeMap.Center.Latitude + " - " + HomeMap.Center.Longitude;
-         //   MessageBox.Show(str);
+              // MessageBox.Show(str + "   " + target.Latitude + " - " + target.Longitude);
+
         }
 
         /// <summary>
@@ -109,10 +112,13 @@ namespace NeerbyyWindowsPhone
         {
             Pushpin pp = (Pushpin)sender;
             PushpinModel infos = pp.Tag as PushpinModel;
-            String str = infos.description; // Au lieu de mettre un string on aurait pu mettre le model qui contient les infos dont on a besoin
+            target = new GeoCoordinate(infos.latitude, infos.longitude);
+            HomeMap.SetView(target, HomeMap.ZoomLevel, MapAnimationKind.Linear);
 
-            HomeMap.SetView(new GeoCoordinate(infos.latitude, infos.longitude), HomeMap.ZoomLevel, MapAnimationKind.Linear);
-            MessageBox.Show(str);
+
+            infoDisplayer.Visibility = System.Windows.Visibility.Visible;
+            popup_title.Text = infos.title;
+            popup_description.Text = infos.description;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
