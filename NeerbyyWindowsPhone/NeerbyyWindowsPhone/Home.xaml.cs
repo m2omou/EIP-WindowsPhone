@@ -38,7 +38,7 @@ namespace NeerbyyWindowsPhone
             map_zoom = 12;
             HomeMap.Center = map_center;
             HomeMap.ZoomLevel = map_zoom;
-            
+            HomeMap.ViewChanged += HomeMap_ViewChanged;
             layer = new MapLayer();
             HomeMap.Layers.Add(layer);
 
@@ -59,6 +59,18 @@ namespace NeerbyyWindowsPhone
             CreatePushpin(infos2);
 
         }
+
+
+        /// <summary>
+        /// Callback appelé lorsque la carte a termine son deplacement
+        /// </summary>
+        /// 
+        void HomeMap_ViewChanged(object sender, MapViewChangedEventArgs e)
+        {
+
+            infoDisplayer.Visibility = System.Windows.Visibility.Visible;
+        }
+
 
         /// <summary>
         /// Fonction permettant l'affichage de pushpin sur la map avec les coordonnées passées en paramètre
@@ -83,9 +95,7 @@ namespace NeerbyyWindowsPhone
         /// 
         private void HomeMap_CenterChanged(object sender, MapCenterChangedEventArgs e)
         {
-            String str = "New coordinate : " + HomeMap.Center.Latitude + " - " + HomeMap.Center.Longitude;
-              // MessageBox.Show(str + "   " + target.Latitude + " - " + target.Longitude);
-
+            infoDisplayer.Visibility = System.Windows.Visibility.Collapsed;
         }
 
         /// <summary>
@@ -115,10 +125,10 @@ namespace NeerbyyWindowsPhone
             target = new GeoCoordinate(infos.latitude, infos.longitude);
             HomeMap.SetView(target, HomeMap.ZoomLevel, MapAnimationKind.Linear);
 
-
-            infoDisplayer.Visibility = System.Windows.Visibility.Visible;
+            infoDisplayer.Visibility = System.Windows.Visibility.Collapsed;
             popup_title.Text = infos.title;
             popup_description.Text = infos.description;
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

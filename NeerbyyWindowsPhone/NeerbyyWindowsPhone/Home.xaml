@@ -70,7 +70,7 @@
             <maps:Map CenterChanged="HomeMap_CenterChanged" ZoomLevelChanged="HomeMap_ZoomLevelChanged" x:Name="HomeMap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,80,0,0" Width="456" Height="600">
                 
             </maps:Map>
-            <Grid x:Name="infoDisplayer"  Background="#FF74FFCC" Margin="102,228,85,326" Visibility="Collapsed">
+            <Grid x:Name="infoDisplayer"  Background="#8D303030" Margin="102,228,85,326" Visibility="Collapsed">
             	<TextBlock x:Name="popup_title" HorizontalAlignment="Center" Margin="28,10,28,0" TextWrapping="Wrap" Text="Title" VerticalAlignment="Top" Width="213" TextAlignment="Center"/>
             	<TextBlock x:Name="popup_description" HorizontalAlignment="Left" Margin="28,43,28,0" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top" Height="69" Width="213" FontSize="16"/>
             </Grid>
