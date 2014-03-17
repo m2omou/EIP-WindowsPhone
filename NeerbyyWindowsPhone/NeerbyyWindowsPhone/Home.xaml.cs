@@ -12,7 +12,7 @@ using Microsoft.Phone.Maps.Toolkit;
 using Microsoft.Phone.Maps.Services;
 using System.Device.Location;
 using System.Windows.Media;
-
+using System.Windows.Threading;
 
 namespace NeerbyyWindowsPhone
 {
@@ -25,9 +25,11 @@ namespace NeerbyyWindowsPhone
         private GeoCoordinate map_center;
         private GeoCoordinate target;
         private double map_zoom;
-        
+        private DispatcherTimer timer_center;
+        private DispatcherTimer timer_zoom;
+
         /// <summary>
-        /// Constructeur de la vue
+        /// Constructeur de la vue principale (map)
         /// </summary>
         public Home()
         {
@@ -38,7 +40,17 @@ namespace NeerbyyWindowsPhone
             map_zoom = 12;
             HomeMap.Center = map_center;
             HomeMap.ZoomLevel = map_zoom;
+            HomeMap.CenterChanged += HomeMap_CenterChanged;
             HomeMap.ViewChanged += HomeMap_ViewChanged;
+
+            timer_center = new DispatcherTimer();
+            timer_center.Interval = TimeSpan.FromMilliseconds(200);
+            timer_center.Tick += OnTimerCenterTick;
+
+            timer_zoom = new DispatcherTimer();
+            timer_zoom.Interval = TimeSpan.FromMilliseconds(200);
+            timer_zoom.Tick += OnTimerZoomTick;
+
             layer = new MapLayer();
             HomeMap.Layers.Add(layer);
 
@@ -67,7 +79,6 @@ namespace NeerbyyWindowsPhone
         /// 
         void HomeMap_ViewChanged(object sender, MapViewChangedEventArgs e)
         {
-
             infoDisplayer.Visibility = System.Windows.Visibility.Visible;
         }
 
@@ -96,6 +107,26 @@ namespace NeerbyyWindowsPhone
         private void HomeMap_CenterChanged(object sender, MapCenterChangedEventArgs e)
         {
             infoDisplayer.Visibility = System.Windows.Visibility.Collapsed;
+            timer_center.Start();
+        }
+
+        /// <summary>
+        /// Timer pour gerer l'arret sur la map
+        /// </summary>
+        private void OnTimerCenterTick(Object sender, EventArgs args)
+        {
+            timer_center.Stop();
+            MessageBox.Show("lol");
+        }
+
+        /// <summary>
+        /// Timer pour gerer l'arret du zoom
+        /// </summary>
+        private void OnTimerZoomTick(Object sender, EventArgs args)
+        {
+            timer_zoom.Stop();
+            String str = "New zoom : " + HomeMap.ZoomLevel;
+            MessageBox.Show(str);
         }
 
         /// <summary>
@@ -104,13 +135,8 @@ namespace NeerbyyWindowsPhone
         /// 
         private void HomeMap_ZoomLevelChanged(object sender, MapZoomLevelChangedEventArgs e)
         {
-            String str = "New zoom : " + HomeMap.ZoomLevel;
-            double diff = HomeMap.ZoomLevel - map_zoom;
-            if (diff > 1)
-            {
-                MessageBox.Show(str);
-                map_zoom = HomeMap.ZoomLevel;
-            }
+            timer_zoom.Start();
+            timer_center.Stop();
         }
 
 
