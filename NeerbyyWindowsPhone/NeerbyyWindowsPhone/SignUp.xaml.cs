@@ -35,7 +35,7 @@ namespace NeerbyyWindowsPhone
         private void register(object sender, RoutedEventArgs e)
         {
 
-            Users user = new Users();
+            User user = new User();
             user.id = -1;
             user.username = username.Text;
             user.password = password.Password;

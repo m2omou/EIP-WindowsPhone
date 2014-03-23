@@ -12,7 +12,7 @@ namespace NeerbyyWindowsPhone
     */
     class Datas
     {
-        static public Users my_account{get; set;}
+        static public User my_account{get; set;}
         static public String url_webservice = "http://neerbyy.com:80";
     }
 }

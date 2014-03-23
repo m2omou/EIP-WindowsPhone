@@ -38,38 +38,37 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void tryToLogin(object sender, RoutedEventArgs e)
+        private void tryToLogin(object sender, RoutedEventArgs args)
         {
-
-            Users user = new Users();
-            user.id = -1;
-            user.username = mail.Text;
-            user.password = password.Password;
-            user.email = mail.Text;
-
-            StringBuilder postData = new StringBuilder();
-            postData.AppendFormat("{0}={1}", "email", HttpUtility.UrlEncode(user.username));
-            postData.AppendFormat("&{0}={1}", "password", HttpUtility.UrlEncode(user.password));
-
-
-
-            Uri uri = new Uri(string.Format("{0}/sessions.json", Datas.url_webservice));
-            WebClient webClient = new WebClient();
-
-            webClient.UploadStringCompleted += new UploadStringCompletedEventHandler(webClient_UploadStringCompleted);
-            webClient.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-            webClient.Headers["Content-Length"] = postData.Length.ToString();
-
-            webClient.UploadStringAsync(uri, "POST", postData.ToString());
-
-            
-
             display_progress_bar.Visibility = System.Windows.Visibility.Visible;
-            // Ca marche ?
 
-
-            
             display_status.Text = "Tentative de connexion...";
+
+            //WebApi.Singleton.Places(48.856614, 2.352222, delegate(List<Place> places)
+            //{
+            //    Debug.WriteLine("Test");
+            //}, delegate(WebException e)
+            //{
+            //    Debug.WriteLine("Error");
+            //});
+            WebApi.Singleton.Authenticate(mail.Text, password.Password, (User user) =>
+            {
+                display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
+                NavigationService.Navigate(new Uri("/Home.xaml", UriKind.Relative));
+            }, (WebException e) =>
+            {
+                display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
+                display_status.Text = e.Message;
+            });
+            //WebApi.Singleton.Authenticate(mail.Text, password.Password, (WebApi.UserResultDelegate)delegate(User user)
+            //{
+            //    display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
+            //    NavigationService.Navigate(new Uri("/Home.xaml", UriKind.Relative));
+            //}, (WebApi.ErrorDelegate)delegate(WebException e)
+            //{
+            //    display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
+            //    display_status.Text = e.Message;
+            //});
         }
 
 

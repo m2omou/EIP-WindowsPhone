@@ -52,9 +52,9 @@
                 <TextBlock TextWrapping="Wrap" Text="" FontFamily="Segoe WP SemiLight" x:Name="display_status" Foreground="#FFBFBFBF"/>
                 <ProgressBar IsIndeterminate="True" Foreground="#FF4065C9" x:Name="display_progress_bar" Visibility="Collapsed" Height="10"/>
         		<TextBlock TextWrapping="Wrap" Text="Adresse mail ou nom d'utilisateur" FontFamily="Segoe WP"/>
-        		<TextBox Text="titi" Height="72" TextWrapping="Wrap" Width="456" InputScope="EmailUserName" x:Name="mail"/>
+        		<TextBox Text="callum.henshall@me.com" Height="72" TextWrapping="Wrap" Width="456" InputScope="EmailUserName" x:Name="mail"/>
         		<TextBlock TextWrapping="Wrap" Text="Mot de passe"/>
-        		<PasswordBox Password="test" x:Name="password"/>
+        		<PasswordBox Password="totototo" x:Name="password"/>
         		<Button Click="tryToLogin" Content="Login" Background="#FF4065C9" BorderBrush="#002C2C2C" Foreground="White" FontFamily="Segoe WP Light"/>
                 <Button Content="Inscription" Click="goToSignUp" Foreground="White" BorderBrush="#002C2C2C" Background="#FF4065C9" FontFamily="Segoe WP Light"/>
                 <Button Click="goToRestorePassword"  Content="J'ai oublié mon mot de passe" BorderBrush="Transparent" Background="#FF4065C9" FontFamily="Segoe WP Light"/>
