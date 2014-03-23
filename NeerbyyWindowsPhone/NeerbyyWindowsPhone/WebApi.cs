@@ -150,15 +150,33 @@ namespace NeerbyyWindowsPhone
                 }
 
                 JObject jobject = JObject.Parse(responseString);
-                apiRequest.jResultDelegate(jobject);
+
+                int responseCode = Convert.ToInt32((String)jobject["responseCode"]);
+                if (responseCode == 0)
+                {
+                    apiRequest.jResultDelegate(jobject);
+                }
+                else
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                       {
+                           apiRequest.errorDelegate(new WebException((String)jobject["responseMessage"], WebExceptionStatus.ServerProtocolViolation));
+                       });
+                }
             }
             catch (WebException e)
             {
-                apiRequest.errorDelegate(e);
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        apiRequest.errorDelegate(e);
+                    });
             }
             catch (Exception e)
             {
-                apiRequest.errorDelegate(new WebException(e.Message, WebExceptionStatus.ServerProtocolViolation));
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        apiRequest.errorDelegate(new WebException(e.Message, WebExceptionStatus.ServerProtocolViolation));
+                    });
             }
         }
 
