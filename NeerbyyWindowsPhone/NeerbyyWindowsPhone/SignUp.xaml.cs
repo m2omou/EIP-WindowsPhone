@@ -32,81 +32,24 @@ namespace NeerbyyWindowsPhone
         /// <summary>
         /// Callback appelé pour créer le compte
         /// </summary>
-        private void register(object sender, RoutedEventArgs e)
+        private void register(object sender, RoutedEventArgs args)
         {
-
-            User user = new User();
-            user.id = -1;
-            user.username = username.Text;
-            user.password = password.Password;
-            user.email = mail.Text;
-
-            StringBuilder postData = new StringBuilder();
-            postData.AppendFormat("{0}={1}", "user[username]", HttpUtility.UrlEncode(user.username));
-            postData.AppendFormat("&{0}={1}", "user[email]", HttpUtility.UrlEncode(user.email));
-            postData.AppendFormat("&{0}={1}", "user[password]", HttpUtility.UrlEncode(user.password));
-
-                
-
-            Uri uri = new Uri(string.Format("{0}/users.json", Datas.url_webservice));
-            WebClient webClient = new WebClient();
-
-            webClient.UploadStringCompleted += new UploadStringCompletedEventHandler(webClient_UploadStringCompleted);
-            webClient.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-            webClient.Headers["Content-Length"] = postData.Length.ToString();
-
-            webClient.UploadStringAsync(uri, "POST", postData.ToString());
-            
-            // Tentative de login
-            var errorMsg = "Les mots de passe ne correspondent pas";
-
             display_progress_bar.Visibility = System.Windows.Visibility.Visible;
-            // Ca marche ?
 
-
-            // Ca marche pas 
-            //display_status.Text = errorMsg;
-
-        }
-
-
-        /// <summary>
-        /// Réponse asynchrone du serveur pour savoir si la création à fonctionné ou non
-        /// </summary>
-        private void webClient_UploadStringCompleted(object sender, UploadStringCompletedEventArgs e)
-        {
-            //NavigationService.Navigate(new Uri("/Home.xaml", UriKind.Relative));
-            // Fini
-            display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
-            Dispatcher.BeginInvoke(() =>
-            {
-                if (e.Error == null)
+            WebApi.Singleton.CreateUser(username.Text, password.Password, mail.Text, (User user) =>
                 {
-                    display_status.Text= "Compte créé";
-                    MessageBox.Show("User Created : " + e.Result);
-                }
-                else
+                    display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
+                    MessageBox.Show("Compte crée.");
+                }, (WebException e) =>
                 {
-                    WebException we = (WebException)e.Error;
-                    display_status.Text = "Compte créé";
-                    HttpWebResponse response = (System.Net.HttpWebResponse)we.Response;
-                    MessageBox.Show("Compte créé"); //+ response.StatusCode + response.StatusDescription);
-                }
-            });
+                    display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
+                    MessageBox.Show(e.Message);
+                });
         }
 
         private void username_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
-
-
-
-        ///
-        ///
-        /// Envoi de la requête pour créer un utilisateur
-        /// 
-
-        
     }
 }

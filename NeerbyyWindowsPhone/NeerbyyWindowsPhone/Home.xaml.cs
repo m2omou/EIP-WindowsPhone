@@ -27,6 +27,7 @@ namespace NeerbyyWindowsPhone
         private double map_zoom;
         private DispatcherTimer timer_center;
         private DispatcherTimer timer_zoom;
+        private List<Place> places;
 
         /// <summary>
         /// Constructeur de la vue principale (map)
@@ -54,24 +55,27 @@ namespace NeerbyyWindowsPhone
             layer = new MapLayer();
             HomeMap.Layers.Add(layer);
 
-            PushpinModel infos1 = new PushpinModel();
-            infos1.title = "Lama temple";
-            infos1.description = "Trop bien";
-            infos1.latitude = 39.9084462;
-            infos1.longitude = 116.321542;
-
-            CreatePushpin(infos1);
-
-            PushpinModel infos2 = new PushpinModel();
-            infos2.title = "Forbidden City";
-            infos2.description = "Trop bien aussi lol";
-            infos2.latitude = 39.9684462;
-            infos2.longitude = 116.3571542;
-
-            CreatePushpin(infos2);
-
+            this.UpdatePlaces();
         }
 
+        /// <summary>
+        /// Update the list of places by quering the WebApi
+        /// </summary>
+        private void UpdatePlaces()
+        {
+            WebApi.Singleton.Places(HomeMap.Center.Latitude, HomeMap.Center.Longitude, (List<Place> places) =>
+            {
+                layer.Clear();
+                this.places = places;
+                foreach (Place place in places)
+                {
+                    CreatePushpin(place);
+                }
+            }, (WebException e) =>
+            {
+
+            });
+        }
 
         /// <summary>
         /// Callback appelé lorsque la carte a termine son deplacement
@@ -86,11 +90,11 @@ namespace NeerbyyWindowsPhone
         /// <summary>
         /// Fonction permettant l'affichage de pushpin sur la map avec les coordonnées passées en paramètre
         /// </summary>
-        private void CreatePushpin(PushpinModel infos) // Il faudrait passer le model de la place ici
+        private void CreatePushpin(Place infos) // Il faudrait passer le model de la place ici
         {
             Pushpin pp = new Pushpin();
             pp.Background = new SolidColorBrush(Color.FromArgb(255, 50, 50, 200));
-            pp.Content = infos.title;
+            pp.Content = infos.name;
             pp.Tag = infos;
             pp.Tap += Pushpin_Tap;
             MapOverlay overlay = new MapOverlay();
@@ -116,7 +120,9 @@ namespace NeerbyyWindowsPhone
         private void OnTimerCenterTick(Object sender, EventArgs args)
         {
             timer_center.Stop();
-            MessageBox.Show("lol");
+            //MessageBox.Show("lol");
+
+            this.UpdatePlaces();
         }
 
         /// <summary>
@@ -126,7 +132,9 @@ namespace NeerbyyWindowsPhone
         {
             timer_zoom.Stop();
             String str = "New zoom : " + HomeMap.ZoomLevel;
-            MessageBox.Show(str);
+            //MessageBox.Show(str);
+
+            this.UpdatePlaces();
         }
 
         /// <summary>
@@ -147,13 +155,13 @@ namespace NeerbyyWindowsPhone
         private void Pushpin_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             Pushpin pp = (Pushpin)sender;
-            PushpinModel infos = pp.Tag as PushpinModel;
+            Place infos = pp.Tag as Place;
             target = new GeoCoordinate(infos.latitude, infos.longitude);
             HomeMap.SetView(target, HomeMap.ZoomLevel, MapAnimationKind.Linear);
 
             infoDisplayer.Visibility = System.Windows.Visibility.Collapsed;
-            popup_title.Text = infos.title;
-            popup_description.Text = infos.description;
+            popup_title.Text = infos.name;
+            popup_description.Text = infos.city;
             
         }
 

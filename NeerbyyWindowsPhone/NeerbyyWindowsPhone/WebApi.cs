@@ -86,6 +86,13 @@ namespace NeerbyyWindowsPhone
             }
         }
 
+        /// <summary>
+        /// Post Data to the Webservice
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="data"></param>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
         private void Post(String controller, String data, JResultDelegate resultDelegate, ErrorDelegate errorDelegate)
         {
             Uri uri = new Uri(string.Format("{0}/{1}", WebApi.webServiceUrl, controller));
@@ -104,6 +111,13 @@ namespace NeerbyyWindowsPhone
             request.BeginGetRequestStream(new AsyncCallback(BeginGetRequestStream), apiRequest);
         }
 
+        /// <summary>
+        /// Get a Webpage with some variables
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="data"></param>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
         private void Get(String controller, String data, JResultDelegate resultDelegate, ErrorDelegate errorDelegate)
         {
             Uri uri = new Uri(string.Format("{0}/{1}?{2}", WebApi.webServiceUrl, controller, data));
@@ -119,6 +133,10 @@ namespace NeerbyyWindowsPhone
             request.BeginGetResponse(new AsyncCallback(BeginGetResponse), apiRequest);
         }
 
+        /// <summary>
+        /// Asynchronous Request Stream so as not to block the main thread
+        /// </summary>
+        /// <param name="result"></param>
         private void BeginGetRequestStream(IAsyncResult result)
         {
             Request apiRequest = (Request)result.AsyncState;
@@ -134,6 +152,10 @@ namespace NeerbyyWindowsPhone
             request.BeginGetResponse(new AsyncCallback(BeginGetResponse), apiRequest);
         }
 
+        /// <summary>
+        /// Asynchronous Response
+        /// </summary>
+        /// <param name="result"></param>
         private void BeginGetResponse(IAsyncResult result)
         {
             Request apiRequest = (Request)result.AsyncState;
@@ -190,8 +212,8 @@ namespace NeerbyyWindowsPhone
         public void Authenticate(String email, String password, UserResultDelegate resultDelegate, ErrorDelegate errorDelegate)
         {
             StringBuilder postData = new StringBuilder();
-            postData.AppendFormat("{0}={1}", "email", HttpUtility.UrlEncode(email));
-            postData.AppendFormat("&{0}={1}", "password", HttpUtility.UrlEncode(password));
+            postData.AppendFormat("{0}={1}", "connection[email]", HttpUtility.UrlEncode(email));
+            postData.AppendFormat("&{0}={1}", "connection[password]", HttpUtility.UrlEncode(password));
 
             JResultDelegate jResultDelegate = delegate(JObject result)
             {
@@ -237,7 +259,7 @@ namespace NeerbyyWindowsPhone
         }
 
         /// <summary>
-        /// Get list of places
+        /// Get a list of places
         /// </summary>
         /// <param name="latitude"></param>
         /// <param name="longitude"></param>

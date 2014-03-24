@@ -105,7 +105,6 @@
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Place.cs" />
-    <Compile Include="Models\PushpinModel.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="RestorePassword.xaml.cs">
       <DependentUpon>RestorePassword.xaml</DependentUpon>

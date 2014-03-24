@@ -37,12 +37,12 @@ namespace NeerbyyWindowsPhone
         /// Callback appelé pour tenter de se connecter à Neerbyy
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="args"></param>
         private void tryToLogin(object sender, RoutedEventArgs args)
         {
             display_progress_bar.Visibility = System.Windows.Visibility.Visible;
 
-            display_status.Text = "Tentative de connexion...";
+            display_status.Text = "Connexion en cours...";
 
             WebApi.Singleton.Authenticate(mail.Text, password.Password, (User user) =>
             {
@@ -52,49 +52,6 @@ namespace NeerbyyWindowsPhone
             {
                 display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
                 display_status.Text = e.Message;
-            });
-        }
-
-
-
-        /// <summary>
-        /// Callback de la requête asynchrone faite au server. Est appelé quand le serveur envoie sa réponse
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e">Reponse du serveur</param>
-        private void webClient_UploadStringCompleted(object sender, UploadStringCompletedEventArgs e)
-        {
-            
-            // Fini
-            display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
-            Dispatcher.BeginInvoke(() =>
-            {
-                if (e.Error == null)
-                {
-                    string result = e.Result;
-                    Debug.WriteLine(result);
-                    JObject j_user = JObject.Parse(result);
-
-                    int error = Convert.ToInt32((string)j_user["responseCode"]);
-                    if (error == 1)
-                    {
-                        display_status.Text = (string)j_user["responseMessage"];
-                    }
-                    else
-                    {
-                       // Users user = j_user.ToObject<Users>();
-                       // Datas.my_account = user;
-                        display_status.Text = "Connecté";
-                        NavigationService.Navigate(new Uri("/Home.xaml", UriKind.Relative));
-                    }
-                    
-                }
-                else
-                {
-                    WebException we = (WebException)e.Error;
-                    HttpWebResponse response = (System.Net.HttpWebResponse)we.Response;
-                    MessageBox.Show("Error occured : " + response.StatusCode + response.StatusDescription);
-                }
             });
         }
 
