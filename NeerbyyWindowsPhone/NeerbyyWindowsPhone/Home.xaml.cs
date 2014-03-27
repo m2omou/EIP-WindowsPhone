@@ -17,7 +17,7 @@ using System.Windows.Threading;
 namespace NeerbyyWindowsPhone
 {
     /// <summary>
-    /// Vue de la map et des lieux autour de notre position actuelle
+    /// Map view
     /// </summary>
     public partial class Home : PhoneApplicationPage
     {
@@ -30,7 +30,7 @@ namespace NeerbyyWindowsPhone
         private List<Place> places;
 
         /// <summary>
-        /// Constructeur de la vue principale (map)
+        /// View constructor
         /// </summary>
         public Home()
         {
@@ -78,7 +78,7 @@ namespace NeerbyyWindowsPhone
         }
 
         /// <summary>
-        /// Callback appelé lorsque la carte a termine son deplacement
+        /// Callback called when the map stops moving
         /// </summary>
         /// 
         void HomeMap_ViewChanged(object sender, MapViewChangedEventArgs e)
@@ -88,7 +88,7 @@ namespace NeerbyyWindowsPhone
 
 
         /// <summary>
-        /// Fonction permettant l'affichage de pushpin sur la map avec les coordonnées passées en paramètre
+        /// Pushpin creator on the map
         /// </summary>
         private void CreatePushpin(Place infos) // Il faudrait passer le model de la place ici
         {
@@ -105,7 +105,7 @@ namespace NeerbyyWindowsPhone
 
 
         /// <summary>
-        /// Callback appelé lorsque l'utilisateur bouge la carte
+        /// Callback called when the user move the map
         /// </summary>
         /// 
         private void HomeMap_CenterChanged(object sender, MapCenterChangedEventArgs e)
@@ -115,7 +115,7 @@ namespace NeerbyyWindowsPhone
         }
 
         /// <summary>
-        /// Timer pour gerer l'arret sur la map
+        /// Timer to handle when the map stops moving
         /// </summary>
         private void OnTimerCenterTick(Object sender, EventArgs args)
         {
@@ -126,7 +126,7 @@ namespace NeerbyyWindowsPhone
         }
 
         /// <summary>
-        /// Timer pour gerer l'arret du zoom
+        /// Timer to handle zoom event
         /// </summary>
         private void OnTimerZoomTick(Object sender, EventArgs args)
         {
@@ -138,7 +138,7 @@ namespace NeerbyyWindowsPhone
         }
 
         /// <summary>
-        /// Callback appelé lorsque l'utilisateur zoom ou dezoom
+        /// Callback called when the user zoom or unzoom
         /// </summary>
         /// 
         private void HomeMap_ZoomLevelChanged(object sender, MapZoomLevelChangedEventArgs e)
@@ -149,7 +149,7 @@ namespace NeerbyyWindowsPhone
 
 
         /// <summary>
-        /// Callback appelé lorsque l'on choisi un lieu pour afficher ses postes
+        /// Callback called when we chose a place to show its information
         /// </summary>
         /// 
         private void Pushpin_Tap(object sender, System.Windows.Input.GestureEventArgs e)

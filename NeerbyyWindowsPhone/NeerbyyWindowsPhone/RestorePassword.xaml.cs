@@ -12,7 +12,7 @@ using System.Diagnostics;
 namespace NeerbyyWindowsPhone
 {
     /// <summary>
-    /// Page pour récupérer son mot de passe
+    /// Forgotten password view
     /// </summary>
     public partial class RestorePassword : PhoneApplicationPage
     {
@@ -22,7 +22,7 @@ namespace NeerbyyWindowsPhone
         }
 
         /// <summary>
-        /// Callback appelé une fois les informations rentrées par l'utilisateur
+        /// Callback called to send the procedure mail
         /// </summary>
         private void restorePassword(object sender, RoutedEventArgs e)
         {

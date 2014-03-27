@@ -12,7 +12,7 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
-	<Grid x:Name="LayoutRoot" Background="#FF2C2C2C">
+	<Grid x:Name="LayoutRoot" Background="White">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
@@ -45,7 +45,7 @@
             Before shipping remove this XAML and the image itself.-->
 		<!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
     <!--TitlePanel contains the name of the application and page title-->
-		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,173,28" Background="#FF3EB88E">
 			<TextBlock Text="Neerby" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0" FontFamily="Segoe WP Black"/>
 			<TextBlock Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="GeosansLight" Text="Inscription"/>
 		</StackPanel>
@@ -55,15 +55,15 @@
 			<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
 				<TextBlock TextWrapping="Wrap" Text="" FontFamily="Segoe WP SemiLight" x:Name="display_status" Foreground="#FFBFBFBF"/>
 				<ProgressBar IsIndeterminate="True" Foreground="#FF4065C9" x:Name="display_progress_bar" Visibility="Collapsed" Height="10"/>
-                <TextBlock TextWrapping="Wrap" FontFamily="Segoe WP" Text="Nom d'utilisateur"/>
-                <TextBox Text="titi" Height="72" TextWrapping="Wrap" Width="456" InputScope="LogOnName" x:Name="username" TextChanged="username_TextChanged"/>
-				<TextBlock TextWrapping="Wrap" Text="Mail"/>
-                <TextBox Text="titi42@gmail.com"  x:Name="mail" Height="72" TextWrapping="Wrap" Width="456" InputScope="EmailUserName"/>
-				<TextBlock TextWrapping="Wrap" Text="Mot de passe"/>
-                <PasswordBox Password="test"  x:Name="password"/>
-				<TextBlock TextWrapping="Wrap" Text="Confirmation du mot de passe"/>
-                <PasswordBox Password="test"  x:Name="password2"/>
-				<Button Content="Je rejoins Neerby !" Click="register" Foreground="White" BorderBrush="#002C2C2C" Background="#FF4065C9" FontFamily="Segoe WP Light"/>
+                <TextBlock TextWrapping="Wrap" FontFamily="Segoe WP" Text="Nom d'utilisateur" Foreground="#FF151515"/>
+                <TextBox Text="titi" Height="72" TextWrapping="Wrap" Width="456" InputScope="LogOnName" x:Name="username" TextChanged="username_TextChanged" Background="#BFCBCBCB"/>
+				<TextBlock TextWrapping="Wrap" Text="Mail" Foreground="#FF151515"/>
+                <TextBox Text="titi42@gmail.com"  x:Name="mail" Height="72" TextWrapping="Wrap" Width="456" InputScope="EmailUserName" Background="#BFCBCBCB"/>
+				<TextBlock TextWrapping="Wrap" Text="Mot de passe" Foreground="#FF151515"/>
+                <PasswordBox Password="test"  x:Name="password" Background="#BFCBCBCB"/>
+				<TextBlock TextWrapping="Wrap" Text="Confirmation du mot de passe" Foreground="#FF151515"/>
+                <PasswordBox Password="test"  x:Name="password2" Background="#BFCBCBCB"/>
+				<Button Content="REJOINDRE NEERBY" Click="register" Foreground="White" BorderBrush="#002C2C2C" Background="#FF3EB88E" FontFamily="Segoe WP Light"/>
 			</StackPanel>
 		</Grid>
 

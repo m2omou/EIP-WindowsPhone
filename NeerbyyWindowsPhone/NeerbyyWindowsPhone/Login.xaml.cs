@@ -17,7 +17,7 @@ using System.Threading;
 namespace NeerbyyWindowsPhone
 {
     /// <summary>
-    /// Vue de connexion et acces aux differentes vues
+    /// Connection view
     /// </summary>
     public partial class Login : PhoneApplicationPage
     {
@@ -34,7 +34,7 @@ namespace NeerbyyWindowsPhone
 
         
         /// <summary>
-        /// Callback appelé pour tenter de se connecter à Neerbyy
+        /// Callback called to try to connect to Neerbyy
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
@@ -56,7 +56,7 @@ namespace NeerbyyWindowsPhone
         }
 
         /// <summary>
-        /// Callback afin d'accéder à la page d'inscription
+        /// Callback called to go to the register view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -67,7 +67,7 @@ namespace NeerbyyWindowsPhone
 
 
         /// <summary>
-        /// Fonction à n'utiliser que pendant le phase de développement afin d'accéder rapidement à la map
+        /// Use Neerbyy without account
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -78,7 +78,7 @@ namespace NeerbyyWindowsPhone
 
 
         /// <summary>
-        /// Callback appelé pour récuper un mot de passe oublié
+        /// Callback to go to the forgotten password view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
