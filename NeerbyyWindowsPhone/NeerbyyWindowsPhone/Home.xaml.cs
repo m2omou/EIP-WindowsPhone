@@ -13,6 +13,9 @@ using Microsoft.Phone.Maps.Services;
 using System.Device.Location;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Threading.Tasks;
+using Windows.Devices.Geolocation;
+using System.IO.IsolatedStorage;
 
 namespace NeerbyyWindowsPhone
 {
@@ -35,12 +38,11 @@ namespace NeerbyyWindowsPhone
         public Home()
         {
             InitializeComponent();
+            this.getLocation();
 
-            map_center = new GeoCoordinate(39.9484462, 116.3371542);
-            target = new GeoCoordinate(-map_center.Latitude, -map_center.Longitude);
             map_zoom = 12;
-            HomeMap.Center = map_center;
             HomeMap.ZoomLevel = map_zoom;
+
             HomeMap.CenterChanged += HomeMap_CenterChanged;
             HomeMap.ViewChanged += HomeMap_ViewChanged;
 
@@ -56,6 +58,74 @@ namespace NeerbyyWindowsPhone
             HomeMap.Layers.Add(layer);
 
             this.UpdatePlaces();
+        }
+
+        /// <summary>
+        /// Get the user position
+        /// </summary>
+        private async void getLocation()
+        {
+            if ((bool)IsolatedStorageSettings.ApplicationSettings["LocationConsent"] != true)
+            {
+                // The user has opted out of Location.
+                return;
+            }
+
+            Geolocator geolocator = new Geolocator();
+            geolocator.DesiredAccuracyInMeters = 50;
+
+            try
+            {
+                Geoposition geoposition = await geolocator.GetGeopositionAsync(
+                    maximumAge: TimeSpan.FromMinutes(5),
+                    timeout: TimeSpan.FromSeconds(10)
+                    );
+                map_center = new GeoCoordinate(geoposition.Coordinate.Latitude, geoposition.Coordinate.Longitude);
+                target = new GeoCoordinate(-map_center.Latitude, -map_center.Longitude);
+                HomeMap.Center = map_center;
+            }
+            catch (Exception ex)
+            {
+                if ((uint)ex.HResult == 0x80004004)
+                {
+                    // the application does not have the right capability or the location master switch is off
+                    MessageBox.Show("Location  is disabled in phone settings.");
+                }
+                //else
+                {
+                    // something else happened acquring the location
+                }
+            }
+        }
+
+        /// <summary>
+        /// Ask user permission to access to its GPS
+        /// </summary>
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            if (IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent"))
+            {
+                // User has opted in or out of Location
+                return;
+            }
+            else
+            {
+                MessageBoxResult result =
+                    MessageBox.Show("This app accesses your phone's location. Is that ok?",
+                    "Location",
+                    MessageBoxButton.OKCancel);
+
+                if (result == MessageBoxResult.OK)
+                {
+                    IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = true;
+                }
+                else
+                {
+                    IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = false;
+                }
+
+                IsolatedStorageSettings.ApplicationSettings.Save();
+            }
         }
 
         /// <summary>
@@ -147,6 +217,14 @@ namespace NeerbyyWindowsPhone
             timer_center.Stop();
         }
 
+        /// <summary>
+        /// Go back to the menu when back button is pressed
+        /// </summary>
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Menu.xaml", UriKind.Relative));
+            base.OnBackKeyPress(e);
+        }
 
         /// <summary>
         /// Callback called when we chose a place to show its information
@@ -172,6 +250,16 @@ namespace NeerbyyWindowsPhone
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        /// <summary>
+        /// Center the map on user location
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CenterMap(object sender, RoutedEventArgs e)
+        {
+            this.getLocation();
         }
 
         

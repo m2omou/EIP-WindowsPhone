@@ -56,11 +56,12 @@
 			<TextBlock Text="Neerby" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0" FontFamily="Segoe WP Black"/>
 			<TextBlock Text="Carte" Margin="9,-7,12,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="GeosansLight"/>
 		</StackPanel>
+		<Button Content="CENTRER" Click="CenterMap" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="2.833,1.263" Margin="328,41,0,0" Background="#FF3EB88E" BorderBrush="#FF3EB88E" FontSize="12"/>
 
         <!--ContentPanel - place additional content here-->
 		<Grid x:Name="ContentPanel" Grid.Row="2" Margin="12,0,12,0">
 			<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
-				<StackPanel Height="80" Margin="0,0,1,0" Orientation="Horizontal">
+				<StackPanel Height="77" Margin="0,0,1,0" Orientation="Horizontal">
 					<TextBox TextWrapping="Wrap" Width="260" Height="74" Background="#BFCBCBCB"/>
 					<Button Click="Button_Click"  Content="Détails" BorderBrush="Transparent" Background="#FF3EB88E" FontFamily="Segoe WP Light"  Width="120" Margin="-20,0,0,0"/>
 					<Button Click="Button_Click_1"  Content="Filtrer" BorderBrush="Transparent" Background="#FF3EB88E" FontFamily="Segoe WP Light"  Width="120" Margin="-20,0,0,0"/>
@@ -71,9 +72,10 @@
             <maps:Map CenterChanged="HomeMap_CenterChanged" ZoomLevelChanged="HomeMap_ZoomLevelChanged" x:Name="HomeMap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,80,0,0" Width="456" Height="600">
                 
             </maps:Map>
-            <Grid x:Name="infoDisplayer"  Background="#8D303030" Margin="102,228,85,326" Visibility="Collapsed">
+            <Grid x:Name="infoDisplayer"  Background="#8D303030" Margin="75,193,51,239" Visibility="Collapsed">
             	<TextBlock x:Name="popup_title" HorizontalAlignment="Center" Margin="28,10,28,0" TextWrapping="Wrap" Text="Title" VerticalAlignment="Top" Width="213" TextAlignment="Center"/>
             	<TextBlock x:Name="popup_description" HorizontalAlignment="Left" Margin="28,43,28,0" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top" Height="69" Width="213" FontSize="16"/>
+            	<Button Content="VOIR PLUS..." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="187,131,0,-4" Height="58" Width="143" Background="#FF3EB88E" BorderBrush="Transparent" FontSize="13.333"/>
             </Grid>
         </Grid>
 		<Popup/>
