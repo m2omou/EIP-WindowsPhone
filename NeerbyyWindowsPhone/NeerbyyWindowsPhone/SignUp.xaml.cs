@@ -36,14 +36,14 @@ namespace NeerbyyWindowsPhone
         {
             display_progress_bar.Visibility = System.Windows.Visibility.Visible;
 
-            WebApi.Singleton.CreateUser(mail.Text, username.Text, password.Password, (User user) =>
+            WebApi.Singleton.CreateUser(mail.Text, username.Text, password.Password, (String responseMessage, User user) =>
                 {
                     display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
                     MessageBox.Show("Compte crée.");
-                }, (WebException e) =>
+                }, (String responseMessage, WebException e) =>
                 {
                     display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
-                    MessageBox.Show(e.Message);
+                    MessageBox.Show(responseMessage);
                 });
         }
 

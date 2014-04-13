@@ -134,7 +134,7 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         private void UpdatePlaces()
         {
-            WebApi.Singleton.Places(HomeMap.Center.Latitude, HomeMap.Center.Longitude, (List<Place> places) =>
+            WebApi.Singleton.Places(HomeMap.Center.Latitude, HomeMap.Center.Longitude, (String responseMessage, List<Place> places) =>
             {
                 layer.Clear();
                 this.places = places;
@@ -142,7 +142,7 @@ namespace NeerbyyWindowsPhone
                 {
                     CreatePushpin(place);
                 }
-            }, (WebException e) =>
+            }, (String responseMessage, WebException e) =>
             {
 
             });

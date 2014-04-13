@@ -44,14 +44,14 @@ namespace NeerbyyWindowsPhone
 
             display_status.Text = "Connexion en cours...";
 
-            WebApi.Singleton.Authenticate(mail.Text, password.Password, (User user) =>
+            WebApi.Singleton.Authenticate(mail.Text, password.Password, (String responseMessage, User user) =>
             {
                 display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
                 NavigationService.Navigate(new Uri("/Home.xaml", UriKind.Relative));
-            }, (WebException e) =>
+            }, (String responseMessage, WebException e) =>
             {
                 display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
-                display_status.Text = e.Message;
+                display_status.Text = responseMessage;
             });
         }
 

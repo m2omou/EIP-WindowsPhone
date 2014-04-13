@@ -29,8 +29,7 @@ namespace NeerbyyWindowsPhone
             // Tentative de login
             var errorMsg = "Les identifiants que vous avez entré sont incorrects.";
             Debug.WriteLine(mail.Text);
-
-            display_status.Text = "Envoi du mail";
+            
             display_progress_bar.Visibility = System.Windows.Visibility.Visible;
             // Ca marche ?
 
@@ -38,7 +37,16 @@ namespace NeerbyyWindowsPhone
             //display_status.Text = errorMsg;
 
             // Fini
-            //display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
+
+            WebApi.Singleton.RestorePassword(mail.Text, (String responseMessage, Object resultObject) =>
+            {
+                display_status.Text = "Envoi du mail";
+                display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
+            }, (String responseMessage, WebException exception) =>
+            {
+                display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
+                display_status.Text = responseMessage;
+            });
         }
     }
 }

@@ -22,7 +22,7 @@ namespace NeerbyyWindowsPhone
 
             public String data { get; set; }
 
-            public JResultDelegate jResultDelegate { get; set; }
+            public JObjectResultDelegate jObjectResultDelegate { get; set; }
 
             public ErrorDelegate errorDelegate { get; set; }
         }
@@ -44,6 +44,9 @@ namespace NeerbyyWindowsPhone
             }
         }
 
+        /// <summary>
+        /// Log the User out
+        /// </summary>
         public static void LogOut()
         {
             WebApi.user = null;
@@ -52,29 +55,48 @@ namespace NeerbyyWindowsPhone
         /// <summary>
         /// Delegate type for handling Results
         /// </summary>
-        public delegate void ResultDelegate(Object result);
+        private delegate void ResultDelegate(Object result);
 
         /// <summary>
         /// Delegate type for handling Jobject Results
         /// </summary>
-        public delegate void JResultDelegate(JObject result);
+        private delegate void JResultDelegate(JObject result);
 
+
+        /// <summary>
+        /// Generic result delegate
+        /// </summary>
+        /// <param name="responseMessage"></param>
+        /// <param name="result"></param>
+        public delegate void ObjectResultDelegate(String responseMessage, Object result);
+
+        /// <summary>
+        /// Generic result delegate for JObject
+        /// </summary>
+        /// <param name="responseMessage"></param>
+        /// <param name="result"></param>
+        public delegate void JObjectResultDelegate(String responseMessage, JObject result);
 
         /// <summary>
         /// Delegate type for handling User Results
         /// </summary>
-        public delegate void UserResultDelegate(User result);
-
+        /// <param name="responseMessage"></param>
+        /// <param name="result"></param>
+        public delegate void UserResultDelegate(String responseMessage, User result);
+        
         /// <summary>
         /// Delegate type for handling Places Results
         /// </summary>
+        /// <param name="responseMessage"></param>
         /// <param name="results"></param>
-        public delegate void PlacesResultDelegate(List<Place> results);
+        public delegate void PlacesResultDelegate(String responseMessage, List<Place> results);
 
         /// <summary>
         /// Delegate type for handling Errors
         /// </summary>
-        public delegate void ErrorDelegate(WebException error);
+        /// <param name="responseMessage"></param>
+        /// <param name="error"></param>
+        public delegate void ErrorDelegate(String responseMessage, WebException error);
 
         private WebApi()
         {
@@ -98,7 +120,7 @@ namespace NeerbyyWindowsPhone
         /// <param name="data"></param>
         /// <param name="resultDelegate"></param>
         /// <param name="errorDelegate"></param>
-        private void Post(String controller, String data, JResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        private void Post(String controller, String data, JObjectResultDelegate resultDelegate, ErrorDelegate errorDelegate)
         {
             Uri uri = new Uri(string.Format("{0}/{1}", WebApi.webServiceUrl, controller));
 
@@ -112,7 +134,7 @@ namespace NeerbyyWindowsPhone
             Request apiRequest = new Request();
             apiRequest.request = request;
             apiRequest.data = data;
-            apiRequest.jResultDelegate = resultDelegate;
+            apiRequest.jObjectResultDelegate = resultDelegate;
             apiRequest.errorDelegate = errorDelegate;
 
             request.BeginGetRequestStream(new AsyncCallback(BeginGetRequestStream), apiRequest);
@@ -125,7 +147,7 @@ namespace NeerbyyWindowsPhone
         /// <param name="data"></param>
         /// <param name="resultDelegate"></param>
         /// <param name="errorDelegate"></param>
-        private void Get(String controller, String data, JResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        private void Get(String controller, String data, JObjectResultDelegate resultDelegate, ErrorDelegate errorDelegate)
         {
             Uri uri = new Uri(string.Format("{0}/{1}?{2}", WebApi.webServiceUrl, controller, data));
 
@@ -136,7 +158,7 @@ namespace NeerbyyWindowsPhone
 
             Request apiRequest = new Request();
             apiRequest.request = request;
-            apiRequest.jResultDelegate = resultDelegate;
+            apiRequest.jObjectResultDelegate = resultDelegate;
             apiRequest.errorDelegate = errorDelegate;
 
             request.BeginGetResponse(new AsyncCallback(BeginGetResponse), apiRequest);
@@ -182,7 +204,7 @@ namespace NeerbyyWindowsPhone
                 {
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        apiRequest.errorDelegate(e);
+                        apiRequest.errorDelegate(e.Message, e);
                     });
                 }
                 else
@@ -194,7 +216,7 @@ namespace NeerbyyWindowsPhone
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    apiRequest.errorDelegate(new WebException(e.Message, WebExceptionStatus.ServerProtocolViolation));
+                    apiRequest.errorDelegate(e.Message, new WebException(e.Message, WebExceptionStatus.ServerProtocolViolation));
                 });
             }
         }
@@ -217,15 +239,16 @@ namespace NeerbyyWindowsPhone
             JObject jobject = JObject.Parse(responseString);
 
             int responseCode = Convert.ToInt32((String)jobject["responseCode"]);
+            String responseMessage = (String)jobject["responseMessage"];
             if (responseCode == 0)
             {
-                apiRequest.jResultDelegate(jobject);
+                apiRequest.jObjectResultDelegate(responseMessage, jobject);
             }
             else
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    apiRequest.errorDelegate(new WebException((String)jobject["responseMessage"], WebExceptionStatus.ServerProtocolViolation));
+                    apiRequest.errorDelegate(responseMessage, new WebException(responseMessage, WebExceptionStatus.ServerProtocolViolation));
                 });
             }
         }
@@ -243,18 +266,18 @@ namespace NeerbyyWindowsPhone
             postData.AppendFormat("{0}={1}", "connection[email]", HttpUtility.UrlEncode(email));
             postData.AppendFormat("&{0}={1}", "connection[password]", HttpUtility.UrlEncode(password));
 
-            JResultDelegate jResultDelegate = delegate(JObject result)
+            JObjectResultDelegate jObjectResultDelegate = delegate(String responseString, JObject result)
             {
                 JObject jUser = (JObject)result["result"]["user"];
                 User user = jUser.ToObject<User>();
                 WebApi.user = user;
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    resultDelegate(user);
+                    resultDelegate(responseString, user);
                 });
             };
 
-            this.Post("sessions.json", postData.ToString(), jResultDelegate, errorDelegate);
+            this.Post("sessions.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
         }
 
         /// <summary>
@@ -272,18 +295,40 @@ namespace NeerbyyWindowsPhone
             postData.AppendFormat("&{0}={1}", "user[username]", HttpUtility.UrlEncode(username));
             postData.AppendFormat("&{0}={1}", "user[password]", HttpUtility.UrlEncode(password));
 
-            JResultDelegate jResultDelegate = delegate(JObject result)
+            JObjectResultDelegate jObjectResultDelegate = delegate(String responseString, JObject result)
             {
                 JObject jUser = (JObject)result["result"]["user"];
                 User user = jUser.ToObject<User>();
                 WebApi.user = user;
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    resultDelegate(user);
+                    resultDelegate(responseString, user);
                 });
             };
 
-            this.Post("users.json", postData.ToString(), jResultDelegate, errorDelegate);
+            this.Post("users.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
+        }
+
+        /// <summary>
+        /// Send request to restore the User's password
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        public void RestorePassword(String email, ObjectResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        {
+            StringBuilder postData = new StringBuilder();
+            postData.AppendFormat("{0}={1}", "email", HttpUtility.UrlEncode(email));
+
+            JObjectResultDelegate jObjectResultDelegate = delegate(String responseString, JObject result)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    resultDelegate(responseString, null);
+                });
+            };
+
+            this.Post("password_resets.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
         }
 
         /// <summary>
@@ -299,17 +344,17 @@ namespace NeerbyyWindowsPhone
             postData.AppendFormat("{0}={1}", "latitude", HttpUtility.UrlEncode(latitude.ToString()));
             postData.AppendFormat("&{0}={1}", "longitude", HttpUtility.UrlEncode(longitude.ToString()));
 
-            JResultDelegate jResultDelegate = delegate(JObject result)
+            JObjectResultDelegate jObjectResultDelegate = delegate(String responseString, JObject result)
             {
                 JToken jToken = result["result"]["places"];
                 List<Place> places = jToken.ToObject<List<Place>>();
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    resultDelegate(places);
+                    resultDelegate(responseString, places);
                 });
             };
 
-            this.Get("places.json", postData.ToString(), jResultDelegate, errorDelegate);
+            this.Get("places.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
         }
     }
 }
