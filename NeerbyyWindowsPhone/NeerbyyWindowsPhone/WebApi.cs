@@ -44,6 +44,11 @@ namespace NeerbyyWindowsPhone
             }
         }
 
+        public static void LogOut()
+        {
+            WebApi.user = null;
+        }
+
         /// <summary>
         /// Delegate type for handling Results
         /// </summary>
@@ -101,6 +106,8 @@ namespace NeerbyyWindowsPhone
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";
             request.ContentLength = data.Length;
+            if (WebApi.user != null)
+                request.Headers[HttpRequestHeader.Authorization] = WebApi.User.auth_token;
 
             Request apiRequest = new Request();
             apiRequest.request = request;
@@ -124,6 +131,8 @@ namespace NeerbyyWindowsPhone
 
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(uri);
             request.Method = "GET";
+            if (WebApi.user != null)
+                request.Headers[HttpRequestHeader.Authorization] = WebApi.User.auth_token;
 
             Request apiRequest = new Request();
             apiRequest.request = request;
@@ -165,40 +174,59 @@ namespace NeerbyyWindowsPhone
             {
                 HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(result);
 
-                String responseString;
-                using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
-                {
-                    responseString = streamReader.ReadToEnd();
-                }
-
-                JObject jobject = JObject.Parse(responseString);
-
-                int responseCode = Convert.ToInt32((String)jobject["responseCode"]);
-                if (responseCode == 0)
-                {
-                    apiRequest.jResultDelegate(jobject);
-                }
-                else
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                       {
-                           apiRequest.errorDelegate(new WebException((String)jobject["responseMessage"], WebExceptionStatus.ServerProtocolViolation));
-                       });
-                }
+                this.HandleWebResponse(apiRequest, response);
             }
             catch (WebException e)
             {
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                if (e.Response == null)
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
                         apiRequest.errorDelegate(e);
                     });
+                }
+                else
+                {
+                    this.HandleWebResponse(apiRequest, (HttpWebResponse)e.Response);
+                }
             }
             catch (Exception e)
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        apiRequest.errorDelegate(new WebException(e.Message, WebExceptionStatus.ServerProtocolViolation));
-                    });
+                {
+                    apiRequest.errorDelegate(new WebException(e.Message, WebExceptionStatus.ServerProtocolViolation));
+                });
+            }
+        }
+
+
+        /// <summary>
+        /// This method handles the Web Response object that contains the server's response.
+        /// </summary>
+        /// <param name="apiRequest"></param>
+        /// <param name="response"></param>
+        private void HandleWebResponse(Request apiRequest, HttpWebResponse response)
+        {
+            String responseString;
+            using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
+            {
+                responseString = streamReader.ReadToEnd();
+            }
+            Debug.WriteLine(responseString);
+
+            JObject jobject = JObject.Parse(responseString);
+
+            int responseCode = Convert.ToInt32((String)jobject["responseCode"]);
+            if (responseCode == 0)
+            {
+                apiRequest.jResultDelegate(jobject);
+            }
+            else
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    apiRequest.errorDelegate(new WebException((String)jobject["responseMessage"], WebExceptionStatus.ServerProtocolViolation));
+                });
             }
         }
 
@@ -221,9 +249,9 @@ namespace NeerbyyWindowsPhone
                 User user = jUser.ToObject<User>();
                 WebApi.user = user;
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        resultDelegate(user);
-                    });
+                {
+                    resultDelegate(user);
+                });
             };
 
             this.Post("sessions.json", postData.ToString(), jResultDelegate, errorDelegate);

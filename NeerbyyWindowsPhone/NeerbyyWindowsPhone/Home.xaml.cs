@@ -65,17 +65,18 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         private async void getLocation()
         {
-            if ((bool)IsolatedStorageSettings.ApplicationSettings["LocationConsent"] != true)
-            {
-                // The user has opted out of Location.
-                return;
-            }
-
-            Geolocator geolocator = new Geolocator();
-            geolocator.DesiredAccuracyInMeters = 50;
 
             try
             {
+                if ((bool)IsolatedStorageSettings.ApplicationSettings["LocationConsent"] != true)
+                {
+                    // The user has opted out of Location.
+                    return;
+                }
+
+                Geolocator geolocator = new Geolocator();
+                geolocator.DesiredAccuracyInMeters = 50;
+
                 Geoposition geoposition = await geolocator.GetGeopositionAsync(
                     maximumAge: TimeSpan.FromMinutes(5),
                     timeout: TimeSpan.FromSeconds(10)
