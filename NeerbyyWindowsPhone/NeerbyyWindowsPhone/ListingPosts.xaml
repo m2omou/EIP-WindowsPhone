@@ -33,66 +33,17 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+          
         	<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="646">
         		<StackPanel Height="59" Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Center">
-        			<TextBlock TextWrapping="Wrap" Text="PARIS" Width="253" Foreground="#FF3EB88E" FontFamily="Segoe WP Black" FontSize="37.333" HorizontalAlignment="Center"/>
-        			<Button Content="POSTER UN SOUVENIR" HorizontalAlignment="Right" Width="193" Background="#FFFF6666" BorderBrush="#FFFF6666" Foreground="White" FontSize="13.333" BorderThickness="0,3,3,3"/>
-        		</StackPanel>
-        		<StackPanel x:Name="Post" Height="154" Width="456" Orientation="Horizontal" Background="#FFEAEAEA" Margin="0,0,0,25">
-        			<Image Width="100" Source="default.jpg" Margin="0,0,10,0"/>
-        			<StackPanel Margin="3,0,0,0" Width="341">
-        				<TextBlock TextWrapping="Wrap" Text="La tour eiffel ça déboite tout ! J'y ..." Foreground="#FF171717" Margin="0" FontFamily="Segoe WP Semibold" Height="32"/>
-        				<TextBlock TextWrapping="Wrap" Foreground="#FF4D4D4D" FontFamily="Segoe WP SemiLight" FontStyle="Italic" HorizontalAlignment="Right" FontSize="16">
-        					<Run Text="Par mahmoud le 23/12/2014 "/>
-        					<Run Text="à 12h12"/>
-        				</TextBlock>
-        				<StackPanel Height="100" Orientation="Horizontal">
-        					<StackPanel Width="191" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-        						<TextBlock TextWrapping="Wrap" Text="3 Likes" FontFamily="Segoe WP Light" Foreground="#FF404040" FontSize="17.333"/>
-        						<TextBlock TextWrapping="Wrap" Text="3 Dislikes" FontFamily="Segoe WP Light" Foreground="#FF404040" FontSize="17.333"/>
-        						<TextBlock TextWrapping="Wrap" Text="3 Comments" FontFamily="Segoe WP Light" Foreground="#FF404040" FontSize="17.333"/>
-        					</StackPanel>
-        					<Button Content="AFFICHER" Background="#FFFF7E25" Width="149" Height="68" BorderBrush="#FFFF7E25" HorizontalAlignment="Right" FontSize="18.667" Margin="0" VerticalAlignment="Bottom"/>
-        				</StackPanel>
-        			</StackPanel>
-        		</StackPanel>
-        		<StackPanel x:Name="Post_Copy" Height="154" Width="456" Orientation="Horizontal" Background="#FFEAEAEA" Margin="0,0,0,25">
-        			<Image Width="100" Source="default.jpg" Margin="0,0,10,0"/>
-        			<StackPanel Margin="3,0,0,0" Width="341">
-        				<TextBlock TextWrapping="Wrap" Text="La tour eiffel ça déboite tout ! J'y ..." Foreground="#FF171717" Margin="0" FontFamily="Segoe WP Semibold" Height="32"/>
-        				<TextBlock TextWrapping="Wrap" Foreground="#FF4D4D4D" FontFamily="Segoe WP SemiLight" FontStyle="Italic" HorizontalAlignment="Right" FontSize="16">
-        					<Run Text="Par mahmoud le 23/12/2014 "/>
-        					<Run Text="à 12h12"/>
-        				</TextBlock>
-        				<StackPanel Height="100" Orientation="Horizontal">
-        					<StackPanel Width="191" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-        						<TextBlock TextWrapping="Wrap" Text="3 Likes" FontFamily="Segoe WP Light" Foreground="#FF404040" FontSize="17.333"/>
-        						<TextBlock TextWrapping="Wrap" Text="3 Dislikes" FontFamily="Segoe WP Light" Foreground="#FF404040" FontSize="17.333"/>
-        						<TextBlock TextWrapping="Wrap" Text="3 Comments" FontFamily="Segoe WP Light" Foreground="#FF404040" FontSize="17.333"/>
-        					</StackPanel>
-        					<Button Content="AFFICHER" Background="#FFFF7E25" Width="149" Height="68" BorderBrush="#FFFF7E25" HorizontalAlignment="Right" FontSize="18.667" Margin="0" VerticalAlignment="Bottom"/>
-        				</StackPanel>
-        			</StackPanel>
-        		</StackPanel>
-        		<StackPanel x:Name="Post_Copy1" Height="154" Width="456" Orientation="Horizontal" Background="#FFEAEAEA" Margin="0,0,0,25">
-        			<Image Width="100" Source="default.jpg" Margin="0,0,10,0"/>
-        			<StackPanel Margin="3,0,0,0" Width="341">
-        				<TextBlock TextWrapping="Wrap" Text="La tour eiffel ça déboite tout ! J'y ..." Foreground="#FF171717" Margin="0" FontFamily="Segoe WP Semibold" Height="32"/>
-        				<TextBlock TextWrapping="Wrap" Foreground="#FF4D4D4D" FontFamily="Segoe WP SemiLight" FontStyle="Italic" HorizontalAlignment="Right" FontSize="16">
-        					<Run Text="Par mahmoud le 23/12/2014 "/>
-        					<Run Text="à 12h12"/>
-        				</TextBlock>
-        				<StackPanel Height="100" Orientation="Horizontal">
-        					<StackPanel Width="191" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-        						<TextBlock TextWrapping="Wrap" Text="3 Likes" FontFamily="Segoe WP Light" Foreground="#FF404040" FontSize="17.333"/>
-        						<TextBlock TextWrapping="Wrap" Text="3 Dislikes" FontFamily="Segoe WP Light" Foreground="#FF404040" FontSize="17.333"/>
-        						<TextBlock TextWrapping="Wrap" Text="3 Comments" FontFamily="Segoe WP Light" Foreground="#FF404040" FontSize="17.333"/>
-        					</StackPanel>
-        					<Button Content="AFFICHER" Background="#FFFF7E25" Width="149" Height="68" BorderBrush="#FFFF7E25" HorizontalAlignment="Right" FontSize="18.667" Margin="0" VerticalAlignment="Bottom"/>
-        				</StackPanel>
-        			</StackPanel>
-        		</StackPanel>
-        	</StackPanel>
+        			<TextBlock x:Name="Title" TextWrapping="Wrap" Text="PARIS" Width="253" Foreground="#FF3EB88E" FontFamily="Segoe WP Black" FontSize="37.333" HorizontalAlignment="Center"/>
+        			<Button Content="POSTER UN SOUVENIR" HorizontalAlignment="Right" Width="193" Background="#FFFF6666" BorderBrush="#FFFF6666" Foreground="White" FontSize="13.333" BorderThickness="0,3,3,3" Click="GoToCreatePost"/>
+                 </StackPanel>
+                <ScrollViewer>
+                    <StackPanel x:Name="StackListing" Orientation="Vertical">
+                    </StackPanel>
+                </ScrollViewer>
+            </StackPanel>
         </Grid>
     </Grid>
 

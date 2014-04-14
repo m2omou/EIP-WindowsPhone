@@ -15,12 +15,23 @@ namespace NeerbyyWindowsPhone
     /// </summary>
     public partial class CreatePost : PhoneApplicationPage
     {
+
+        private Place CurrentPlace;
         /// <summary>
         /// Default constructor
         /// </summary>
         public CreatePost()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// View will appear
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            CurrentPlace = ((App)Application.Current).CurrentPlace;
         }
 
         /// <summary>

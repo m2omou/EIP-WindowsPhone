@@ -241,7 +241,7 @@ namespace NeerbyyWindowsPhone
             infoDisplayer.Visibility = System.Windows.Visibility.Collapsed;
             popup_title.Text = infos.name;
             popup_description.Text = infos.city;
-            
+            ((App)Application.Current).CurrentPlace = infos;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -261,6 +261,11 @@ namespace NeerbyyWindowsPhone
         private void CenterMap(object sender, RoutedEventArgs e)
         {
             this.getLocation();
+        }
+
+        private void GoToListing(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/ListingPosts.xaml", UriKind.Relative));
         }
 
         

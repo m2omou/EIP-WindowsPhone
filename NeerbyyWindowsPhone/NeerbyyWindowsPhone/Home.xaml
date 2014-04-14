@@ -75,7 +75,7 @@
             <Grid x:Name="infoDisplayer"  Background="#8D303030" Margin="75,193,51,239" Visibility="Collapsed">
             	<TextBlock x:Name="popup_title" HorizontalAlignment="Center" Margin="28,10,28,0" TextWrapping="Wrap" Text="Title" VerticalAlignment="Top" Width="213" TextAlignment="Center"/>
             	<TextBlock x:Name="popup_description" HorizontalAlignment="Left" Margin="28,43,28,0" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top" Height="69" Width="213" FontSize="16"/>
-            	<Button Content="VOIR PLUS..." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="187,131,0,-4" Height="58" Width="143" Background="#FF3EB88E" BorderBrush="Transparent" FontSize="13.333"/>
+            	<Button Content="VOIR PLUS..." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="187,131,0,-4" Height="58" Width="143" Background="#FF3EB88E" BorderBrush="Transparent" FontSize="13.333" Click="GoToListing"/>
             </Grid>
         </Grid>
 		<Popup/>
