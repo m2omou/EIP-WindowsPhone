@@ -118,7 +118,7 @@
     </Compile>
     <Compile Include="Models\Place.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="PostPreview.xaml.cs">
+    <Compile Include="UI\PostPreview.xaml.cs">
       <DependentUpon>PostPreview.xaml</DependentUpon>
     </Compile>
     <Compile Include="RestorePassword.xaml.cs">
@@ -164,7 +164,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PostPreview.xaml">
+    <Page Include="UI\PostPreview.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

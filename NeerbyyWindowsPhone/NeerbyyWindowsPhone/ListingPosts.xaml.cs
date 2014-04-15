@@ -17,7 +17,7 @@ namespace NeerbyyWindowsPhone
     /// </summary>
     public partial class ListingPosts : PhoneApplicationPage
     {
-    private Place CurrentPlace;
+    private Place currentPlace;
         /// <summary>
         /// Default Constructor
         /// </summary>
@@ -35,8 +35,8 @@ namespace NeerbyyWindowsPhone
             if (e.NavigationMode == NavigationMode.Back)
                 return;
             StackListing.Children.Clear();
-            CurrentPlace = ((App)Application.Current).CurrentPlace;
-            Title.Text = CurrentPlace.name;
+            currentPlace = ((App)Application.Current).currentPlace;
+            Title.Text = currentPlace.name;
 
             PostPreview test = new PostPreview();
             test.id = 12;
