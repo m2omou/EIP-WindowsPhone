@@ -56,10 +56,14 @@
 				<TextBlock TextWrapping="Wrap" Text="" FontFamily="Segoe WP SemiLight" x:Name="display_status" Foreground="#FFBFBFBF"/>
 				<ProgressBar IsIndeterminate="True" Foreground="#FF4065C9" x:Name="display_progress_bar" Visibility="Collapsed" Height="10"/>
 				<TextBlock TextWrapping="Wrap" Text="Contenu du souvenir" FontFamily="Segoe WP" Foreground="#FF151515"/>
-				<TextBox Height="72" TextWrapping="Wrap" Width="456" x:Name="content" Background="#BFCBCBCB"/>
+				<TextBox AcceptsReturn="True" MaxHeight="239" TextWrapping="Wrap" Width="456" x:Name="content" Background="#BFCBCBCB"/>
+                <StackPanel Visibility="Collapsed" Orientation="Horizontal" x:Name="photo_uploader">
+                    <Image x:Name="preview_image" Height="180" Width="220" RenderTransformOrigin="-1.435,0.52"/>
+                    <Button  Content="SUPPRIMER" Background="Red" BorderBrush="#002C2C2C" Foreground="White" FontFamily="Segoe WP Semibold" Margin="0" Width="200" HorizontalAlignment="Right" Height="81" Click="RemovePicture"/>
+                </StackPanel>
 				<StackPanel Orientation="Horizontal">
-					<Button  Content="TEXTE" Background="#FFF3A928" BorderBrush="#002C2C2C" Foreground="White" FontFamily="Segoe WP Semibold" Margin="0" Width="150" HorizontalAlignment="Left" Height="151"/>
-					<Button  Content="PHOTO" Background="#FF545FC9" BorderBrush="#002C2C2C" Foreground="White" FontFamily="Segoe WP Semibold" Margin="0" Width="150" HorizontalAlignment="Left" Height="151"/>
+                    <Button  Content="TEXTE" Background="#FFF3A928" BorderBrush="#002C2C2C" Foreground="White" FontFamily="Segoe WP Semibold" Margin="0" Width="150" HorizontalAlignment="Left" Height="151" Click="RemovePicture"/>
+					<Button  Content="PHOTO" Background="#FF545FC9" BorderBrush="#002C2C2C" Foreground="White" FontFamily="Segoe WP Semibold" Margin="0" Width="150" HorizontalAlignment="Left" Height="151" Click="TakePhoto"/>
 					<Button  Content="VIDEO" Background="#FFDC5574" BorderBrush="#002C2C2C" Foreground="White" FontFamily="Segoe WP Semibold" Margin="0" Width="150" HorizontalAlignment="Left" Height="151"/>
 				</StackPanel>
 				<Button Click="CreatePostPressed" Foreground="White" BorderBrush="#002C2C2C" Background="#FF3EB88E" FontFamily="Segoe WP Semibold" Content="POSTER MON SOUVENIR !"/>

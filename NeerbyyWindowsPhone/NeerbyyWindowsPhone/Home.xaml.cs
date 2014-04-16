@@ -245,15 +245,8 @@ namespace NeerbyyWindowsPhone
             infoDisplayer.Visibility = System.Windows.Visibility.Collapsed;
             popup_title.Text = infos.name;
             popup_description.Text = infos.city;
-            
-            WebApi.Singleton.PublicationsForPlace(infos, (string responseMessage, List<Post> posts) =>
-                {
 
-                }, (String responseMessage, WebException exception) =>
-                {
-
-                });
-
+            ((App)Application.Current).currentPlace = infos;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -274,5 +267,10 @@ namespace NeerbyyWindowsPhone
         {
             this.getLocation();
         }
+
+        private void GoToListing(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/ListingPosts.xaml", UriKind.Relative));
+        }        
     }
 }
