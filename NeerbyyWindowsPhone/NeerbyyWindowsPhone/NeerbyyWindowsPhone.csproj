@@ -118,6 +118,9 @@
     </Compile>
     <Compile Include="Models\Place.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="UI\AsynchronousDisplay.xaml.cs">
+      <DependentUpon>AsynchronousDisplay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\PostPreview.xaml.cs">
       <DependentUpon>PostPreview.xaml</DependentUpon>
     </Compile>
@@ -161,6 +164,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Menu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\AsynchronousDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -34,15 +34,16 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         private void register(object sender, RoutedEventArgs args)
         {
-            display_progress_bar.Visibility = System.Windows.Visibility.Visible;
+
+            asynchronousDisplayer.Visibility = System.Windows.Visibility.Visible;
 
             WebApi.Singleton.CreateUser(mail.Text, username.Text, password.Password, (String responseMessage, User user) =>
                 {
-                    display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
+                    asynchronousDisplayer.Visibility = System.Windows.Visibility.Collapsed;
                     MessageBox.Show("Compte crée.");
                 }, (String responseMessage, WebException e) =>
                 {
-                    display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
+                    asynchronousDisplayer.Visibility = System.Windows.Visibility.Collapsed;
                     MessageBox.Show(responseMessage);
                 });
         }

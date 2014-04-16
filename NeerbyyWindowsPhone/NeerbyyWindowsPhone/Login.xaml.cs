@@ -40,18 +40,18 @@ namespace NeerbyyWindowsPhone
         /// <param name="args"></param>
         private void tryToLogin(object sender, RoutedEventArgs args)
         {
-            display_progress_bar.Visibility = System.Windows.Visibility.Visible;
+            asynchronousDisplayer.stack_panel.Visibility = System.Windows.Visibility.Visible;
 
-            display_status.Text = "Connexion en cours...";
+            asynchronousDisplayer.display_status.Text = "Connexion en cours...";
 
             WebApi.Singleton.Authenticate(mail.Text, password.Password, (String responseMessage, User user) =>
             {
-                display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
+                asynchronousDisplayer.stack_panel.Visibility = System.Windows.Visibility.Collapsed;
                 NavigationService.Navigate(new Uri("/Home.xaml", UriKind.Relative));
             }, (String responseMessage, WebException e) =>
             {
-                display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
-                display_status.Text = responseMessage;
+                asynchronousDisplayer.stack_panel.Visibility = System.Windows.Visibility.Collapsed;
+                asynchronousDisplayer.display_status.Text = responseMessage;
             });
         }
 

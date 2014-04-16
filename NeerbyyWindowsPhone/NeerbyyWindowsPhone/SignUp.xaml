@@ -6,6 +6,8 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:NeerbyyWindowsPhone.UI"
+    
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -53,8 +55,7 @@
         <!--ContentPanel - place additional content here-->
 		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 			<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
-				<TextBlock TextWrapping="Wrap" Text="" FontFamily="Segoe WP SemiLight" x:Name="display_status" Foreground="#FFBFBFBF"/>
-				<ProgressBar IsIndeterminate="True" Foreground="#FF4065C9" x:Name="display_progress_bar" Visibility="Collapsed" Height="10"/>
+                <local:AsynchronousDisplay x:Name="asynchronousDisplayer"/>
                 <TextBlock TextWrapping="Wrap" FontFamily="Segoe WP" Text="Nom d'utilisateur" Foreground="#FF151515"/>
                 <TextBox Text="titi" Height="72" TextWrapping="Wrap" Width="456" InputScope="LogOnName" x:Name="username" TextChanged="username_TextChanged" Background="#BFCBCBCB"/>
 				<TextBlock TextWrapping="Wrap" Text="Mail" Foreground="#FF151515"/>
