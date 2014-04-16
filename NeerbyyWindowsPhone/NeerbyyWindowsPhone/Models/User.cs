@@ -8,33 +8,6 @@ using System.Threading.Tasks;
 namespace NeerbyyWindowsPhone
 {
     /// <summary>
-    /// Thumb Object for User's Avatar
-    /// </summary>
-    public class Thumb
-    {
-        /// <summary>
-        /// Url of the Thumb
-        /// </summary>
-        public string url { get; set; }
-    }
-
-    /// <summary>
-    /// Avatar Object for User
-    /// </summary>
-    public class Avatar
-    {
-        /// <summary>
-        /// URL for Avater
-        /// </summary>
-        public string url { get; set; }
-
-        /// <summary>
-        /// Thumb object
-        /// </summary>
-        public Thumb thumb { get; set; }
-    }
-
-    /// <summary>
     /// User Object
     /// </summary>
     public class User
@@ -52,22 +25,17 @@ namespace NeerbyyWindowsPhone
         /// <summary>
         /// Firstname
         /// </summary>
-        public object firstname { get; set; }
+        public string firstname { get; set; }
 
         /// <summary>
         /// Lastname
         /// </summary>
-        public object lastname { get; set; }
+        public string lastname { get; set; }
 
         /// <summary>
         /// Email
         /// </summary>
         public string email { get; set; }
-
-        /// <summary>
-        /// Avatar
-        /// </summary>
-        public Avatar avatar { get; set; }
 
         /// <summary>
         /// 
@@ -88,6 +56,16 @@ namespace NeerbyyWindowsPhone
         /// Password
         /// </summary>
         public string password { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string avatar { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string avatar_thumb { get; set; }
 
         /// <summary>
         /// Called to know if the object should be serialized

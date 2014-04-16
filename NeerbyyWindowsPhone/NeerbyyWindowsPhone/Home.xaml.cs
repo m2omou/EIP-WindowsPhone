@@ -66,6 +66,10 @@ namespace NeerbyyWindowsPhone
         private async void getLocation()
         {
 
+            map_center = new GeoCoordinate(48.856614, 2.352222);
+            target = new GeoCoordinate(-map_center.Latitude, -map_center.Longitude);
+            HomeMap.Center = map_center;
+            return;
             try
             {
                 if ((bool)IsolatedStorageSettings.ApplicationSettings["LocationConsent"] != true)
@@ -90,9 +94,9 @@ namespace NeerbyyWindowsPhone
                 if ((uint)ex.HResult == 0x80004004)
                 {
                     // the application does not have the right capability or the location master switch is off
-                    MessageBox.Show("Location  is disabled in phone settings.");
+                    MessageBox.Show("Location is disabled in phone settings.");
                 }
-                //else
+                else
                 {
                     // something else happened acquring the location
                 }
@@ -112,7 +116,7 @@ namespace NeerbyyWindowsPhone
             else
             {
                 MessageBoxResult result =
-                    MessageBox.Show("This app accesses your phone's location. Is that ok?",
+                    MessageBox.Show("Do you want to allow this app to access your phone's current location?",
                     "Location",
                     MessageBoxButton.OKCancel);
 
@@ -161,7 +165,7 @@ namespace NeerbyyWindowsPhone
         /// <summary>
         /// Pushpin creator on the map
         /// </summary>
-        private void CreatePushpin(Place infos) // Il faudrait passer le model de la place ici
+        private void CreatePushpin(Place infos)
         {
             Pushpin pp = new Pushpin();
             pp.Background = new SolidColorBrush(Color.FromArgb(255, 50, 50, 200));
@@ -242,6 +246,14 @@ namespace NeerbyyWindowsPhone
             popup_title.Text = infos.name;
             popup_description.Text = infos.city;
             
+            WebApi.Singleton.PublicationsForPlace(infos, (string responseMessage, List<Post> posts) =>
+                {
+
+                }, (String responseMessage, WebException exception) =>
+                {
+
+                });
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -262,8 +274,5 @@ namespace NeerbyyWindowsPhone
         {
             this.getLocation();
         }
-
-        
-        
     }
 }
