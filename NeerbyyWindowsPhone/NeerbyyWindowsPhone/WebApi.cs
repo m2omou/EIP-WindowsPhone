@@ -385,7 +385,7 @@ namespace NeerbyyWindowsPhone
             {
                 responseString = streamReader.ReadToEnd();
             }
-            Debug.WriteLine("Test");
+
             Debug.WriteLine(responseString);
 
             JObject jobject = JObject.Parse(responseString);
@@ -420,13 +420,24 @@ namespace NeerbyyWindowsPhone
 
             JObjectResultDelegate jObjectResultDelegate = delegate(String responseMessage, JObject result)
             {
-                JObject jUser = (JObject)result["result"]["user"];
-                User user = jUser.ToObject<User>();
-                WebApi.user = user;
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                try
                 {
-                    resultDelegate(responseMessage, user);
-                });
+                    JObject jUser = (JObject)result["result"]["user"];
+                    User user = jUser.ToObject<User>();
+                    WebApi.user = user;
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        resultDelegate(responseMessage, user);
+                    });
+                }
+                catch (Exception)
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        string errorMessage = "Server Error";
+                        errorDelegate(errorMessage, new WebException(errorMessage, WebExceptionStatus.ServerProtocolViolation));
+                    });
+                }
             };
 
             this.Post("sessions.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
@@ -449,13 +460,24 @@ namespace NeerbyyWindowsPhone
 
             JObjectResultDelegate jObjectResultDelegate = delegate(String responseMessage, JObject result)
             {
-                JObject jUser = (JObject)result["result"]["user"];
-                User user = jUser.ToObject<User>();
-                WebApi.user = user;
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                try
                 {
-                    resultDelegate(responseMessage, user);
-                });
+                    JObject jUser = (JObject)result["result"]["user"];
+                    User user = jUser.ToObject<User>();
+                    WebApi.user = user;
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        resultDelegate(responseMessage, user);
+                    });
+                }
+                catch (Exception)
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        string errorMessage = "Server Error";
+                        errorDelegate(errorMessage, new WebException(errorMessage, WebExceptionStatus.ServerProtocolViolation));
+                    });
+                }
             };
 
             this.Post("users.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
@@ -474,10 +496,21 @@ namespace NeerbyyWindowsPhone
 
             JObjectResultDelegate jObjectResultDelegate = delegate(String responseMessage, JObject result)
             {
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                try
                 {
-                    resultDelegate(responseMessage, null);
-                });
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        resultDelegate(responseMessage, null);
+                    });
+                }
+                catch (Exception)
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        string errorMessage = "Server Error";
+                        errorDelegate(errorMessage, new WebException(errorMessage, WebExceptionStatus.ServerProtocolViolation));
+                    });
+                }
             };
 
             this.Post("password_resets.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
@@ -498,12 +531,23 @@ namespace NeerbyyWindowsPhone
 
             JObjectResultDelegate jObjectResultDelegate = delegate(String responseMessage, JObject result)
             {
-                JToken jToken = result["result"]["places"];
-                List<Place> places = jToken.ToObject<List<Place>>();
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                try
                 {
-                    resultDelegate(responseMessage, places);
-                });
+                    JToken jToken = result["result"]["places"];
+                    List<Place> places = jToken.ToObject<List<Place>>();
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        resultDelegate(responseMessage, places);
+                    });
+                }
+                catch (Exception)
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        string errorMessage = "Server Error";
+                        errorDelegate(errorMessage, new WebException(errorMessage, WebExceptionStatus.ServerProtocolViolation));
+                    });
+                }
             };
 
             this.Get("places.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
