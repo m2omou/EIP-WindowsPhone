@@ -8,6 +8,8 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using NeerbyyWindowsPhone.Resources;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 namespace NeerbyyWindowsPhone
 {
@@ -38,19 +40,25 @@ namespace NeerbyyWindowsPhone
             currentPlace = ((App)Application.Current).currentPlace;
             Title.Text = currentPlace.name;
 
-            PostPreview test = new PostPreview();
-            test.id = 12;
-            StackListing.Children.Add(test);
-
-            PostPreview test2 = new PostPreview();
-            test2.id = 13;
-            StackListing.Children.Add(test2);
-
             WebApi.Singleton.PublicationsForPlace(currentPlace, (string responseMessage, List<Post> posts) =>
             {
                 foreach (Post post in posts)
                 {
-
+                    PostPreview display_post = new PostPreview();
+                    display_post.Title.Text = (String)post.content;
+                    if (post.url != null && (String)post.url != "")
+                    {
+                        Uri uri = new Uri((String)post.url, UriKind.Absolute);
+                        var bitmap = new BitmapImage(uri);
+                        display_post.Preview.Source = bitmap;
+                        ScrollingView.UpdateLayout();
+                    }
+                    display_post.my_post = post;
+                    display_post.Infos.Text = "Le " + post.created_at;
+                    display_post.NBComments.Text = String.Format("Commentaires {0}", post.comments);
+                    display_post.NBDislikes.Text = String.Format("Dislikes {0}", post.dislike);
+                    display_post.NBLikes.Text = String.Format("Likes {0}", post.like);
+                    StackListing.Children.Add(display_post);
                 }
             }, (String responseMessage, WebException exception) =>
             {

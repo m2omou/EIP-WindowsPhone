@@ -40,7 +40,7 @@ namespace NeerbyyWindowsPhone
             InitializeComponent();
             this.getLocation();
 
-            map_zoom = 12;
+            map_zoom = 14;
             HomeMap.ZoomLevel = map_zoom;
 
             HomeMap.CenterChanged += HomeMap_CenterChanged;
@@ -66,7 +66,7 @@ namespace NeerbyyWindowsPhone
         private async void getLocation()
         {
 
-            map_center = new GeoCoordinate(48.856614, 2.352222);
+            map_center = new GeoCoordinate(48.858093, 2.294694);
             target = new GeoCoordinate(-map_center.Latitude, -map_center.Longitude);
             HomeMap.Center = map_center;
             return;

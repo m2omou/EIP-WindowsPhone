@@ -100,6 +100,9 @@
       <DependentUpon>CreatePost.xaml</DependentUpon>
     </Compile>
     <Compile Include="Datas.cs" />
+    <Compile Include="DisplayPost.xaml.cs">
+      <DependentUpon>DisplayPost.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
@@ -145,6 +148,10 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Page Include="CreatePost.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DisplayPost.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -256,6 +263,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="default.jpg" />
+    <Resource Include="UI\texte.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

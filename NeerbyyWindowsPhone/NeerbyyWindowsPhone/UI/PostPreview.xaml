@@ -10,15 +10,15 @@
     d:DesignHeight="184" d:DesignWidth="480">
 
     <StackPanel x:Name="Post" Height="154" Width="456" Orientation="Horizontal" Background="#FFEAEAEA" Margin="0,0,0,25">
-        <Image Width="100" Source="default.jpg" Margin="0,0,10,0"/>
+        <Image Width="100" x:Name="Preview" Source="texte.png" Margin="0,0,10,0"/>
         <StackPanel Margin="3,0,0,0" Width="341">
-            <TextBlock TextWrapping="Wrap" x:Name="Title" Text="La tour eiffel ça déboite tout ! J'y ..." Foreground="#FF171717" Margin="0" FontFamily="Segoe WP Semibold" Height="32"/>
-            <TextBlock TextWrapping="Wrap" x:Name="Infos" Foreground="#FF4D4D4D" FontFamily="Segoe WP SemiLight" FontStyle="Italic" HorizontalAlignment="Right" FontSize="16" Text="Demo"/>
+            <TextBlock TextWrapping="Wrap" x:Name="Title" Text="La tour eiffel ça déboite tout ! J'y ..." Foreground="#FF171717" Margin="0,4,10,0" FontFamily="Segoe WP Semibold" Height="32"/>
+            <TextBlock TextWrapping="Wrap" x:Name="Infos" Foreground="#FF4D4D4D" FontFamily="Segoe WP SemiLight" FontStyle="Italic" HorizontalAlignment="Right" FontSize="16" Text="Demo" Margin="0,0,16,0"/>
             <StackPanel Height="100" Orientation="Horizontal">
                 <StackPanel Width="191" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                     <TextBlock TextWrapping="Wrap" Text="3 Likes" x:Name="NBLikes" FontFamily="Segoe WP Light" Foreground="#FF404040" FontSize="17.333"/>
                     <TextBlock TextWrapping="Wrap" Text="3 Dislikes" x:Name="NBDislikes" FontFamily="Segoe WP Light" Foreground="#FF404040" FontSize="17.333"/>
-                    <TextBlock TextWrapping="Wrap" Text="3 Comments" x:Name="NBComments" FontFamily="Segoe WP Light" Foreground="#FF404040" FontSize="17.333"/>
+                    <TextBlock TextWrapping="Wrap" Text="3 Comments" x:Name="NBComments" FontFamily="Segoe WP Light" Foreground="#FF404040" FontSize="17.333" Margin="0,0,0,8"/>
                 </StackPanel>
                 <Button Content="AFFICHER" Background="#FFFF7E25" Width="149" Height="68" BorderBrush="#FFFF7E25" HorizontalAlignment="Right" FontSize="18.667" Margin="0" VerticalAlignment="Bottom" Click="DisplayPost"/>
             </StackPanel>

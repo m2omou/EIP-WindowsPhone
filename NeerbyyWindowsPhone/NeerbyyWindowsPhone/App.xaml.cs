@@ -18,6 +18,7 @@ namespace NeerbyyWindowsPhone
         /// <returns>The root frame of the Phone Application.</returns>
         public static PhoneApplicationFrame RootFrame { get; private set; }
         public Place currentPlace { get; set; }
+        public Post currentPost { get; set; }
 
         /// <summary>
         /// Constructor for the Application object.
