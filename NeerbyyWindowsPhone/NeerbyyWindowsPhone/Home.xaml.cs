@@ -169,7 +169,7 @@ namespace NeerbyyWindowsPhone
         private void CreatePushpin(Place infos)
         {
             Pushpin pp = new Pushpin();
-            pp.Background = new SolidColorBrush(Color.FromArgb(255, 50, 50, 200));
+            pp.Background = new SolidColorBrush(Color.FromArgb(160, 62, 184, 142));
             pp.Content = infos.name;
             pp.Tag = infos;
             pp.Tap += Pushpin_Tap;

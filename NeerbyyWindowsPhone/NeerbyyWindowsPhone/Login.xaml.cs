@@ -44,7 +44,7 @@ namespace NeerbyyWindowsPhone
 
             asynchronousDisplayer.display_status.Text = "Connexion en cours...";
 
-            WebApi.Singleton.Authenticate(mail.Text, password.Password, (String responseMessage, User user) =>
+            WebApi.Singleton.Authenticate("callum.henshall@me.com", "totototo", (String responseMessage, User user) =>//mail.Text, password.Password, (String responseMessage, User user) =>
             {
                 asynchronousDisplayer.stack_panel.Visibility = System.Windows.Visibility.Collapsed;
                 NavigationService.Navigate(new Uri("/Home.xaml", UriKind.Relative));
