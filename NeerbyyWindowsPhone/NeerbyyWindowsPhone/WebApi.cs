@@ -98,25 +98,46 @@ namespace NeerbyyWindowsPhone
         public delegate void UserResultDelegate(string responseMessage, User result);
         
         /// <summary>
-        /// Delegate type for handling Places Results
+        /// Delegate type for handling Place Results
         /// </summary>
         /// <param name="responseMessage"></param>
         /// <param name="results"></param>
         public delegate void PlacesResultDelegate(string responseMessage, List<Place> results);
         
         /// <summary>
-        /// Delegate type for handling a Post reuslt
+        /// Delegate type for handling a Post Reuslt
         /// </summary>
         /// <param name="responseMessage"></param>
         /// <param name="result"></param>
         public delegate void PostResultDelegate(string responseMessage, Post result);
 
         /// <summary>
-        /// Delegate type for handling Posts Results
+        /// Delegate type for handling Post Results
         /// </summary>
         /// <param name="responseMessage"></param>
         /// <param name="results"></param>
         public delegate void PostsResultDelegate(string responseMessage, List<Post> results);
+
+        /// <summary>
+        /// Delegate type for handling a Comment Result
+        /// </summary>
+        /// <param name="responseMessage"></param>
+        /// <param name="result"></param>
+        public delegate void CommentResultDelegate(string responseMessage, Comment result);
+
+        /// <summary>
+        /// Delegate type for handling Comment Results
+        /// </summary>
+        /// <param name="responseMessage"></param>
+        /// <param name="results"></param>
+        public delegate void CommentsResultDelegate(string responseMessage, List<Comment> results);
+
+        /// <summary>
+        /// Delegate type for handling a Vote Result
+        /// </summary>
+        /// <param name="responseMessage"></param>
+        /// <param name="result"></param>
+        public delegate void VoteResultDelegate(string responseMessage, Vote result);
 
         /// <summary>
         /// Delegate type for handling Errors
@@ -145,7 +166,7 @@ namespace NeerbyyWindowsPhone
             request.Headers[HttpRequestHeader.Authorization] = "Token token=\"" + WebApi.User.auth_token + "\"";
         }
 
-        private Uri UriForController(String controller, String arguments)
+        private Uri UriForController(string controller, string arguments)
         {
             if (arguments == null || arguments.Length == 0)
                 return new Uri(string.Format("{0}/{1}", WebApi.webServiceUrl, controller));
@@ -160,7 +181,7 @@ namespace NeerbyyWindowsPhone
         /// <param name="data"></param>
         /// <param name="resultDelegate"></param>
         /// <param name="errorDelegate"></param>
-        private void Post(String controller, String data, JObjectResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        private void Post(string controller, string data, JObjectResultDelegate resultDelegate, ErrorDelegate errorDelegate)
         {
             Uri uri = this.UriForController(controller, null);
 
@@ -184,7 +205,7 @@ namespace NeerbyyWindowsPhone
             this.BeginCreateBodyStream(apiRequest);
         }
 
-        private void PostFile(String controller, SortedDictionary<string, string> args, SortedDictionary<string, string> files, JObjectResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        private void PostFile(string controller, SortedDictionary<string, string> args, SortedDictionary<string, string> files, JObjectResultDelegate resultDelegate, ErrorDelegate errorDelegate)
         {
             Uri uri = this.UriForController(controller, null);
 
@@ -215,7 +236,7 @@ namespace NeerbyyWindowsPhone
         /// <param name="data"></param>
         /// <param name="resultDelegate"></param>
         /// <param name="errorDelegate"></param>
-        private void Get(String controller, String data, JObjectResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        private void Get(string controller, string data, JObjectResultDelegate resultDelegate, ErrorDelegate errorDelegate)
         {
             Uri uri = this.UriForController(controller, data);
 
@@ -360,7 +381,17 @@ namespace NeerbyyWindowsPhone
                 }
                 else
                 {
-                    this.HandleWebResponse(apiRequest, (HttpWebResponse)e.Response);
+                    try
+                    {
+                        this.HandleWebResponse(apiRequest, (HttpWebResponse)e.Response);
+                    }
+                    catch (Exception exception)
+                    {
+                        Deployment.Current.Dispatcher.BeginInvoke(() =>
+                        {
+                            apiRequest.errorDelegate(exception.Message, new WebException(exception.Message, WebExceptionStatus.ServerProtocolViolation));
+                        });
+                    }
                 }
             }
             catch (Exception e)
@@ -412,7 +443,7 @@ namespace NeerbyyWindowsPhone
         /// <param name="password"></param>
         /// <param name="resultDelegate"></param>
         /// <param name="errorDelegate"></param>
-        public void Authenticate(String email, String password, UserResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        public void Authenticate(string email, string password, UserResultDelegate resultDelegate, ErrorDelegate errorDelegate)
         {
             StringBuilder postData = new StringBuilder();
             postData.AppendFormat("{0}={1}", "connection[email]", HttpUtility.UrlEncode(email));
@@ -451,7 +482,7 @@ namespace NeerbyyWindowsPhone
         /// <param name="password"></param>
         /// <param name="resultDelegate"></param>
         /// <param name="errorDelegate"></param>
-        public void CreateUser(String email, String username, String password, UserResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        public void CreateUser(string email, string username, string password, UserResultDelegate resultDelegate, ErrorDelegate errorDelegate)
         {
             StringBuilder postData = new StringBuilder();
             postData.AppendFormat("{0}={1}", "user[email]", HttpUtility.UrlEncode(email));
@@ -489,7 +520,7 @@ namespace NeerbyyWindowsPhone
         /// <param name="email"></param>
         /// <param name="resultDelegate"></param>
         /// <param name="errorDelegate"></param>
-        public void RestorePassword(String email, ObjectResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        public void RestorePassword(string email, ObjectResultDelegate resultDelegate, ErrorDelegate errorDelegate)
         {
             StringBuilder postData = new StringBuilder();
             postData.AppendFormat("{0}={1}", "email", HttpUtility.UrlEncode(email));
@@ -559,7 +590,7 @@ namespace NeerbyyWindowsPhone
         /// <param name="place"></param>
         /// <param name="resultDelegate"></param>
         /// <param name="errorDelegate"></param>
-        public void PublicationsForPlace(Place place, PostsResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        public void PostsForPlace(Place place, PostsResultDelegate resultDelegate, ErrorDelegate errorDelegate)
         {
             StringBuilder postData = new StringBuilder();
             postData.AppendFormat("{0}={1}", "place_id", HttpUtility.UrlEncode(place.id.ToString()));
@@ -592,19 +623,22 @@ namespace NeerbyyWindowsPhone
         /// 
         /// </summary>
         /// <param name="place"></param>
+        /// <param name="content"></param>
         /// <param name="url"></param>
         /// <param name="resultDelegate"></param>
         /// <param name="errorDelegate"></param>
-        public void PublishURL(Place place, String url, PostResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        public void CreatePostWithUrl(Place place, string content, string url, PostResultDelegate resultDelegate, ErrorDelegate errorDelegate)
         {
             //SortedDictionary<string, string> args = new SortedDictionary<string, string>();
             //args.Add("publication[user_id]", user.id.ToString());
             //args.Add("publication[place_id]", place.id.ToString());
+            //args.Add("publication[content]", content);
             //args.Add("publication[link]", url);
 
             StringBuilder postData = new StringBuilder();
             postData.AppendFormat("{0}={1}", "publication[user_id]", HttpUtility.UrlEncode(user.id.ToString()));
             postData.AppendFormat("&{0}={1}", "publication[place_id]", HttpUtility.UrlEncode(place.id.ToString()));
+            postData.AppendFormat("&{0}={1}", "publication[content]", HttpUtility.UrlEncode(content));
             postData.AppendFormat("&{0}={1}", "publication[link]", HttpUtility.UrlEncode(url));
 
             JObjectResultDelegate jObjectResultDelegate = delegate(String responseMessage, JObject result)
@@ -635,12 +669,125 @@ namespace NeerbyyWindowsPhone
         /// 
         /// </summary>
         /// <param name="place"></param>
+        /// <param name="content"></param>
         /// <param name="filePath"></param>
         /// <param name="resultDelegate"></param>
         /// <param name="errorDelegate"></param>
-        public void PublishFile(Place place, String filePath, PostResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        public void CreatePostWithFile(Place place, string content, string filePath, PostResultDelegate resultDelegate, ErrorDelegate errorDelegate)
         {
 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="post"></param>
+        /// <param name="content"></param>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        public void AddCommentToPost(Post post, string content, CommentResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        {
+            StringBuilder postData = new StringBuilder();
+            postData.AppendFormat("{0}={1}", "comment[user_id]", HttpUtility.UrlEncode(user.id.ToString()));
+            postData.AppendFormat("&{0}={1}", "comment[publication_id]", HttpUtility.UrlEncode(post.id.ToString()));
+            postData.AppendFormat("&{0}={1}", "comment[content]", HttpUtility.UrlEncode(content));
+
+            JObjectResultDelegate jObjectResultDelegate = delegate(String responseMessage, JObject result)
+            {
+                try
+                {
+                    JToken jToken = result; //["result"]["comment"];
+                    Comment comment = jToken.ToObject<Comment>();
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        resultDelegate(responseMessage, comment);
+                    });
+                }
+                catch (Exception)
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        string errorMessage = "Server Error";
+                        errorDelegate(errorMessage, new WebException(errorMessage, WebExceptionStatus.ServerProtocolViolation));
+                    });
+                }
+            };
+
+            this.Post("comments.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="post"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        public void CommentsForPost(Post post, int pageNumber, CommentsResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        {
+            StringBuilder postData = new StringBuilder();
+            postData.AppendFormat("{0}={1}", "publication_id", HttpUtility.UrlEncode(post.id.ToString()));
+
+            JObjectResultDelegate jObjectResultDelegate = delegate(String responseMessage, JObject result)
+            {
+                try
+                {
+                    JToken jToken = result["result"]["comments"];
+                    List<Comment> comments = jToken.ToObject<List<Comment>>();
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        resultDelegate(responseMessage, comments);
+                    });
+                }
+                catch (Exception)
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        string errorMessage = "Server Error";
+                        errorDelegate(errorMessage, new WebException(errorMessage, WebExceptionStatus.ServerProtocolViolation));
+                    });
+                }
+            };
+
+            this.Get("comments.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="post"></param>
+        /// <param name="value"></param>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        public void SetVoteOnPost(Post post, Boolean value, VoteResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        {
+            StringBuilder postData = new StringBuilder();
+            postData.AppendFormat("{0}={1}", "vote[user_id]", HttpUtility.UrlEncode(user.id.ToString()));
+            postData.AppendFormat("&{0}={1}", "vote[publication_id]", HttpUtility.UrlEncode(post.id.ToString()));
+            postData.AppendFormat("&{0}={1}", "vote[value]", value ? "true" : "false");
+
+            JObjectResultDelegate jObjectResultDelegate = delegate(String responseMessage, JObject result)
+            {
+                try
+                {
+                    JToken jToken = result; //["result"]["vote"];
+                    Vote vote = jToken.ToObject<Vote>();
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        resultDelegate(responseMessage, vote);
+                    });
+                }
+                catch (Exception)
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        string errorMessage = "Server Error";
+                        errorDelegate(errorMessage, new WebException(errorMessage, WebExceptionStatus.ServerProtocolViolation));
+                    });
+                }
+            };
+
+            this.Post("votes.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
         }
     }
 }

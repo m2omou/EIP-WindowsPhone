@@ -40,15 +40,19 @@ namespace NeerbyyWindowsPhone
             currentPlace = ((App)Application.Current).currentPlace;
             Title.Text = currentPlace.name;
 
-            WebApi.Singleton.PublicationsForPlace(currentPlace, (string responseMessage, List<Post> posts) =>
+            WebApi.Singleton.PostsForPlace(currentPlace, (string responseMessage, List<Post> posts) =>
             {
                 foreach (Post post in posts)
                 {
                     PostPreview display_post = new PostPreview();
-                    display_post.Title.Text = (String)post.content;
-                    if (post.url != null && (String)post.url != "")
+                    display_post.Title.Text = post.content;
+                    if (post.url != null && post.url != "")
                     {
-                        Uri uri = new Uri((String)post.url, UriKind.Absolute);
+                        Uri uri = null;
+                        if (post.url.StartsWith("http://"))
+                            uri = new Uri(post.url, UriKind.Absolute);
+                        else
+                            uri = new Uri("http://" + post.url, UriKind.Absolute);
                         var bitmap = new BitmapImage(uri);
                         display_post.Preview.Source = bitmap;
                         ScrollingView.UpdateLayout();

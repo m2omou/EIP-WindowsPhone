@@ -70,6 +70,7 @@ namespace NeerbyyWindowsPhone
             target = new GeoCoordinate(-map_center.Latitude, -map_center.Longitude);
             HomeMap.Center = map_center;
             return;
+            // temporary hack to center on Paris
             try
             {
                 if ((bool)IsolatedStorageSettings.ApplicationSettings["LocationConsent"] != true)

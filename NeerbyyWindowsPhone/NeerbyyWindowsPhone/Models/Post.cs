@@ -24,12 +24,12 @@ namespace NeerbyyWindowsPhone
         /// <summary>
         /// The ID of the place where the post was created
         /// </summary>
-        public int place_id { get; set; }
+        public string place_id { get; set; }
 
         /// <summary>
         /// The content of the Post
         /// </summary>
-        public object content { get; set; }
+        public string content { get; set; }
 
         /// <summary>
         /// 
@@ -59,12 +59,12 @@ namespace NeerbyyWindowsPhone
         /// <summary>
         /// The Post's URL that points the data
         /// </summary>
-        public object url { get; set; }
+        public string url { get; set; }
 
         /// <summary>
         /// The URL for the thumbnail for the data
         /// </summary>
-        public object thumb_url { get; set; }
+        public string thumb_url { get; set; }
 
         /// <summary>
         /// Number of comments

@@ -38,12 +38,16 @@ namespace NeerbyyWindowsPhone
             Place currentPlace = ((App)Application.Current).currentPlace;
             Post currentPost = ((App)Application.Current).currentPost;
             //Title.Text = currentPost.;
-            this.text_content.Text = (String)currentPost.content;
+            this.text_content.Text = currentPost.content;
             this.Place.Text = currentPlace.city;
             this.Title.Text = currentPlace.name;
-            if (currentPost.url != null && (String)currentPost.url != "")
+            if (currentPost.url != null && currentPost.url != "")
             {
-                Uri uri = new Uri((String)currentPost.url, UriKind.Absolute);
+                Uri uri = null;
+                if (currentPost.url.StartsWith("http://"))
+                    uri = new Uri(currentPost.url, UriKind.Absolute);
+                else
+                    uri = new Uri("http://" + currentPost.url, UriKind.Absolute);
                 var bitmap = new BitmapImage(uri);
                 this.image_content.Source = bitmap;
                 this.image_content.Visibility = System.Windows.Visibility.Visible;
