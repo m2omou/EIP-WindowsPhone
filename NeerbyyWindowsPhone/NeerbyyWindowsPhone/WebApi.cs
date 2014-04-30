@@ -770,7 +770,7 @@ namespace NeerbyyWindowsPhone
             {
                 try
                 {
-                    JToken jToken = result; //["result"]["vote"];
+                    JToken jToken = result["result"]["vote"];
                     Vote vote = jToken.ToObject<Vote>();
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
