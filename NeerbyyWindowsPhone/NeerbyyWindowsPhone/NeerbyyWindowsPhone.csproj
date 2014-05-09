@@ -126,6 +126,9 @@
     <Compile Include="UI\AsynchronousDisplay.xaml.cs">
       <DependentUpon>AsynchronousDisplay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\PostComment.xaml.cs">
+      <DependentUpon>PostComment.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\PostPreview.xaml.cs">
       <DependentUpon>PostPreview.xaml</DependentUpon>
     </Compile>
@@ -179,6 +182,10 @@
     <Page Include="UI\AsynchronousDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\PostComment.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\PostPreview.xaml">
       <SubType>Designer</SubType>
@@ -235,6 +242,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Coding4Fun.Toolkit.Controls">
+      <HintPath>..\packages\Coding4Fun.Toolkit.Controls.2.0.7\lib\windowsphone8\Coding4Fun.Toolkit.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
@@ -265,6 +275,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="default.jpg" />
+    <Resource Include="UI\default.jpg" />
     <Resource Include="UI\texte.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />

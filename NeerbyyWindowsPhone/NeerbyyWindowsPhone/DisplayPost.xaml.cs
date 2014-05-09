@@ -10,6 +10,7 @@ using Microsoft.Phone.Shell;
 using NeerbyyWindowsPhone.Resources;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using Coding4Fun.Toolkit.Controls;
 
 namespace NeerbyyWindowsPhone
 {
@@ -38,7 +39,7 @@ namespace NeerbyyWindowsPhone
             Place currentPlace = ((App)Application.Current).currentPlace;
             Post currentPost = ((App)Application.Current).currentPost;
             //Title.Text = currentPost.;
-            this.text_content.Text = currentPost.content;
+            //this.text_content.Text = currentPost.content;
             this.Place.Text = currentPlace.city;
             this.Title.Text = currentPlace.name;
             if (currentPost.url != null && currentPost.url != "")
@@ -56,6 +57,63 @@ namespace NeerbyyWindowsPhone
             {
                 this.image_content.Visibility = System.Windows.Visibility.Collapsed;
             }
+            this.DisplayComments();
         }
+
+        private void DisplayComments() {
+            ListingComments.Children.Clear();
+            PostComment display_comment = new PostComment();
+
+            display_comment.Value.Text = "toto";
+            display_comment.Username.Text = "toto";
+            //var bitmap = new BitmapImage(uri);
+            //display_comment.Avatar.Source = bitmap;
+            ListingComments.Children.Add(display_comment);
+        }
+
+        /// <summary>
+        /// Input box to post a comment
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void WriteComment(object sender, RoutedEventArgs e)
+        {
+            InputPrompt input = new InputPrompt();
+            input.Completed += input_Completed;
+            input.Title = "Poster un commentaire";
+            input.Message = "Commentez le souvenir";
+            input.Show();
+        }
+
+        void input_Completed(object sender, PopUpEventArgs<string, PopUpResult> e)
+        {
+            // Le contenu du commentaire a poster
+            MessageBox.Show(e.Result);
+        }
+
+        /// <summary>
+        /// Upvote a post
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void VoteUp(object sender, RoutedEventArgs e)
+        {
+
+            button_vote_up.BorderBrush.Opacity = 100;
+            button_vote_down.BorderBrush.Opacity = 0;
+        }
+
+        /// <summary>
+        /// DownVote a post
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void VoteDown(object sender, RoutedEventArgs e)
+        {
+            button_vote_up.BorderBrush.Opacity = 0;
+            button_vote_down.BorderBrush.Opacity = 100;
+
+        }
+
     }
 }

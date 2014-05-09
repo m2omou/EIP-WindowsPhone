@@ -37,7 +37,7 @@
         	<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="646">
         		<StackPanel Height="59" Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Center">
         			<TextBlock x:Name="Title" TextWrapping="Wrap" Text="PARIS" Width="253" Foreground="#FF3EB88E" FontFamily="Segoe WP Black" FontSize="37.333" HorizontalAlignment="Center"/>
-        			<Button Content="POSTER UN SOUVENIR" HorizontalAlignment="Right" Width="193" Background="#FFFF6666" BorderBrush="#FFFF6666" Foreground="White" FontSize="13.333" BorderThickness="0,3,3,3" Click="GoToCreatePost"/>
+        			<Button x:Name="button_post" Content="POSTER UN SOUVENIR" HorizontalAlignment="Right" Width="193" Background="#FFFF6666" BorderBrush="#FFFF6666" Foreground="White" FontSize="13.333" BorderThickness="0,3,3,3" Click="GoToCreatePost"/>
                  </StackPanel>
                 <ScrollViewer x:Name="ScrollingView" Height="567">
                     <StackPanel x:Name="StackListing" Orientation="Vertical">
