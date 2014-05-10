@@ -21,6 +21,7 @@ namespace NeerbyyWindowsPhone
     /// </summary>
     public partial class DisplayPost : PhoneApplicationPage
     {
+        private Post currentPost;
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -36,8 +37,10 @@ namespace NeerbyyWindowsPhone
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
 
+            button_vote_down.BorderBrush.Opacity = 0;
+            button_vote_up.BorderBrush.Opacity = 0;
             Place currentPlace = ((App)Application.Current).currentPlace;
-            Post currentPost = ((App)Application.Current).currentPost;
+            currentPost = ((App)Application.Current).currentPost;
             //Title.Text = currentPost.;
             //this.text_content.Text = currentPost.content;
             this.Place.Text = currentPlace.city;
@@ -60,15 +63,40 @@ namespace NeerbyyWindowsPhone
             this.DisplayComments();
         }
 
-        private void DisplayComments() {
-            ListingComments.Children.Clear();
+
+        /// <summary>
+        /// Add a comment to the displayed one
+        /// </summary>
+        private void AddComment(Comment comment)
+        {
             PostComment display_comment = new PostComment();
 
-            display_comment.Value.Text = "toto";
-            display_comment.Username.Text = "toto";
+            display_comment.Value.Text = comment.content;
+            display_comment.Username.Text = "bobb";
             //var bitmap = new BitmapImage(uri);
             //display_comment.Avatar.Source = bitmap;
             ListingComments.Children.Add(display_comment);
+            ScrollingView.UpdateLayout();
+        }
+
+
+        /// <summary>
+        /// Display all comments
+        /// </summary>
+        private void DisplayComments()
+        {
+            ListingComments.Children.Clear();
+            WebApi.Singleton.CommentsForPost(currentPost, 0, (string responseMessage, List<Comment> comments) =>
+            {
+                foreach (Comment comment in comments)
+                {
+                    this.AddComment(comment);
+                }
+            }, (String responseMessage, WebException exception) =>
+            {
+
+            });
+            
         }
 
         /// <summary>
@@ -88,7 +116,14 @@ namespace NeerbyyWindowsPhone
         void input_Completed(object sender, PopUpEventArgs<string, PopUpResult> e)
         {
             // Le contenu du commentaire a poster
-            MessageBox.Show(e.Result);
+            if (e.Result != "")
+            WebApi.Singleton.AddCommentToPost(currentPost, e.Result, (string responseMessage, Comment result) =>
+            {
+                this.AddComment(result);   
+            }, (String responseMessage, WebException exception) =>
+            {
+
+            });
         }
 
         /// <summary>
