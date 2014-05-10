@@ -19,7 +19,7 @@ namespace NeerbyyWindowsPhone
         /// <summary>
         /// The ID of the user that created the post
         /// </summary>
-        public int user_id { get; set; }
+        public int? user_id { get; set; }
 
         /// <summary>
         /// The ID of the place where the post was created
@@ -44,12 +44,12 @@ namespace NeerbyyWindowsPhone
         /// <summary>
         /// Longitude of the Post
         /// </summary>
-        public object longitude { get; set; }
+        public double? longitude { get; set; }
 
         /// <summary>
         /// Latitude of the Post
         /// </summary>
-        public object latitude { get; set; }
+        public double? latitude { get; set; }
 
         /// <summary>
         /// The Post's type

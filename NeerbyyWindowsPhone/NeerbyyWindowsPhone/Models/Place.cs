@@ -44,7 +44,7 @@ namespace NeerbyyWindowsPhone
         /// <summary>
         /// Address of the Place
         /// </summary>
-        public object address { get; set; }
+        public string address { get; set; }
 
         /// <summary>
         /// Country of the Place
