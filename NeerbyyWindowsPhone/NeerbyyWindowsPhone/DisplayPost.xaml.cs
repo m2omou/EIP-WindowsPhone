@@ -41,6 +41,7 @@ namespace NeerbyyWindowsPhone
             button_vote_up.BorderBrush.Opacity = 0;
             Place currentPlace = ((App)Application.Current).currentPlace;
             currentPost = ((App)Application.Current).currentPost;
+            this.DisplayVotes();
             //Title.Text = currentPost.;
             //this.text_content.Text = currentPost.content;
             this.Place.Text = currentPlace.city;
@@ -63,6 +64,14 @@ namespace NeerbyyWindowsPhone
             this.DisplayComments();
         }
 
+        /// <summary>
+        /// Update the vote buttons' content
+        /// </summary>
+        private void DisplayVotes()
+        {
+            this.button_vote_down.Content = string.Format("{0}", currentPost.dislike);
+            this.button_vote_up.Content = string.Format("{0}", currentPost.like);
+        }
 
         /// <summary>
         /// Add a comment to the displayed one
@@ -122,7 +131,7 @@ namespace NeerbyyWindowsPhone
                 this.AddComment(result);   
             }, (String responseMessage, WebException exception) =>
             {
-
+                ErrorDisplayer error = new ErrorDisplayer();
             });
         }
 
@@ -134,8 +143,17 @@ namespace NeerbyyWindowsPhone
         private void VoteUp(object sender, RoutedEventArgs e)
         {
 
-            button_vote_up.BorderBrush.Opacity = 100;
-            button_vote_down.BorderBrush.Opacity = 0;
+            WebApi.Singleton.SetVoteOnPost(currentPost, true, (string responseMessage, Vote result) =>
+                {
+                 button_vote_up.BorderBrush.Opacity = 100;
+                 button_vote_down.BorderBrush.Opacity = 0;
+                 currentPost.like += 1;
+                 this.DisplayVotes();
+
+                }, (String responseMessage, WebException exception) =>
+                    {
+                        ErrorDisplayer error = new ErrorDisplayer();
+                    });
         }
 
         /// <summary>
@@ -145,10 +163,18 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void VoteDown(object sender, RoutedEventArgs e)
         {
-            button_vote_up.BorderBrush.Opacity = 0;
-            button_vote_down.BorderBrush.Opacity = 100;
+            WebApi.Singleton.SetVoteOnPost(currentPost, false, (string responseMessage, Vote result) =>
+                {
+                 button_vote_up.BorderBrush.Opacity = 0;
+                 button_vote_down.BorderBrush.Opacity = 100;
+                 currentPost.dislike += 1;
+                 this.DisplayVotes();
 
-        }
+                }, (String responseMessage, WebException exception) =>
+                    {
+                        ErrorDisplayer error = new ErrorDisplayer();
+                    });
+                }
 
     }
 }

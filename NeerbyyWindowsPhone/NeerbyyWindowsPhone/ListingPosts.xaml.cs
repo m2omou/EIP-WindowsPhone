@@ -66,7 +66,7 @@ namespace NeerbyyWindowsPhone
                 }
             }, (String responseMessage, WebException exception) =>
             {
-
+                ErrorDisplayer error = new ErrorDisplayer();
             });
         }
 

@@ -126,6 +126,9 @@
     <Compile Include="UI\AsynchronousDisplay.xaml.cs">
       <DependentUpon>AsynchronousDisplay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\ErrorDisplayer.xaml.cs">
+      <DependentUpon>ErrorDisplayer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\PostComment.xaml.cs">
       <DependentUpon>PostComment.xaml</DependentUpon>
     </Compile>
@@ -180,6 +183,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\AsynchronousDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\ErrorDisplayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -149,7 +149,7 @@ namespace NeerbyyWindowsPhone
                 }
             }, (String responseMessage, WebException e) =>
             {
-
+                ErrorDisplayer error = new ErrorDisplayer();
             });
         }
 
