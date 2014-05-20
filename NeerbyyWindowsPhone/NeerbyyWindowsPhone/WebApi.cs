@@ -8,6 +8,7 @@ using System.Windows;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace NeerbyyWindowsPhone
 {
@@ -184,7 +185,7 @@ namespace NeerbyyWindowsPhone
         private void Post(string controller, string data, JObjectResultDelegate resultDelegate, ErrorDelegate errorDelegate)
         {
             Uri uri = this.UriForController(controller, null);
-
+            
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(uri);
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";
@@ -202,7 +203,7 @@ namespace NeerbyyWindowsPhone
             //RequestCallBack callBack = new RequestCallBack(this.BeginCreateBodyStream);
             //callBack.BeginInvoke(apiRequest, null, null);
 
-            this.BeginCreateBodyStream(apiRequest);
+            Task.Run(() => BeginCreateBodyStream(apiRequest)).ConfigureAwait(continueOnCapturedContext: false);
         }
 
         private void PostFile(string controller, SortedDictionary<string, string> args, SortedDictionary<string, string> files, JObjectResultDelegate resultDelegate, ErrorDelegate errorDelegate)
@@ -225,8 +226,9 @@ namespace NeerbyyWindowsPhone
             apiRequest.jObjectResultDelegate = resultDelegate;
             apiRequest.errorDelegate = errorDelegate;
 
-            RequestCallBack callBack = new RequestCallBack(this.BeginCreateBodyStream);
-            callBack.BeginInvoke(apiRequest, null, null);
+            //RequestCallBack callBack = new RequestCallBack(this.BeginCreateBodyStream);
+            //callBack.BeginInvoke(apiRequest, null, null);
+            Task.Run(() => BeginCreateBodyStream(apiRequest)).ConfigureAwait(continueOnCapturedContext: false);
         }
 
         /// <summary>
@@ -240,6 +242,7 @@ namespace NeerbyyWindowsPhone
         {
             Uri uri = this.UriForController(controller, data);
 
+            
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(uri);
             request.Method = "GET";
             if (WebApi.user != null)
@@ -696,7 +699,7 @@ namespace NeerbyyWindowsPhone
             {
                 try
                 {
-                    JToken jToken = result; //["result"]["comment"];
+                    JToken jToken = result["result"]["comment"];
                     Comment comment = jToken.ToObject<Comment>();
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {

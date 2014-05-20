@@ -30,6 +30,11 @@ namespace NeerbyyWindowsPhone
         /// The ID of the user having posted the comment
         /// </summary>
         public int user_id { get; set; }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public User user { get; set; }
 
         /// <summary>
         /// 
