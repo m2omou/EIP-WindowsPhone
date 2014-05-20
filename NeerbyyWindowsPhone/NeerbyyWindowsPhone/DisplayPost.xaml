@@ -41,7 +41,7 @@
 					</StackPanel>
 					<Button Content="COMMENTER" Background="#FF444444" FontSize="18.667" Height="70" Click="WriteComment"/>
 				</StackPanel>
-                <ScrollViewer x:Name="ScrollingView">
+                <ScrollViewer x:Name="ScrollingView" Height="200">
 					<StackPanel x:Name="ListingComments"/>
 				</ScrollViewer>
 			</StackPanel>

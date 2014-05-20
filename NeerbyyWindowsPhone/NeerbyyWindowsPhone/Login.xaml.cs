@@ -32,7 +32,15 @@ namespace NeerbyyWindowsPhone
             //BuildLocalizedApplicationBar();
         }
 
-        
+        /// <summary>
+        /// Do nothing when back button is pressed
+        /// </summary>
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnBackKeyPress(e);
+            e.Cancel = true;
+        }
+
         /// <summary>
         /// Callback called to try to connect to Neerbyy
         /// </summary>

@@ -85,6 +85,8 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void Disconnect(object sender, RoutedEventArgs e)
         {
+            WebApi.LogOut();
+            NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative));
         }
 
         /// <summary>

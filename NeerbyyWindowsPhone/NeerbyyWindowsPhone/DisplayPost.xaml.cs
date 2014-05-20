@@ -44,7 +44,7 @@ namespace NeerbyyWindowsPhone
             this.DisplayVotes();
             //Title.Text = currentPost.;
             //this.text_content.Text = currentPost.content;
-            this.Place.Text = currentPlace.city;
+            this.Place.Text = currentPost.content;
             this.Title.Text = currentPlace.name;
             if (currentPost.url != null && currentPost.url != "")
             {
@@ -81,7 +81,7 @@ namespace NeerbyyWindowsPhone
             PostComment display_comment = new PostComment();
 
             display_comment.Value.Text = comment.content;
-            display_comment.Username.Text = "bobb";
+            display_comment.Username.Text = "Bobby";
             //var bitmap = new BitmapImage(uri);
             //display_comment.Avatar.Source = bitmap;
             ListingComments.Children.Add(display_comment);
@@ -122,6 +122,11 @@ namespace NeerbyyWindowsPhone
             input.Show();
         }
 
+        /// <summary>
+        /// Commenter un poste
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void input_Completed(object sender, PopUpEventArgs<string, PopUpResult> e)
         {
             // Le contenu du commentaire a poster
