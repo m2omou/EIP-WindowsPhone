@@ -80,5 +80,10 @@ namespace NeerbyyWindowsPhone
         /// Number of Dislikes
         /// </summary>
         public int dislike { get; set; }
+
+        /// <summary>
+        /// Information on the User's vote
+        /// </summary>
+        public Vote vote { get; set; }
     }
 }
