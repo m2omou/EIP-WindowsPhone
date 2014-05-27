@@ -34,14 +34,14 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.NavigationMode == NavigationMode.Back)
-                return;
-            StackListing.Children.Clear();
+            if (e.NavigationMode != NavigationMode.Back)
+                StackListing.Children.Clear();
             currentPlace = ((App)Application.Current).currentPlace;
             Title.Text = currentPlace.name;
 
             WebApi.Singleton.PostsForPlace(currentPlace, (string responseMessage, List<Post> posts) =>
             {
+                StackListing.Children.Clear();
                 foreach (Post post in posts)
                 {
                     PostPreview display_post = new PostPreview();

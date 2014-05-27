@@ -245,7 +245,7 @@ namespace NeerbyyWindowsPhone
 
             infoDisplayer.Visibility = System.Windows.Visibility.Collapsed;
             popup_title.Text = infos.name;
-            popup_description.Text = infos.city;
+            popup_description.Text = String.Format("{2}\n{0}({1})", infos.city, infos.country, infos.address);
 
             ((App)Application.Current).currentPlace = infos;
         }

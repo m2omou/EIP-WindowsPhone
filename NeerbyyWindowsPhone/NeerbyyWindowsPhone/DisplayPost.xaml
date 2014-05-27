@@ -33,7 +33,7 @@
 				<TextBlock x:Name="Title" TextWrapping="Wrap" Text="PARIS" Width="454" Foreground="#FF3EB88E" FontFamily="Segoe WP Black" FontSize="37.333" HorizontalAlignment="Center" Height="59"/>
 				<TextBlock x:Name="Place" TextWrapping="Wrap" Text="à la Tour Eiffel" Width="454" Foreground="#FF535353" FontFamily="Segoe WP Black" FontSize="26.667" HorizontalAlignment="Center" Height="44"/>
 				<StackPanel>
-					<Image Height="215" Margin="1,0,-353,0" HorizontalAlignment="Left" x:Name="image_content" Stretch="None" Width="453"/>
+					<Image Tap="image_content_Tap" Height="215" Margin="1,0,-353,0" HorizontalAlignment="Left" x:Name="image_content" Stretch="UniformToFill" Width="453"/>
 					<StackPanel Height="70" Orientation="Horizontal">
 						<Button Content="SIGNALER" Background="#FFF33232" FontSize="18.667" Width="216"/>
 						<Button x:Name="button_vote_up" Click="VoteUp" Content="745" Background="#FF3EB88E" FontSize="18.667" Width="120" BorderBrush="#FF2D8969"/>

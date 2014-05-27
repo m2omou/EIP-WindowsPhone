@@ -181,5 +181,16 @@ namespace NeerbyyWindowsPhone
                     });
                 }
 
+        /// <summary>
+        /// Display the image in fullscreen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void image_content_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            string context = ((sender as Image).Source as BitmapImage).UriSource.ToString();
+            NavigationService.Navigate(new Uri(String.Concat("/FullScreenImage.xaml?context=", context), UriKind.RelativeOrAbsolute));
+        }
+
     }
 }

@@ -16,11 +16,11 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
-    
-    
-	<Grid x:Name="LayoutRoot" Background="White">
 
-		<!-- LOCALIZATION NOTE:
+
+    <Grid x:Name="LayoutRoot" Background="White">
+
+        <!-- LOCALIZATION NOTE:
             To localize the displayed strings copy their values to appropriately named
             keys in the app's neutral language resource file (AppResources.resx) then
             replace the hard-coded text value between the attributes' quotation marks
@@ -39,47 +39,49 @@
             CurrentUICulture of the app at run time.
          -->
 
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-		<!--Uncomment to see an alignment grid to help ensure your controls are
+        <!--Uncomment to see an alignment grid to help ensure your controls are
             aligned on common boundaries.  The image has a top margin of -32px to
             account for the System Tray. Set this to 0 (or remove the margin altogether)
             if the System Tray is hidden.
 
             Before shipping remove this XAML and the image itself.-->
-		<!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
-    <!--TitlePanel contains the name of the application and page title-->
-		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,229,28" Background="#FF3EB88E">
-			<TextBlock Text="Neerby" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0" FontFamily="Segoe WP Black"/>
-			<TextBlock Text="Carte" Margin="9,-7,12,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="GeosansLight"/>
-		</StackPanel>
-		<Button Content="CENTRER" Click="CenterMap" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="2.833,1.263" Margin="328,41,0,0" Background="#FF3EB88E" BorderBrush="#FF3EB88E" FontSize="12"/>
+        <!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,229,28" Background="#FF3EB88E">
+            <TextBlock Text="Neerby" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0" FontFamily="Segoe WP Black"/>
+            <TextBlock Text="Carte" Margin="9,-7,12,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="GeosansLight"/>
+        </StackPanel>
+        <Button Content="CENTRER" Click="CenterMap" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="2.833,1.263" Margin="328,41,0,0" Background="#FF3EB88E" BorderBrush="#FF3EB88E" FontSize="12"/>
 
         <!--ContentPanel - place additional content here-->
-		<Grid x:Name="ContentPanel" Grid.Row="2" Margin="12,0,12,0">
-			<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
-				<StackPanel Height="77" Margin="0,0,1,0" Orientation="Horizontal">
-					<TextBox TextWrapping="Wrap" Width="260" Height="74" Background="#BFCBCBCB"/>
-					<Button Click="Button_Click"  Content="Détails" BorderBrush="Transparent" Background="#FF3EB88E" FontFamily="Segoe WP Light"  Width="120" Margin="-20,0,0,0"/>
-					<Button Click="Button_Click_1"  Content="Filtrer" BorderBrush="Transparent" Background="#FF3EB88E" FontFamily="Segoe WP Light"  Width="120" Margin="-20,0,0,0"/>
-				</StackPanel>
-                
+        <Grid x:Name="ContentPanel" Grid.Row="2" Margin="12,0,12,0">
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
+                <StackPanel Height="77" Margin="0,0,1,0" Orientation="Horizontal">
+                    <TextBox TextWrapping="Wrap" Width="260" Height="74" Background="#BFCBCBCB"/>
+                    <Button Click="Button_Click"  Content="Détails" BorderBrush="Transparent" Background="#FF3EB88E" FontFamily="Segoe WP Light"  Width="120" Margin="-20,0,0,0"/>
+                    <Button Click="Button_Click_1"  Content="Filtrer" BorderBrush="Transparent" Background="#FF3EB88E" FontFamily="Segoe WP Light"  Width="120" Margin="-20,0,0,0"/>
+                </StackPanel>
+
             </StackPanel>
-            
+
             <maps:Map CenterChanged="HomeMap_CenterChanged" ZoomLevelChanged="HomeMap_ZoomLevelChanged" x:Name="HomeMap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,80,0,0" Width="456" Height="600">
-                
+
             </maps:Map>
-            <Grid x:Name="infoDisplayer"  Background="#8D303030" Margin="75,193,51,239" Visibility="Collapsed">
-            	<TextBlock x:Name="popup_title" HorizontalAlignment="Center" Margin="28,10,28,0" TextWrapping="Wrap" Text="Title" VerticalAlignment="Top" Width="213" TextAlignment="Center"/>
-            	<TextBlock x:Name="popup_description" HorizontalAlignment="Left" Margin="28,43,28,0" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top" Height="69" Width="213" FontSize="16"/>
-            	<Button Content="VOIR PLUS..." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="187,131,0,-4" Height="58" Width="143" Background="#FF3EB88E" BorderBrush="Transparent" FontSize="13.333" Click="GoToListing"/>
+            <Grid x:Name="infoDisplayer"  Background="#8D303030" Margin="75,193,51,239" Visibility="Visible">
+                <StackPanel>
+                    <TextBlock x:Name="popup_title" FontSize="26" HorizontalAlignment="Center" Margin="28,10,23,0" TextWrapping="Wrap" Text="Title" VerticalAlignment="Top" Width="279" TextAlignment="Center"/>
+                    <TextBlock x:Name="popup_description" HorizontalAlignment="Left" Margin="10,43,0,0" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top" Height="59" Width="310" FontSize="20"/>
+                </StackPanel>
+                <Button Content="VOIR PLUS..." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="187,131,0,-4" Height="58" Width="143" Background="#FF3EB88E" BorderBrush="Transparent" FontSize="13.333" Click="GoToListing"/>
             </Grid>
         </Grid>
-		<Popup/>
+        <Popup/>
 
-	</Grid>
+    </Grid>
 
 </phone:PhoneApplicationPage>

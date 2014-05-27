@@ -51,6 +51,27 @@ namespace NeerbyyWindowsPhone
         {
             //preview_image.Source
             //content.Text
+            if (content.Text != "")
+                if (preview_image.Source == null) // creation de texte
+                {
+                    WebApi.Singleton.CreatePostWithUrl(currentPlace, content.Text, "", (string responseMessage, Post result) =>
+                    {
+                        MessageBox.Show("Votre souvenir a bien été créé");
+                    }, (String responseMessage, WebException exception) =>
+                    {
+                        ErrorDisplayer error = new ErrorDisplayer();
+                    });
+                }
+                else  // creation d'une image
+                {
+                    /*WebApi.Singleton.CreatePostWithFile(currentPlace, content.Text, preview_image.Source, (string responseMessage, Post result) =>
+                    {
+                        MessageBox.Show("Votre souvenir a bien été créé");
+                    }, (String responseMessage, WebException exception) =>
+                    {
+                        ErrorDisplayer error = new ErrorDisplayer();
+                    });*/
+                }
         }
 
         /// <summary>
