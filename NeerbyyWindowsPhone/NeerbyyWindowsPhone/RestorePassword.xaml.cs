@@ -38,15 +38,15 @@ namespace NeerbyyWindowsPhone
 
             // Fini
 
-            WebApi.Singleton.RestorePassword(mail.Text, (String responseMessage, Object resultObject) =>
+            WebApi.Singleton.RestorePasswordAsync((String responseMessage, Result result) =>
             {
                 asynchronousDisplayer.display_status.Text = "Envoi du mail";
                 asynchronousDisplayer.Visibility = System.Windows.Visibility.Collapsed;
-            }, (String responseMessage, WebException exception) =>
+            }, (String responseMessage, Exception exception) =>
             {
                 asynchronousDisplayer.Visibility = System.Windows.Visibility.Collapsed;
                 asynchronousDisplayer.display_status.Text = responseMessage;
-            });
+            }, mail.Text);
         }
     }
 }

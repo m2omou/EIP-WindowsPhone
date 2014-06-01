@@ -37,15 +37,15 @@ namespace NeerbyyWindowsPhone
 
             asynchronousDisplayer.Visibility = System.Windows.Visibility.Visible;
 
-            WebApi.Singleton.CreateUser(mail.Text, username.Text, password.Password, (String responseMessage, User user) =>
+            WebApi.Singleton.CreateUserAsync((String responseMessage, UserResult result) =>
                 {
                     asynchronousDisplayer.Visibility = System.Windows.Visibility.Collapsed;
                     MessageBox.Show("Compte crée.");
-                }, (String responseMessage, WebException e) =>
+                }, (String responseMessage, Exception e) =>
                 {
                     asynchronousDisplayer.Visibility = System.Windows.Visibility.Collapsed;
                     MessageBox.Show(responseMessage);
-                });
+                }, mail.Text, username.Text, password.Password);
         }
 
         private void username_TextChanged(object sender, TextChangedEventArgs e)

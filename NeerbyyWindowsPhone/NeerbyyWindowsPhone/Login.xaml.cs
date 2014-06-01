@@ -52,15 +52,15 @@ namespace NeerbyyWindowsPhone
 
             asynchronousDisplayer.display_status.Text = "Connexion en cours...";
 
-            WebApi.Singleton.Authenticate(mail.Text, password.Password, (String responseMessage, User user) =>
+            WebApi.Singleton.AuthenticateAsync((String responseMessage, UserResult result) =>
             {
                 asynchronousDisplayer.stack_panel.Visibility = System.Windows.Visibility.Collapsed;
                 NavigationService.Navigate(new Uri("/Home.xaml", UriKind.Relative));
-            }, (String responseMessage, WebException e) =>
+            }, (String responseMessage, Exception e) =>
             {
                 asynchronousDisplayer.stack_panel.Visibility = System.Windows.Visibility.Collapsed;
                 asynchronousDisplayer.display_status.Text = responseMessage;
-            });
+            }, mail.Text, password.Password);
         }
 
         /// <summary>

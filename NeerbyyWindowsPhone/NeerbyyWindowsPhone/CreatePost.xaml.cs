@@ -54,13 +54,13 @@ namespace NeerbyyWindowsPhone
             if (content.Text != "")
                 if (preview_image.Source == null) // creation de texte
                 {
-                    WebApi.Singleton.CreatePostWithUrl(currentPlace, content.Text, "", (string responseMessage, Post result) =>
+                    WebApi.Singleton.CreatePostWithUrlAsync((string responseMessage, PostResult result) =>
                     {
                         MessageBox.Show("Votre souvenir a bien été créé");
-                    }, (String responseMessage, WebException exception) =>
+                    }, (String responseMessage, Exception exception) =>
                     {
                         ErrorDisplayer error = new ErrorDisplayer();
-                    });
+                    }, currentPlace, content.Text, "", 42.0, 42.0);
                 }
                 else  // creation d'une image
                 {

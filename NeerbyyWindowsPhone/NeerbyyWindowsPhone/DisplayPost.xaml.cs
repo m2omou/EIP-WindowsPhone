@@ -69,8 +69,8 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         private void DisplayVotes()
         {
-            this.button_vote_down.Content = string.Format("{0}", currentPost.dislike);
-            this.button_vote_up.Content = string.Format("{0}", currentPost.like);
+            this.button_vote_down.Content = string.Format("{0}", currentPost.downvotes);
+            this.button_vote_up.Content = string.Format("{0}", currentPost.upvotes);
         }
 
         /// <summary>
@@ -95,16 +95,16 @@ namespace NeerbyyWindowsPhone
         private void DisplayComments()
         {
             ListingComments.Children.Clear();
-            WebApi.Singleton.CommentsForPost(currentPost, 0, (string responseMessage, List<Comment> comments) =>
+            WebApi.Singleton.CommentsForPostAsync((string responseMessage, CommentListResult result) =>
             {
-                foreach (Comment comment in comments)
+                foreach (Comment comment in result.comments)
                 {
                     this.AddComment(comment);
                 }
-            }, (String responseMessage, WebException exception) =>
+            }, (String responseMessage, Exception exception) =>
             {
 
-            });
+            }, currentPost);
             
         }
 
@@ -131,13 +131,13 @@ namespace NeerbyyWindowsPhone
         {
             // Le contenu du commentaire a poster
             if (e.Result != "")
-            WebApi.Singleton.AddCommentToPost(currentPost, e.Result, (string responseMessage, Comment result) =>
+                WebApi.Singleton.AddCommentToPostAsync((string responseMessage, CommentResult result) =>
             {
-                this.AddComment(result);   
-            }, (String responseMessage, WebException exception) =>
+                this.AddComment(result.comment);   
+            }, (String responseMessage, Exception exception) =>
             {
                 ErrorDisplayer error = new ErrorDisplayer();
-            });
+            }, currentPost, e.Result);
         }
 
         /// <summary>
@@ -148,17 +148,18 @@ namespace NeerbyyWindowsPhone
         private void VoteUp(object sender, RoutedEventArgs e)
         {
 
-            WebApi.Singleton.SetVoteOnPost(currentPost, true, (string responseMessage, Vote result) =>
+            WebApi.Singleton.SetVoteOnPostAsync((string responseMessage, VoteResult result) =>
                 {
                  button_vote_up.BorderBrush.Opacity = 100;
                  button_vote_down.BorderBrush.Opacity = 0;
-                 currentPost.like += 1;
+                 currentPost.upvotes = result.publication.upvotes;
+                 currentPost.downvotes = result.publication.downvotes;
                  this.DisplayVotes();
 
-                }, (String responseMessage, WebException exception) =>
-                    {
-                        ErrorDisplayer error = new ErrorDisplayer();
-                    });
+                }, (String responseMessage, Exception exception) =>
+                {
+                    ErrorDisplayer error = new ErrorDisplayer();
+                }, currentPost, true);
         }
 
         /// <summary>
@@ -168,17 +169,18 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void VoteDown(object sender, RoutedEventArgs e)
         {
-            WebApi.Singleton.SetVoteOnPost(currentPost, false, (string responseMessage, Vote result) =>
+            WebApi.Singleton.SetVoteOnPostAsync((string responseMessage, VoteResult result) =>
                 {
                  button_vote_up.BorderBrush.Opacity = 0;
                  button_vote_down.BorderBrush.Opacity = 100;
-                 currentPost.dislike += 1;
+                 currentPost.upvotes = result.publication.upvotes;
+                 currentPost.downvotes = result.publication.downvotes;
                  this.DisplayVotes();
 
-                }, (String responseMessage, WebException exception) =>
-                    {
-                        ErrorDisplayer error = new ErrorDisplayer();
-                    });
+                }, (String responseMessage, Exception exception) =>
+                {
+                    ErrorDisplayer error = new ErrorDisplayer();
+                }, currentPost, false);
                 }
 
         /// <summary>

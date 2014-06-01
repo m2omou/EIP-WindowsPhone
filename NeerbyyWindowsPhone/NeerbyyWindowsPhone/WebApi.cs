@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Diagnostics;
 using System.Windows;
@@ -13,32 +14,182 @@ using System.Threading.Tasks;
 namespace NeerbyyWindowsPhone
 {
     /// <summary>
+    /// A Generic Result
+    /// </summary>
+    public class Result
+    {
+    }
+
+    /// <summary>
+    /// A User Result
+    /// </summary>
+    public class UserResult
+    {
+        /// <summary>
+        /// A User
+        /// </summary>
+        public User user { get; set; }
+    }
+
+    /// <summary>
+    /// A List of Users Result
+    /// </summary>
+    public class UserListResult
+    {
+        /// <summary>
+        /// A List of Users
+        /// </summary>
+        public List<User> users { get; set; }
+    }
+
+    /// <summary>
+    /// A Place Result
+    /// </summary>
+    public class PlaceResult
+    {
+        /// <summary>
+        /// A Place
+        /// </summary>
+        public Place place { get; set; }
+    }
+
+    /// <summary>
+    /// A List of Places Result
+    /// </summary>
+    public class PlaceListResult
+    {
+        /// <summary>
+        /// A List of Places
+        /// </summary>
+        public List<Place> places { get; set; }
+    }
+
+    /// <summary>
+    /// A Post Result
+    /// </summary>
+    public class PostResult
+    {
+        /// <summary>
+        /// A Post
+        /// </summary>
+        public Post publication { get; set; }
+    }
+
+    /// <summary>
+    /// A List of Posts Result
+    /// </summary>
+    public class PostListResult
+    {
+        /// <summary>
+        /// A List of Posts
+        /// </summary>
+        public List<Post> publications  { get; set; }
+    }
+
+    /// <summary>
+    /// A Comment Result
+    /// </summary>
+    public class CommentResult
+    {
+        /// <summary>
+        /// A Comment
+        /// </summary>
+        public Comment comment { get; set; }
+    }
+
+    /// <summary>
+    /// A List of Comments Result
+    /// </summary>
+    public class CommentListResult
+    {
+        /// <summary>
+        /// A List of Comments
+        /// </summary>
+        public List<Comment> comments { get; set; }
+    }
+
+    /// <summary>
+    /// A Vote Result
+    /// </summary>
+    public class VoteResult
+    {
+        /// <summary>
+        /// A Vote
+        /// </summary>
+        public Vote vote { get; set; }
+
+        /// <summary>
+        /// The Post linked to the Vote
+        /// </summary>
+        public Post publication { get; set; }
+    }
+
+    /// <summary>
+    /// The type for Reports
+    /// </summary>
+    public enum ReportType
+    {
+        Custom,
+        Copyright,
+        ImageRights,
+        SexualContent
+    };
+
+    /// <summary>
     /// Class to interface with the API
     /// </summary>
     public sealed class WebApi
     {
-        private class Request
-        {
-            public HttpWebRequest request { get; set; }
+        private static readonly string webApiUrl = "http://api.neerbyy.com";
 
-            public Stream bodyStream { get; set; }
+        private static readonly string usersPath = "users";
+        private static readonly string sessionsPath = "sessions";
+        private static readonly string passwordResetsPath = "password_resets";
+        private static readonly string placesPath = "places";
+        private static readonly string postsPath = "publications";
+        private static readonly string commentsPath = "comments";
+        private static readonly string votesPath = "votes";
+        private static readonly string followedPlacesPath = "followed_places";
+        private static readonly string reportPublicationsPath = "report_publications";
+        private static readonly string reportCommentsPath = "report_comments";
+        private static readonly string feedPath = "feed";
+        private static readonly string conversationsPath = "conversations";
+        private static readonly string messagesPath = "messages";
+        private static readonly string searchUsersPath = "search/users";
+        private static readonly string settingsPath = "settings";
 
-            public string data { get; set; }
+        private static readonly string usersKey = "user";
+        private static readonly string sessionsKey = "connection";
+        private static readonly string passwordResetsKey = "";
+        private static readonly string placesKey = "place";
+        private static readonly string postsKey = "publication";
+        private static readonly string commentsKey = "comment";
+        private static readonly string votesKey = "vote";
+        private static readonly string followedPlacesKey = "followed_place";
+        private static readonly string reportPublicationsKey = "report_publication";
+        private static readonly string reportCommentsKey = "report_comment";
+        private static readonly string feedKey = "feed";
+        private static readonly string conversationsKey = "conversation";
+        private static readonly string messagesKey = "message";
+        private static readonly string searchUsersKey = "search";
+        private static readonly string settingsKey = "setting";
 
-            public SortedDictionary<string, string> args;
+        private static readonly string webApiResultType = ".json";
 
-            public SortedDictionary<string, string> files;
+        /// <summary>
+        /// Generic Result delegate
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="responseMessage"></param>
+        /// <param name="result"></param>
+        public delegate void ResultDelegate<T>(string responseMessage, T result);
 
-            public JObjectResultDelegate jObjectResultDelegate { get; set; }
-
-            public ErrorDelegate errorDelegate { get; set; }
-        }
-
-        private static readonly string webServiceUrl = "http://api.neerbyy.com";
-
-        private static readonly WebApi singleton = new WebApi();
-
-        private static readonly string boundary = "0xKhTmLbOuNdArY";
+        /// <summary>
+        /// Delegate type for handling Errors
+        /// </summary>
+        /// <param name="responseMessage"></param>
+        /// <param name="error"></param>
+        public delegate void ErrorDelegate(string responseMessage, Exception error);
 
         private static User user;
 
@@ -51,104 +202,27 @@ namespace NeerbyyWindowsPhone
             {
                 return user;
             }
+            private set
+            {
+                user = value;
+
+                if (user != null)
+                    WebApi.Singleton.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Authorization", "Token token=\"" + WebApi.User.auth_token + "\"");
+                else
+                    WebApi.Singleton.client.DefaultRequestHeaders.Authorization = null;
+            }
         }
 
-        /// <summary>
-        /// Log the User out
-        /// </summary>
-        public static void LogOut()
-        {
-            WebApi.user = null;
-        }
+        private static readonly WebApi singleton = new WebApi();
 
-        /// <summary>
-        /// Delegate type for handling Results
-        /// </summary>
-        private delegate void ResultDelegate(object result);
-
-        /// <summary>
-        /// Delegate type for handling Jobject Results
-        /// </summary>
-        private delegate void JResultDelegate(JObject result);
-
-        /// <summary>
-        /// Callback used inside Request
-        /// </summary>
-        /// <param name="request"></param>
-        private delegate void RequestCallBack(Request request);
-
-        /// <summary>
-        /// Generic result delegate
-        /// </summary>
-        /// <param name="responseMessage"></param>
-        /// <param name="result"></param>
-        public delegate void ObjectResultDelegate(string responseMessage, Object result);
-
-        /// <summary>
-        /// Generic result delegate for JObject
-        /// </summary>
-        /// <param name="responseMessage"></param>
-        /// <param name="result"></param>
-        public delegate void JObjectResultDelegate(string responseMessage, JObject result);
-
-        /// <summary>
-        /// Delegate type for handling User Results
-        /// </summary>
-        /// <param name="responseMessage"></param>
-        /// <param name="result"></param>
-        public delegate void UserResultDelegate(string responseMessage, User result);
-        
-        /// <summary>
-        /// Delegate type for handling Place Results
-        /// </summary>
-        /// <param name="responseMessage"></param>
-        /// <param name="results"></param>
-        public delegate void PlacesResultDelegate(string responseMessage, List<Place> results);
-        
-        /// <summary>
-        /// Delegate type for handling a Post Reuslt
-        /// </summary>
-        /// <param name="responseMessage"></param>
-        /// <param name="result"></param>
-        public delegate void PostResultDelegate(string responseMessage, Post result);
-
-        /// <summary>
-        /// Delegate type for handling Post Results
-        /// </summary>
-        /// <param name="responseMessage"></param>
-        /// <param name="results"></param>
-        public delegate void PostsResultDelegate(string responseMessage, List<Post> results);
-
-        /// <summary>
-        /// Delegate type for handling a Comment Result
-        /// </summary>
-        /// <param name="responseMessage"></param>
-        /// <param name="result"></param>
-        public delegate void CommentResultDelegate(string responseMessage, Comment result);
-
-        /// <summary>
-        /// Delegate type for handling Comment Results
-        /// </summary>
-        /// <param name="responseMessage"></param>
-        /// <param name="results"></param>
-        public delegate void CommentsResultDelegate(string responseMessage, List<Comment> results);
-
-        /// <summary>
-        /// Delegate type for handling a Vote Result
-        /// </summary>
-        /// <param name="responseMessage"></param>
-        /// <param name="result"></param>
-        public delegate void VoteResultDelegate(string responseMessage, Vote result);
-
-        /// <summary>
-        /// Delegate type for handling Errors
-        /// </summary>
-        /// <param name="responseMessage"></param>
-        /// <param name="error"></param>
-        public delegate void ErrorDelegate(string responseMessage, WebException error);
+        private HttpClient client;
 
         private WebApi()
         {
+            client = new HttpClient();
+            client.BaseAddress = new Uri(webApiUrl);
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         /// <summary>
@@ -162,635 +236,794 @@ namespace NeerbyyWindowsPhone
             }
         }
 
-        private void AddAuthenticationHeaders(HttpWebRequest request)
+        private string MakeUri(string path, IDictionary<string, string> args = null)
         {
-            request.Headers[HttpRequestHeader.Authorization] = "Token token=\"" + WebApi.User.auth_token + "\"";
-        }
+            StringBuilder uriString = new StringBuilder(path + webApiResultType);
+            Boolean first = true;
 
-        private Uri UriForController(string controller, string arguments)
-        {
-            if (arguments == null || arguments.Length == 0)
-                return new Uri(string.Format("{0}/{1}", WebApi.webServiceUrl, controller));
-            else
-                return new Uri(string.Format("{0}/{1}?{2}", WebApi.webServiceUrl, controller, arguments));
-        }
-
-        /// <summary>
-        /// Post Data to the Webservice
-        /// </summary>
-        /// <param name="controller"></param>
-        /// <param name="data"></param>
-        /// <param name="resultDelegate"></param>
-        /// <param name="errorDelegate"></param>
-        private void Post(string controller, string data, JObjectResultDelegate resultDelegate, ErrorDelegate errorDelegate)
-        {
-            Uri uri = this.UriForController(controller, null);
-            
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(uri);
-            request.Method = "POST";
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.ContentLength = data.Length;
-            if (WebApi.user != null)
-                this.AddAuthenticationHeaders(request);
-
-            Request apiRequest = new Request();
-            apiRequest.request = request;
-            apiRequest.data = data;
-            apiRequest.jObjectResultDelegate = resultDelegate;
-            apiRequest.errorDelegate = errorDelegate;
-
-
-            //RequestCallBack callBack = new RequestCallBack(this.BeginCreateBodyStream);
-            //callBack.BeginInvoke(apiRequest, null, null);
-
-            Task.Run(() => BeginCreateBodyStream(apiRequest)).ConfigureAwait(continueOnCapturedContext: false);
-        }
-
-        private void PostFile(string controller, SortedDictionary<string, string> args, SortedDictionary<string, string> files, JObjectResultDelegate resultDelegate, ErrorDelegate errorDelegate)
-        {
-            Uri uri = this.UriForController(controller, null);
-
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(uri);
-            request.Method = "POST";
-            if (files.Count > 0)
-                request.ContentType = String.Format("multipart/form-data; boundary={0}", WebApi.boundary);
-            else
-                request.ContentType = "application/x-www-form-urlencoded";
-            if (WebApi.user != null)
-                this.AddAuthenticationHeaders(request);
-
-            Request apiRequest = new Request();
-            apiRequest.request = request;
-            apiRequest.args = args;
-            apiRequest.files = files;
-            apiRequest.jObjectResultDelegate = resultDelegate;
-            apiRequest.errorDelegate = errorDelegate;
-
-            //RequestCallBack callBack = new RequestCallBack(this.BeginCreateBodyStream);
-            //callBack.BeginInvoke(apiRequest, null, null);
-            Task.Run(() => BeginCreateBodyStream(apiRequest)).ConfigureAwait(continueOnCapturedContext: false);
-        }
-
-        /// <summary>
-        /// Get a Webpage with some variables
-        /// </summary>
-        /// <param name="controller"></param>
-        /// <param name="data"></param>
-        /// <param name="resultDelegate"></param>
-        /// <param name="errorDelegate"></param>
-        private void Get(string controller, string data, JObjectResultDelegate resultDelegate, ErrorDelegate errorDelegate)
-        {
-            Uri uri = this.UriForController(controller, data);
-
-            
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(uri);
-            request.Method = "GET";
-            if (WebApi.user != null)
-                this.AddAuthenticationHeaders(request);
-
-            Request apiRequest = new Request();
-            apiRequest.request = request;
-            apiRequest.jObjectResultDelegate = resultDelegate;
-            apiRequest.errorDelegate = errorDelegate;
-
-            request.BeginGetResponse(new AsyncCallback(BeginGetResponse), apiRequest);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="apiRequest"></param>
-        private void BeginCreateBodyStream(Request apiRequest)
-        {
-            HttpWebRequest request = apiRequest.request;
-
-            Stream bodyStream = new System.IO.MemoryStream();
-
-            if (apiRequest.files != null && apiRequest.files.Count > 0)
+            if (args != null)
             {
-                byte[] boundarybytes = System.Text.Encoding.UTF8.GetBytes("\r\n--" + boundary + "\r\n");
-
-
-                string formdataTemplate = "\r\n--" + boundary + "\r\nContent-Disposition: form-data; name=\"{0}\";\r\n\r\n{1}";
-
-                foreach (KeyValuePair<string, string> kvp in apiRequest.args)
+                foreach (KeyValuePair<string, string> pair in args)
                 {
-                    string formitem = string.Format(formdataTemplate, kvp.Key, kvp.Value);
-                    byte[] formitembytes = System.Text.Encoding.UTF8.GetBytes(formitem);
-                    bodyStream.Write(formitembytes, 0, formitembytes.Length);
-                }
-
-                string headerTemplate = "\r\n--" + boundary + "\r\nContent-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\n Content-Type: application/octet-stream\r\n\r\n";
-
-                foreach (KeyValuePair<string, string> kvp in apiRequest.files)
-                {
-
-                    string header = string.Format(headerTemplate, kvp.Key, kvp.Value);
-
-                    byte[] headerbytes = System.Text.Encoding.UTF8.GetBytes(header);
-
-                    bodyStream.Write(headerbytes, 0, headerbytes.Length);
-
-                    FileStream fileStream = new FileStream(kvp.Value, FileMode.Open, FileAccess.Read);
-                    byte[] buffer = new byte[1024];
-
-                    int bytesRead = 0;
-
-                    while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
+                    if (first)
                     {
-                        bodyStream.Write(buffer, 0, bytesRead);
+                        first = false;
+                        uriString.Append("?");
                     }
-                    fileStream.Close();
-                }
-
-                bodyStream.Write(boundarybytes, 0, boundarybytes.Length);
-            }
-            else if (apiRequest.args != null && apiRequest.args.Count > 0)
-            {
-                byte[] seperatorBytes = System.Text.Encoding.UTF8.GetBytes("&");
-
-                int index = 0;
-                foreach (KeyValuePair<string, string> kvp in apiRequest.args)
-                {
-                    if (index > 0)
-                        bodyStream.Write(seperatorBytes, 0, seperatorBytes.Length);
-
-                    string formitem = string.Format("{0}={1}", HttpUtility.UrlEncode(kvp.Key), HttpUtility.UrlEncode(kvp.Value));
-                    byte[] formitembytes = System.Text.Encoding.UTF8.GetBytes(formitem);
-                    bodyStream.Write(formitembytes, 0, formitembytes.Length);
-
-                    index += 1;
+                    else
+                    {
+                        uriString.Append("&");
+                    }
+                    uriString.Append(pair.Key + "=" + HttpUtility.UrlEncode(pair.Value));
                 }
             }
-            else
-            {
-                byte[] byteArray = Encoding.UTF8.GetBytes(apiRequest.data);
-                bodyStream.Write(byteArray, 0, byteArray.Length);
-            }
-
-            request.ContentLength = bodyStream.Length;
-            apiRequest.bodyStream = bodyStream;
-
-            request.BeginGetRequestStream(new AsyncCallback(BeginGetRequestStream), apiRequest);
+            return uriString.ToString(); ;
         }
 
-        /// <summary>
-        /// Asynchronous Request Stream so as not to block the main thread
-        /// </summary>
-        /// <param name="result"></param>
-        private void BeginGetRequestStream(IAsyncResult result)
+        private IDictionary<string, string> AddKey(string mainKey, IDictionary<string, string> dict)
         {
-            Request apiRequest = (Request)result.AsyncState;
-            HttpWebRequest request = apiRequest.request;
+            if (mainKey == null || mainKey == "")
+                return dict;
 
-            using (Stream postStream = request.EndGetRequestStream(result))
+            SortedDictionary<string, string> newDict = new SortedDictionary<string, string>();
+
+            foreach (KeyValuePair<string, string> pair in dict)
             {
-                Stream bodyStream = apiRequest.bodyStream;
-
-                bodyStream.Position = 0;
-                byte[] tempBuffer = new byte[bodyStream.Length];
-                bodyStream.Read(tempBuffer, 0, tempBuffer.Length);
-                bodyStream.Close();
-                postStream.Write(tempBuffer, 0, tempBuffer.Length);
-                postStream.Close();                
+                newDict.Add(mainKey + "[" + pair.Key + "]", pair.Value);
             }
-
-            request.BeginGetResponse(new AsyncCallback(BeginGetResponse), apiRequest);
+            return newDict;
         }
 
-        /// <summary>
-        /// Asynchronous Response
-        /// </summary>
-        /// <param name="result"></param>
-        private void BeginGetResponse(IAsyncResult result)
+        private string AddKey(string mainKey, string key)
         {
-            Request apiRequest = (Request)result.AsyncState;
-            HttpWebRequest request = apiRequest.request;
+            return mainKey == null || mainKey == "" ? key : mainKey + "[" + key + "]";
+        }
 
+        private IDictionary<string, string> AddListOptions(IDictionary<string, string> dict, int? since_id, int? max_id, int? count)
+        {
+            if (since_id != null)
+                dict.Add("since_id", since_id.ToString());
+            if (max_id != null)
+                dict.Add("max_id", max_id.ToString());
+            if (count != null)
+                dict.Add("count", count.ToString());
+            return dict;
+        }
+
+        private async Task<T> HandleResponseMessageAsync<T>(HttpResponseMessage httpResponseMessage, ResultDelegate<T> resultDelegate, ErrorDelegate errorDelegate)
+        {
             try
             {
-                HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(result);
+                httpResponseMessage.EnsureSuccessStatusCode();
 
-                this.HandleWebResponse(apiRequest, response);
-            }
-            catch (WebException e)
-            {
-                if (e.Response == null)
+                string responseString = await httpResponseMessage.Content.ReadAsStringAsync();
+                Debug.WriteLine(responseString);
+
+                JObject jobject = JObject.Parse(responseString);
+
+                int responseCode = (int)jobject["responseCode"];
+                string responseMessage = (string)jobject["responseMessage"];
+                if (responseCode == 0)
                 {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        apiRequest.errorDelegate(e.Message, e);
-                    });
+                    JToken jToken = jobject["result"];
+                    T result = jToken.ToObject<T>();
+
+                    resultDelegate(responseMessage, result);
+                    return result;
                 }
                 else
                 {
-                    try
-                    {
-                        this.HandleWebResponse(apiRequest, (HttpWebResponse)e.Response);
-                    }
-                    catch (Exception exception)
-                    {
-                        Deployment.Current.Dispatcher.BeginInvoke(() =>
-                        {
-                            apiRequest.errorDelegate(exception.Message, new WebException(exception.Message, WebExceptionStatus.ServerProtocolViolation));
-                        });
-                    }
+                    Exception e = new Exception(responseMessage);
+                    errorDelegate(responseMessage, e);
                 }
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
             }
             catch (Exception e)
             {
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    apiRequest.errorDelegate(e.Message, new WebException(e.Message, WebExceptionStatus.ServerProtocolViolation));
-                });
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
             }
-        }
-
-
-        /// <summary>
-        /// This method handles the Web Response object that contains the server's response.
-        /// </summary>
-        /// <param name="apiRequest"></param>
-        /// <param name="response"></param>
-        private void HandleWebResponse(Request apiRequest, HttpWebResponse response)
-        {
-            String responseString;
-            using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
-            {
-                responseString = streamReader.ReadToEnd();
-            }
-
-            Debug.WriteLine(responseString);
-
-            JObject jobject = JObject.Parse(responseString);
-
-            int responseCode = Convert.ToInt32((String)jobject["responseCode"]);
-            String responseMessage = (String)jobject["responseMessage"];
-            if (responseCode == 0)
-            {
-                apiRequest.jObjectResultDelegate(responseMessage, jobject);
-            }
-            else
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    apiRequest.errorDelegate(responseMessage, new WebException(responseMessage, WebExceptionStatus.ServerProtocolViolation));
-                });
-            }
+            return default(T);
         }
 
         /// <summary>
         /// Send Authentication params to server
         /// </summary>
-        /// <param name="email"></param>
-        /// <param name="password"></param>
         /// <param name="resultDelegate"></param>
         /// <param name="errorDelegate"></param>
-        public void Authenticate(string email, string password, UserResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task AuthenticateAsync(ResultDelegate<UserResult> resultDelegate, ErrorDelegate errorDelegate,
+            string email, string password)
         {
-            StringBuilder postData = new StringBuilder();
-            postData.AppendFormat("{0}={1}", "connection[email]", HttpUtility.UrlEncode(email));
-            postData.AppendFormat("&{0}={1}", "connection[password]", HttpUtility.UrlEncode(password));
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            args.Add("email", email);
+            args.Add("password", password);
 
-            JObjectResultDelegate jObjectResultDelegate = delegate(String responseMessage, JObject result)
+            FormUrlEncodedContent content = new FormUrlEncodedContent(AddKey(sessionsKey, args));
+            
+            try
             {
-                try
-                {
-                    JObject jUser = (JObject)result["result"]["user"];
-                    User user = jUser.ToObject<User>();
-                    WebApi.user = user;
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        resultDelegate(responseMessage, user);
-                    });
-                }
-                catch (Exception)
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        string errorMessage = "Server Error";
-                        errorDelegate(errorMessage, new WebException(errorMessage, WebExceptionStatus.ServerProtocolViolation));
-                    });
-                }
-            };
+                HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(sessionsPath), content);
 
-            this.Post("sessions.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
+                UserResult result = await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+                WebApi.User = result.user;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        /// <summary>
+        /// Log the User out
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <returns></returns>
+        public async Task LogOutAsync(ResultDelegate<Result> resultDelegate, ErrorDelegate errorDelegate)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = await client.DeleteAsync(MakeUri(sessionsPath + "/" + WebApi.User.auth_token));
+
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+                WebApi.User = null;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
         }
 
         /// <summary>
         /// Create a new user
         /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
         /// <param name="email"></param>
         /// <param name="username"></param>
         /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task CreateUserAsync(ResultDelegate<UserResult> resultDelegate, ErrorDelegate errorDelegate,
+            string email, string username, string password)
+        {
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            args.Add("email", email);
+            args.Add("username", username);
+            args.Add("password", password);
+
+            FormUrlEncodedContent content = new FormUrlEncodedContent(AddKey(usersKey, args));
+
+            try
+            {
+                HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(usersPath), content);
+
+                UserResult result = await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+                WebApi.User = result.user;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        /// <summary>
+        /// Update a user's account
+        /// </summary>
         /// <param name="resultDelegate"></param>
         /// <param name="errorDelegate"></param>
-        public void CreateUser(string email, string username, string password, UserResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        /// <param name="email"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <param name="firstname"></param>
+        /// <param name="lastname"></param>
+        /// <param name="imageStream"></param>
+        /// <param name="imagename"></param>
+        /// <returns></returns>
+        public async Task UpdateUserAsync(ResultDelegate<UserResult> resultDelegate, ErrorDelegate errorDelegate,
+            string email = null, string username = null, string password = null, string firstname = null, string lastname = null, Stream imageStream = null, string imagename = null)
         {
-            StringBuilder postData = new StringBuilder();
-            postData.AppendFormat("{0}={1}", "user[email]", HttpUtility.UrlEncode(email));
-            postData.AppendFormat("&{0}={1}", "user[username]", HttpUtility.UrlEncode(username));
-            postData.AppendFormat("&{0}={1}", "user[password]", HttpUtility.UrlEncode(password));
+            HttpContent httpContent = null;
+            MultipartFormDataContent dataContent = null;
+            FormUrlEncodedContent formContent = null;
 
-            JObjectResultDelegate jObjectResultDelegate = delegate(String responseMessage, JObject result)
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            if (email != null)
+                args.Add("email", email);
+            if (username != null)
+                args.Add("username", username);
+            if (password != null)
+                args.Add("password", password);
+            if (firstname != null)
+                args.Add("firstname", firstname);
+            if (lastname != null)
+                args.Add("lastname", lastname);
+
+            formContent = new FormUrlEncodedContent(AddKey(usersKey, args));
+
+            if (imageStream != null)
             {
-                try
-                {
-                    JObject jUser = (JObject)result["result"]["user"];
-                    User user = jUser.ToObject<User>();
-                    WebApi.user = user;
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        resultDelegate(responseMessage, user);
-                    });
-                }
-                catch (Exception)
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        string errorMessage = "Server Error";
-                        errorDelegate(errorMessage, new WebException(errorMessage, WebExceptionStatus.ServerProtocolViolation));
-                    });
-                }
-            };
+                dataContent = new MultipartFormDataContent();
 
-            this.Post("users.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
+                if (formContent != null)
+                    dataContent.Add(formContent);
+                dataContent.Add(new StreamContent(imageStream), AddKey(usersKey, "data"), imagename);
+
+                httpContent = dataContent;
+            }
+            else
+                httpContent = formContent;
+
+            try
+            {
+                HttpResponseMessage responseMessage = await client.PutAsync(MakeUri(usersPath), httpContent);
+
+                UserResult result = await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+                result.user.auth_token = WebApi.User.auth_token;
+                WebApi.User = result.user;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        /// <summary>
+        /// Delete the User's account
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <returns></returns>
+        public async Task DeleteUserAsync(ResultDelegate<Result> resultDelegate, ErrorDelegate errorDelegate)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = await client.DeleteAsync(MakeUri(usersPath + "/" + WebApi.User.id));
+
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        /// <summary>
+        /// Get the User's information from an ID
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public async Task UserAsync(ResultDelegate<UserResult> resultDelegate, ErrorDelegate errorDelegate,
+            int user_id)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(usersPath + "/" + user_id));
+
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
         }
 
         /// <summary>
         /// Send request to restore the User's password
         /// </summary>
-        /// <param name="email"></param>
         /// <param name="resultDelegate"></param>
         /// <param name="errorDelegate"></param>
-        public void RestorePassword(string email, ObjectResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public async Task RestorePasswordAsync(ResultDelegate<Result> resultDelegate, ErrorDelegate errorDelegate,
+            string email)
         {
-            StringBuilder postData = new StringBuilder();
-            postData.AppendFormat("{0}={1}", "email", HttpUtility.UrlEncode(email));
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            args.Add("email", email);
 
-            JObjectResultDelegate jObjectResultDelegate = delegate(String responseMessage, JObject result)
+            FormUrlEncodedContent content = new FormUrlEncodedContent(AddKey(passwordResetsKey, args));
+
+            try
             {
-                try
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        resultDelegate(responseMessage, null);
-                    });
-                }
-                catch (Exception)
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        string errorMessage = "Server Error";
-                        errorDelegate(errorMessage, new WebException(errorMessage, WebExceptionStatus.ServerProtocolViolation));
-                    });
-                }
-            };
+                HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(passwordResetsPath), content);
 
-            this.Post("password_resets.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
         }
 
         /// <summary>
         /// Get a list of places
         /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
         /// <param name="latitude"></param>
         /// <param name="longitude"></param>
-        /// <param name="resultDelegate"></param>
-        /// <param name="errorDelegate"></param>
-        public void Places(double latitude, double longitude, PlacesResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        /// <returns></returns>
+        public async Task PlacesAsync(ResultDelegate<PlaceListResult> resultDelegate, ErrorDelegate errorDelegate,
+            double latitude, double longitude)
         {
-            StringBuilder postData = new StringBuilder();
-            postData.AppendFormat("{0}={1}", "latitude", HttpUtility.UrlEncode(latitude.ToString()));
-            postData.AppendFormat("&{0}={1}", "longitude", HttpUtility.UrlEncode(longitude.ToString()));
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            args.Add("latitude", latitude.ToString());
+            args.Add("longitude", longitude.ToString());
 
-            JObjectResultDelegate jObjectResultDelegate = delegate(String responseMessage, JObject result)
+            try
             {
-                try
-                {
-                    JToken jToken = result["result"]["places"];
-                    List<Place> places = jToken.ToObject<List<Place>>();
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        resultDelegate(responseMessage, places);
-                    });
-                }
-                catch (Exception)
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        string errorMessage = "Server Error";
-                        errorDelegate(errorMessage, new WebException(errorMessage, WebExceptionStatus.ServerProtocolViolation));
-                    });
-                }
-            };
+                HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(placesPath, args));
 
-            this.Get("places.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
         }
 
         /// <summary>
-        /// Get a list of publications for a Place
+        /// Get a list of publications for a Place or a User
         /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
         /// <param name="place"></param>
-        /// <param name="resultDelegate"></param>
-        /// <param name="errorDelegate"></param>
-        public void PostsForPlace(Place place, PostsResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        /// <param name="user"></param>
+        /// <param name="since_id"></param>
+        /// <param name="max_id"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task PostsForPlaceAsync(ResultDelegate<PostListResult> resultDelegate, ErrorDelegate errorDelegate,
+            Place place = null, User user = null, int? since_id = null, int? max_id = null, int? count = null)
         {
-            StringBuilder postData = new StringBuilder();
-            postData.AppendFormat("{0}={1}", "place_id", HttpUtility.UrlEncode(place.id.ToString()));
-
-            JObjectResultDelegate jObjectResultDelegate = delegate(String responseMessage, JObject result)
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            if (place != null)
+                args.Add("place_id", place.id.ToString());
+            if (user != null)
+                args.Add("user_id", user.id.ToString());
+            AddListOptions(args, since_id, max_id, count);
+            
+            try
             {
-                try
-                {
-                    JToken jToken = result["result"]["publications"];
-                    List<Post> posts = jToken.ToObject<List<Post>>();
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        resultDelegate(responseMessage, posts);
-                    });
-                }
-                catch (Exception)
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        string errorMessage = "Server Error";
-                        errorDelegate(errorMessage, new WebException(errorMessage, WebExceptionStatus.ServerProtocolViolation));
-                    });
-                }
-            };
+                HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(postsPath, args));
 
-            this.Get("publications.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
         }
 
         /// <summary>
-        /// 
+        /// Create a Post with a URL
         /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
         /// <param name="place"></param>
         /// <param name="content"></param>
         /// <param name="url"></param>
-        /// <param name="resultDelegate"></param>
-        /// <param name="errorDelegate"></param>
-        public void CreatePostWithUrl(Place place, string content, string url, PostResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        /// <param name="latitude"></param>
+        /// <param name="longitude"></param>
+        /// <returns></returns>
+        public async Task CreatePostWithUrlAsync(ResultDelegate<PostResult> resultDelegate, ErrorDelegate errorDelegate,
+            Place place, string content, string url, double latitude, double longitude)
         {
-            //SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            //args.Add("publication[user_id]", user.id.ToString());
-            //args.Add("publication[place_id]", place.id.ToString());
-            //args.Add("publication[content]", content);
-            //args.Add("publication[link]", url);
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            args.Add("place_id", place.id.ToString());
+            args.Add("content", content);
+            args.Add("link", url);
+            args.Add("latitude", latitude.ToString());
+            args.Add("longitude", longitude.ToString());
 
-            StringBuilder postData = new StringBuilder();
-            postData.AppendFormat("{0}={1}", "publication[user_id]", HttpUtility.UrlEncode(user.id.ToString()));
-            postData.AppendFormat("&{0}={1}", "publication[place_id]", HttpUtility.UrlEncode(place.id.ToString()));
-            postData.AppendFormat("&{0}={1}", "publication[content]", HttpUtility.UrlEncode(content));
-            postData.AppendFormat("&{0}={1}", "publication[link]", HttpUtility.UrlEncode(url));
+            FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(postsKey, args));
 
-            JObjectResultDelegate jObjectResultDelegate = delegate(String responseMessage, JObject result)
+            try
             {
-                try
-                {
-                    JToken jToken = result["result"]["publication"];
-                    Post post = jToken.ToObject<Post>();
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        resultDelegate(responseMessage, post);
-                    });
-                }
-                catch (Exception)
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        string errorMessage = "Server Error";
-                        errorDelegate(errorMessage, new WebException(errorMessage, WebExceptionStatus.ServerProtocolViolation));
-                    });
-                }
-            };
-
-            this.Post("publications.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
+                HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(postsPath), formContent);
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
         }
 
         /// <summary>
-        /// 
+        /// Create a Post with a file
         /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
         /// <param name="place"></param>
         /// <param name="content"></param>
-        /// <param name="filePath"></param>
-        /// <param name="resultDelegate"></param>
-        /// <param name="errorDelegate"></param>
-        public void CreatePostWithFile(Place place, string content, string filePath, PostResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        /// <param name="fileStream"></param>
+        /// <param name="filename"></param>
+        /// <param name="latitude"></param>
+        /// <param name="longitude"></param>
+        /// <returns></returns>
+        public async Task CreatePostWithFileAsync(ResultDelegate<PostResult> resultDelegate, ErrorDelegate errorDelegate,
+            Place place, string content, Stream fileStream, string filename, double latitude, double longitude)
         {
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            args.Add("place_id", place.id.ToString());
+            args.Add("content", content);
+            args.Add("latitude", latitude.ToString());
+            args.Add("longitude", longitude.ToString());
 
+            MultipartFormDataContent dataContent = new MultipartFormDataContent();
+
+            dataContent.Add(new FormUrlEncodedContent(AddKey(postsKey, args)));
+            dataContent.Add(new StreamContent(fileStream), AddKey(postsKey, "data"), filename);
+
+            try
+            {
+                HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(postsPath), dataContent);
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        public async Task DeletePostAsync(ResultDelegate<Result> resultDelegate, ErrorDelegate errorDelegate,
+            Post post)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = await client.DeleteAsync(MakeUri(postsPath + "/" + post.id));
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
         }
 
         /// <summary>
-        /// 
+        /// Get the list of Comments for a Post
         /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <param name="post"></param>
+        /// <param name="since_id"></param>
+        /// <param name="max_id"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task CommentsForPostAsync(ResultDelegate<CommentListResult> resultDelegate, ErrorDelegate errorDelegate,
+            Post post, int? since_id = null, int? max_id = null, int? count = null)
+        {
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            args.Add("publication_id", post.id.ToString());
+            AddListOptions(args, since_id, max_id, count);
+
+            try
+            {
+                HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(commentsPath, args));
+
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        /// <summary>
+        /// Add a Comment to a Post
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
         /// <param name="post"></param>
         /// <param name="content"></param>
-        /// <param name="resultDelegate"></param>
-        /// <param name="errorDelegate"></param>
-        public void AddCommentToPost(Post post, string content, CommentResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        /// <returns></returns>
+        public async Task AddCommentToPostAsync(ResultDelegate<CommentResult> resultDelegate, ErrorDelegate errorDelegate,
+            Post post, string content)
         {
-            StringBuilder postData = new StringBuilder();
-            postData.AppendFormat("{0}={1}", "comment[user_id]", HttpUtility.UrlEncode(user.id.ToString()));
-            postData.AppendFormat("&{0}={1}", "comment[publication_id]", HttpUtility.UrlEncode(post.id.ToString()));
-            postData.AppendFormat("&{0}={1}", "comment[content]", HttpUtility.UrlEncode(content));
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            args.Add("publication_id", post.id.ToString());
+            args.Add("content", content);
 
-            JObjectResultDelegate jObjectResultDelegate = delegate(String responseMessage, JObject result)
+            FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(commentsKey, args));
+
+            try
             {
-                try
-                {
-                    JToken jToken = result["result"]["comment"];
-                    Comment comment = jToken.ToObject<Comment>();
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        resultDelegate(responseMessage, comment);
-                    });
-                }
-                catch (Exception)
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        string errorMessage = "Server Error";
-                        errorDelegate(errorMessage, new WebException(errorMessage, WebExceptionStatus.ServerProtocolViolation));
-                    });
-                }
-            };
-
-            this.Post("comments.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
+                HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(commentsPath), formContent);
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
         }
 
         /// <summary>
-        /// 
+        /// Delete a Comment
         /// </summary>
-        /// <param name="post"></param>
-        /// <param name="pageNumber"></param>
         /// <param name="resultDelegate"></param>
         /// <param name="errorDelegate"></param>
-        public void CommentsForPost(Post post, int pageNumber, CommentsResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        /// <param name="comment"></param>
+        /// <returns></returns>
+        public async Task DeleteCommentAsync(ResultDelegate<Result> resultDelegate, ErrorDelegate errorDelegate,
+            Comment comment)
         {
-            StringBuilder postData = new StringBuilder();
-            postData.AppendFormat("{0}={1}", "publication_id", HttpUtility.UrlEncode(post.id.ToString()));
-
-            JObjectResultDelegate jObjectResultDelegate = delegate(String responseMessage, JObject result)
+            try
             {
-                try
-                {
-                    JToken jToken = result["result"]["comments"];
-                    List<Comment> comments = jToken.ToObject<List<Comment>>();
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        resultDelegate(responseMessage, comments);
-                    });
-                }
-                catch (Exception)
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        string errorMessage = "Server Error";
-                        errorDelegate(errorMessage, new WebException(errorMessage, WebExceptionStatus.ServerProtocolViolation));
-                    });
-                }
-            };
-
-            this.Get("comments.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
+                HttpResponseMessage responseMessage = await client.DeleteAsync(MakeUri(commentsPath + "/" + comment.id));
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
         }
 
         /// <summary>
-        /// 
+        /// Vote on a Post
         /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
         /// <param name="post"></param>
         /// <param name="value"></param>
+        /// <returns></returns>
+        public async Task SetVoteOnPostAsync(ResultDelegate<VoteResult> resultDelegate, ErrorDelegate errorDelegate,
+            Post post, Boolean value)
+        {
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            args.Add("publication_id", post.id.ToString());
+            args.Add("value", value ? "true" : "false");
+
+            FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(votesKey, args));
+
+            try
+            {
+                HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(votesPath), formContent);
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        /// <summary>
+        /// Cancel the Vote on a Post
+        /// </summary>
         /// <param name="resultDelegate"></param>
         /// <param name="errorDelegate"></param>
-        public void SetVoteOnPost(Post post, Boolean value, VoteResultDelegate resultDelegate, ErrorDelegate errorDelegate)
+        /// <param name="vote"></param>
+        /// <returns></returns>
+        public async Task CancelVoteAsync(ResultDelegate<VoteResult> resultDelegate, ErrorDelegate errorDelegate,
+            Vote vote)
         {
-            StringBuilder postData = new StringBuilder();
-            postData.AppendFormat("{0}={1}", "vote[user_id]", HttpUtility.UrlEncode(user.id.ToString()));
-            postData.AppendFormat("&{0}={1}", "vote[publication_id]", HttpUtility.UrlEncode(post.id.ToString()));
-            postData.AppendFormat("&{0}={1}", "vote[value]", value ? "true" : "false");
-
-            JObjectResultDelegate jObjectResultDelegate = delegate(String responseMessage, JObject result)
+            try
             {
-                try
-                {
-                    JToken jToken = result["result"]["vote"];
-                    Vote vote = jToken.ToObject<Vote>();
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        resultDelegate(responseMessage, vote);
-                    });
-                }
-                catch (Exception)
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        string errorMessage = "Server Error";
-                        errorDelegate(errorMessage, new WebException(errorMessage, WebExceptionStatus.ServerProtocolViolation));
-                    });
-                }
-            };
+                HttpResponseMessage responseMessage = await client.DeleteAsync(MakeUri(votesPath + "/" + vote.id));
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
 
-            this.Post("votes.json", postData.ToString(), jObjectResultDelegate, errorDelegate);
+        /// <summary>
+        /// Report a Post
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <param name="post"></param>
+        /// <param name="reportType"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public async Task ReportPostAsync(ResultDelegate<Result> resultDelegate, ErrorDelegate errorDelegate,
+            Post post, ReportType reportType, string content)
+        {
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            args.Add("post_id", post.id.ToString());
+            args.Add("reason", reportType.ToString());
+            args.Add("content", content);
+
+            FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(reportPublicationsKey, args));
+
+            try
+            {
+                HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(reportPublicationsPath), formContent);
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        /// <summary>
+        /// Report a Comment
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <param name="comment"></param>
+        /// <param name="reportType"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public async Task ReportCommentAsync(ResultDelegate<Result> resultDelegate, ErrorDelegate errorDelegate,
+            Comment comment, ReportType reportType, string content)
+        {
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            args.Add("comment_id", comment.id.ToString());
+            args.Add("reason", reportType.ToString());
+            args.Add("content", content);
+
+            FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(reportCommentsKey, args));
+
+            try
+            {
+                HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(reportCommentsPath), formContent);
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        /// <summary>
+        /// Get the list of Followed Places for the current user or another user
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <param name="user_id"></param>
+        /// <param name="since_id"></param>
+        /// <param name="max_id"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task FollowedPlacesAsync(ResultDelegate<PlaceListResult> resultDelegate, ErrorDelegate errorDelegate,
+            int? user_id = null, int? since_id = null, int? max_id = null, int? count = null)
+        {
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            args.Add("user_id", user_id.ToString());
+            AddListOptions(args, since_id, max_id, count);
+
+            try
+            {
+                HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(followedPlacesPath, args));
+
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        /// <summary>
+        /// Follow a Place
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <param name="place"></param>
+        /// <returns></returns>
+        public async Task FollowPlaceAsync(ResultDelegate<PlaceResult> resultDelegate, ErrorDelegate errorDelegate,
+            Place place)
+        {
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            args.Add("place_id", place.id);
+
+            FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(followedPlacesKey, args));
+
+            try
+            {
+                HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(followedPlacesPath), formContent);
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        /// <summary>
+        /// Stop following a Place
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <param name="place"></param>
+        /// <returns></returns>
+        public async Task StopFollowingPlaceAsync(ResultDelegate<Result> resultDelegate, ErrorDelegate errorDelegate,
+            Place place)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = await client.DeleteAsync(MakeUri(followedPlacesPath + "/" + place.followed_place_id));
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        /// <summary>
+        /// Get the Feed
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <param name="since_id"></param>
+        /// <param name="max_id"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task FeedAsync(ResultDelegate<PostListResult> resultDelegate, ErrorDelegate errorDelegate,
+            int? since_id = null, int? max_id = null, int? count = null)
+        {
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            AddListOptions(args, since_id, max_id, count);
+
+            try
+            {
+                HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(feedPath, args));
+
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
         }
     }
 }

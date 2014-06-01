@@ -55,5 +55,10 @@ namespace NeerbyyWindowsPhone
         /// Icon to be used with the Place
         /// </summary>
         public string icon { get; set; }
+
+        /// <summary>
+        /// The ID of to reference following this place or null
+        /// </summary>
+        public int? followed_place_id { get; set; }
     }
 }

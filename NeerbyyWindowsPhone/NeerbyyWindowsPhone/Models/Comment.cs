@@ -32,7 +32,7 @@ namespace NeerbyyWindowsPhone
         public int user_id { get; set; }
         
         /// <summary>
-        /// 
+        /// The User that posted the Comment
         /// </summary>
         public User user { get; set; }
 

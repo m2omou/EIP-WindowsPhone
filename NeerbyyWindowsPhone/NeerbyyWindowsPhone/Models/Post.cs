@@ -19,7 +19,7 @@ namespace NeerbyyWindowsPhone
         /// <summary>
         /// The ID of the user that created the post
         /// </summary>
-        public int? user_id { get; set; }
+        public User user { get; set; }
 
         /// <summary>
         /// The ID of the place where the post was created
@@ -74,12 +74,12 @@ namespace NeerbyyWindowsPhone
         /// <summary>
         /// Number of likes
         /// </summary>
-        public int like { get; set; }
+        public int upvotes { get; set; }
 
         /// <summary>
         /// Number of Dislikes
         /// </summary>
-        public int dislike { get; set; }
+        public int downvotes { get; set; }
 
         /// <summary>
         /// Information on the User's vote

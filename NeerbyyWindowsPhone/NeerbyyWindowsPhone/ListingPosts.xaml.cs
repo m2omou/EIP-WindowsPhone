@@ -39,10 +39,10 @@ namespace NeerbyyWindowsPhone
             currentPlace = ((App)Application.Current).currentPlace;
             Title.Text = currentPlace.name;
 
-            WebApi.Singleton.PostsForPlace(currentPlace, (string responseMessage, List<Post> posts) =>
+            WebApi.Singleton.PostsForPlaceAsync((string responseMessage, PostListResult result) =>
             {
                 StackListing.Children.Clear();
-                foreach (Post post in posts)
+                foreach (Post post in result.publications)
                 {
                     PostPreview display_post = new PostPreview();
                     display_post.Title.Text = post.content;
@@ -60,14 +60,14 @@ namespace NeerbyyWindowsPhone
                     display_post.my_post = post;
                     display_post.Infos.Text = "Le " + post.created_at;
                     display_post.NBComments.Text = String.Format("Commentaires {0}", post.comments);
-                    display_post.NBDislikes.Text = String.Format("Dislikes {0}", post.dislike);
-                    display_post.NBLikes.Text = String.Format("Likes {0}", post.like);
+                    display_post.NBDislikes.Text = String.Format("Downvotes {0}", post.downvotes);
+                    display_post.NBLikes.Text = String.Format("Upvotes {0}", post.upvotes);
                     StackListing.Children.Add(display_post);
                 }
-            }, (String responseMessage, WebException exception) =>
+            }, (String responseMessage, Exception exception) =>
             {
                 ErrorDisplayer error = new ErrorDisplayer();
-            });
+            }, currentPlace);
         }
 
 

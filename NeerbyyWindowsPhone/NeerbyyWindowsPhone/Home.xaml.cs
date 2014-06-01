@@ -139,18 +139,18 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         private void UpdatePlaces()
         {
-            WebApi.Singleton.Places(HomeMap.Center.Latitude, HomeMap.Center.Longitude, (String responseMessage, List<Place> places) =>
+            WebApi.Singleton.PlacesAsync((String responseMessage, PlaceListResult result) =>
             {
                 layer.Clear();
-                this.places = places;
+                this.places = result.places;
                 foreach (Place place in places)
                 {
                     CreatePushpin(place);
                 }
-            }, (String responseMessage, WebException e) =>
+            }, (String responseMessage, Exception e) =>
             {
                 ErrorDisplayer error = new ErrorDisplayer();
-            });
+            }, HomeMap.Center.Latitude, HomeMap.Center.Longitude);
         }
 
         /// <summary>
