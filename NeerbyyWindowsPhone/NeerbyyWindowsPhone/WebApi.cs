@@ -125,13 +125,74 @@ namespace NeerbyyWindowsPhone
     }
 
     /// <summary>
+    /// A List of Conversations
+    /// </summary>
+    public class ConversationListResult
+    {
+        /// <summary>
+        /// The List of Conversations
+        /// </summary>
+        public List<Conversation> conversations { get; set; }
+    }
+
+    /// <summary>
+    /// A Message Result
+    /// </summary>
+    public class MessageResult
+    {
+        /// <summary>
+        /// A Message
+        /// </summary>
+        public Message message { get; set; }
+
+        /// <summary>
+        /// The Conversation that the Message is in
+        /// </summary>
+        public Conversation conversation { get; set; }
+    }
+
+    /// <summary>
+    /// A List of Messages
+    /// </summary>
+    public class MessageListResult
+    {
+        /// <summary>
+        /// The List of Messages
+        /// </summary>
+        public List<Message> messages { get; set; }
+    }
+
+    /// <summary>
+    /// A Settings Result
+    /// </summary>
+    public class SettingsResult
+    {
+        /// <summary>
+        /// Settings
+        /// </summary>
+        public Settings settings { get; set; }
+    }
+
+    /// <summary>
     /// The type for Reports
     /// </summary>
     public enum ReportType
     {
+        /// <summary>
+        /// A Report Type that doesn't match the others
+        /// </summary>
         Custom,
+        /// <summary>
+        /// A Report for Copyright infringment
+        /// </summary>
         Copyright,
+        /// <summary>
+        /// A Report for not respecting a person's right the their image
+        /// </summary>
         ImageRights,
+        /// <summary>
+        /// A Report for Inappropriate Sexual Content
+        /// </summary>
         SexualContent
     };
 
@@ -161,17 +222,17 @@ namespace NeerbyyWindowsPhone
         private static readonly string usersKey = "user";
         private static readonly string sessionsKey = "connection";
         private static readonly string passwordResetsKey = "";
-        private static readonly string placesKey = "place";
+        //private static readonly string placesKey = "place";
         private static readonly string postsKey = "publication";
         private static readonly string commentsKey = "comment";
         private static readonly string votesKey = "vote";
         private static readonly string followedPlacesKey = "followed_place";
         private static readonly string reportPublicationsKey = "report_publication";
         private static readonly string reportCommentsKey = "report_comment";
-        private static readonly string feedKey = "feed";
-        private static readonly string conversationsKey = "conversation";
+        //private static readonly string feedKey = "feed";
+        //private static readonly string conversationsKey = "conversation";
         private static readonly string messagesKey = "message";
-        private static readonly string searchUsersKey = "search";
+        //private static readonly string searchUsersKey = "search";
         private static readonly string settingsKey = "setting";
 
         private static readonly string webApiResultType = ".json";
@@ -1016,6 +1077,180 @@ namespace NeerbyyWindowsPhone
             {
                 HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(feedPath, args));
 
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        /// <summary>
+        /// Get the list of Conversations for a User
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <param name="since_id"></param>
+        /// <param name="max_id"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task ConversationsAsync(ResultDelegate<ConversationListResult> resultDelegate, ErrorDelegate errorDelegate,
+            int? since_id = null, int? max_id = null, int? count = null)
+        {
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            AddListOptions(args, since_id, max_id, count);
+
+            try
+            {
+                HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(conversationsPath, args));
+
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        /// <summary>
+        /// Get the List of Messages for a Conversation
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <param name="conversation"></param>
+        /// <param name="since_id"></param>
+        /// <param name="max_id"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task MessagesAsync(ResultDelegate<MessageListResult> resultDelegate, ErrorDelegate errorDelegate,
+            Conversation conversation, int? since_id = null, int? max_id = null, int? count = null)
+        {
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            args.Add("conversation_id", conversation.id.ToString());
+            AddListOptions(args, since_id, max_id, count);
+
+            try
+            {
+                HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(conversationsPath, args));
+
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        /// <summary>
+        /// Send a Message to a User
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <param name="recipient"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public async Task SendMessageAsync(ResultDelegate<MessageResult> resultDelegate, ErrorDelegate errorDelegate,
+            User recipient, string content)
+        {
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            args.Add("recipient_id", recipient.id.ToString());
+            args.Add("content", content);
+
+            FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(messagesKey, args));
+
+            try
+            {
+                HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(messagesPath), formContent);
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        /// <summary>
+        /// Search for Users using a query string
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task SearchUsersAsync(ResultDelegate<UserListResult> resultDelegate, ErrorDelegate errorDelegate,
+            string query)
+        {
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            args.Add("query", query);
+
+            try
+            {
+                HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(searchUsersPath, args));
+
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        /// <summary>
+        /// Get the User's Settings
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <returns></returns>
+        public async Task SettingsAsync(ResultDelegate<SettingsResult> resultDelegate, ErrorDelegate errorDelegate)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(settingsPath));
+
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        /// <summary>
+        /// Change the Settings
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <param name="allowMessages"></param>
+        /// <param name="sendNotificationForComments"></param>
+        /// <param name="sendNotificationForMessages"></param>
+        /// <returns></returns>
+        public async Task SetSettingsAsync(ResultDelegate<SettingsResult> resultDelegate, ErrorDelegate errorDelegate,
+            bool? allowMessages = null, bool? sendNotificationForComments = null, bool? sendNotificationForMessages = null)
+        {
+            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+            if (allowMessages != null)
+                args.Add("allow_messages", allowMessages.Value ? "true" : "false");
+            if (sendNotificationForComments != null)
+                args.Add("send_notification_for_comments", sendNotificationForComments.Value ? "true" : "false");
+            if (sendNotificationForMessages != null)
+                args.Add("send_notification_for_messages", sendNotificationForMessages.Value ? "true" : "false");
+
+            FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(settingsKey, args));
+
+            try
+            {
+                HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(settingsPath), formContent);
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
             }
             catch (Exception e)

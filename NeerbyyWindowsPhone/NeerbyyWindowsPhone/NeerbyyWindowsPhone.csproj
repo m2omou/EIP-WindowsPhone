@@ -124,8 +124,11 @@
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\Conversation.cs" />
+    <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Place.cs" />
     <Compile Include="Models\Post.cs" />
+    <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Vote.cs" />
     <Compile Include="UI\AsynchronousDisplay.xaml.cs">
