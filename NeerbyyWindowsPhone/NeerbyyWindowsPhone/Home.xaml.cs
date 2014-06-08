@@ -69,6 +69,8 @@ namespace NeerbyyWindowsPhone
             map_center = new GeoCoordinate(48.858093, 2.294694);
             target = new GeoCoordinate(-map_center.Latitude, -map_center.Longitude);
             HomeMap.Center = map_center;
+            ((App)Application.Current).myLatitude = map_center.Latitude;
+            ((App)Application.Current).myLatitude = map_center.Longitude;
             return;
             // temporary hack to center on Paris
             try
@@ -89,6 +91,9 @@ namespace NeerbyyWindowsPhone
                 map_center = new GeoCoordinate(geoposition.Coordinate.Latitude, geoposition.Coordinate.Longitude);
                 target = new GeoCoordinate(-map_center.Latitude, -map_center.Longitude);
                 HomeMap.Center = map_center;
+
+                ((App)Application.Current).myLatitude = geoposition.Coordinate.Latitude;
+                ((App)Application.Current).myLatitude = geoposition.Coordinate.Longitude;
             }
             catch (Exception ex)
             {

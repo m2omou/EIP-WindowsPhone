@@ -107,6 +107,7 @@
     <Compile Include="FullScreenImage.xaml.cs">
       <DependentUpon>FullScreenImage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helper.cs" />
     <Compile Include="Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>

@@ -81,9 +81,12 @@ namespace NeerbyyWindowsPhone
             PostComment display_comment = new PostComment();
 
             display_comment.Value.Text = comment.content;
-            display_comment.Username.Text = "Bobby";
-            //var bitmap = new BitmapImage(uri);
-            //display_comment.Avatar.Source = bitmap;
+            String infos = string.Format("{0} le {1}", comment.user.username, comment.created_at);
+            display_comment.Username.Text = infos;
+            Uri uri = null;
+            uri = new Uri(comment.user.avatar, UriKind.Absolute);
+            var bitmap = new BitmapImage(uri);
+            display_comment.Avatar.Source = bitmap;
             ListingComments.Children.Add(display_comment);
             ScrollingView.UpdateLayout();
         }

@@ -20,6 +20,7 @@ namespace NeerbyyWindowsPhone
         private Place currentPlace;
         private PhotoChooserTask photoChooser;
         private CameraCaptureTask cameraCapture;
+        private System.IO.Stream image_stream;
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -60,17 +61,18 @@ namespace NeerbyyWindowsPhone
                     }, (String responseMessage, Exception exception) =>
                     {
                         ErrorDisplayer error = new ErrorDisplayer();
-                    }, currentPlace, content.Text, "", 42.0, 42.0);
+                    }, currentPlace, content.Text, "", ((App)Application.Current).myLongitude, ((App)Application.Current).myLatitude);
                 }
                 else  // creation d'une image
                 {
-                    /*WebApi.Singleton.CreatePostWithFile(currentPlace, content.Text, preview_image.Source, (string responseMessage, Post result) =>
+                    MessageBox.Show(String.Format("{0}", image_stream.Length));
+                    WebApi.Singleton.CreatePostWithFileAsync((string responseMessage, PostResult result) =>
                     {
                         MessageBox.Show("Votre souvenir a bien été créé");
-                    }, (String responseMessage, WebException exception) =>
+                    }, (String responseMessage, Exception exception) =>
                     {
                         ErrorDisplayer error = new ErrorDisplayer();
-                    });*/
+                    }, currentPlace, content.Text, image_stream, preview_image.Name, ((App)Application.Current).myLongitude, ((App)Application.Current).myLatitude);
                 }
         }
 
@@ -106,6 +108,7 @@ namespace NeerbyyWindowsPhone
            if (e.TaskResult == TaskResult.OK)
             {
                 System.Windows.Media.Imaging.BitmapImage bmp = new System.Windows.Media.Imaging.BitmapImage();
+                image_stream = e.ChosenPhoto;
                 bmp.SetSource(e.ChosenPhoto);
                 preview_image.Source = bmp;
                 photo_uploader.Visibility = System.Windows.Visibility.Visible;
@@ -117,6 +120,7 @@ namespace NeerbyyWindowsPhone
             if (e.TaskResult == TaskResult.OK)
             {
                 System.Windows.Media.Imaging.BitmapImage bmp = new System.Windows.Media.Imaging.BitmapImage();
+                image_stream = e.ChosenPhoto;
                 bmp.SetSource(e.ChosenPhoto);
                 preview_image.Source = bmp;
                 photo_uploader.Visibility = System.Windows.Visibility.Visible;
@@ -127,6 +131,7 @@ namespace NeerbyyWindowsPhone
         {
             photo_uploader.Visibility = System.Windows.Visibility.Collapsed;
             preview_image.Source = null;
+            image_stream = null;
         }
     }
 }

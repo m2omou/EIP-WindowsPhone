@@ -19,6 +19,8 @@ namespace NeerbyyWindowsPhone
         public static PhoneApplicationFrame RootFrame { get; private set; }
         public Place currentPlace { get; set; }
         public Post currentPost { get; set; }
+        public double myLatitude { get; set; }
+        public double myLongitude { get; set; }
 
         /// <summary>
         /// Constructor for the Application object.
