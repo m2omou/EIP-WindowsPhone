@@ -65,7 +65,6 @@ namespace NeerbyyWindowsPhone
                 }
                 else  // creation d'une image
                 {
-                    MessageBox.Show(String.Format("{0}", image_stream.Length));
                     WebApi.Singleton.CreatePostWithFileAsync((string responseMessage, PostResult result) =>
                     {
                         MessageBox.Show("Votre souvenir a bien été créé");
