@@ -46,6 +46,7 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void GoMyFlux(object sender, RoutedEventArgs e)
         {
+            NavigationService.Navigate(new Uri("/Flux.xaml", UriKind.Relative));
         }
 
         /// <summary>

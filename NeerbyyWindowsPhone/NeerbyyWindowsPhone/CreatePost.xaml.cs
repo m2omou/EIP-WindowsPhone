@@ -43,6 +43,7 @@ namespace NeerbyyWindowsPhone
             //preview_image.Source
             //content.Text
             if (content.Text != "")
+            {
                 if (preview_image.Source == null) // creation de texte
                 {
                     WebApi.Singleton.CreatePostWithUrlAsync((string responseMessage, PostResult result) =>
@@ -63,33 +64,28 @@ namespace NeerbyyWindowsPhone
                         ErrorDisplayer error = new ErrorDisplayer();
                     }, ((App)Application.Current).currentPlace, content.Text, image_stream, preview_image.Name, ((App)Application.Current).myLongitude, ((App)Application.Current).myLatitude);
                 }
+                content.Text = "";
+            }
         }
 
         /// <summary>
-        /// Select a picture to post
+        /// Select a picture to post from gallery
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TakeImage(object sender, RoutedEventArgs e)
+        {
+            photoChooser.Show();
+        }
+
+        /// <summary>
+        /// Select a picture to post from camera
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void TakePhoto(object sender, RoutedEventArgs e)
         {
-           IAsyncResult result = Microsoft.Xna.Framework.GamerServices.Guide.BeginShowMessageBox(
-                "Photo",
-                "D'où souhaitez-vous prendre la photo ?",
-                new string[] { "Camera", "Gallerie"},
-                0,
-                Microsoft.Xna.Framework.GamerServices.MessageBoxIcon.None,
-                null,
-                null);
-
-           result.AsyncWaitHandle.WaitOne();
-          int? choice = Microsoft.Xna.Framework.GamerServices.Guide.EndShowMessageBox(result);
-           if (choice.HasValue)
-           {
-               if (choice.Value == 0)
-                   cameraCapture.Show();
-               else if (choice.Value == 1)
-                   photoChooser.Show();
-           }
+            cameraCapture.Show();
         }
 
         private void cameraCaptureTask_Completed(object sender, PhotoResult e)
