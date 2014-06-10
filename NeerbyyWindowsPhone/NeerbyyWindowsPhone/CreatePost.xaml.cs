@@ -26,10 +26,10 @@ namespace NeerbyyWindowsPhone
         {
             InitializeComponent();
             photoChooser = new PhotoChooserTask();
-            photoChooser.Completed += new EventHandler<PhotoResult>(this.photoChooserTask_Completed);
+            photoChooser.Completed += this.photoChooserTask_Completed;
 
             cameraCapture = new CameraCaptureTask();
-            cameraCapture.Completed += new EventHandler<PhotoResult>(this.cameraCaptureTask_Completed);
+            cameraCapture.Completed += this.cameraCaptureTask_Completed;
         }
 
 
@@ -69,23 +69,30 @@ namespace NeerbyyWindowsPhone
         }
 
         /// <summary>
-        /// Select a picture to post from gallery
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TakeImage(object sender, RoutedEventArgs e)
-        {
-            photoChooser.Show();
-        }
-
-        /// <summary>
-        /// Select a picture to post from camera
+        /// Select a picture to post
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void TakePhoto(object sender, RoutedEventArgs e)
         {
-            cameraCapture.Show();
+           IAsyncResult result = Microsoft.Xna.Framework.GamerServices.Guide.BeginShowMessageBox(
+                "Photo",
+                "D'où souhaitez-vous prendre la photo ?",
+                new string[] { "Camera", "Gallerie"},
+                0,
+                Microsoft.Xna.Framework.GamerServices.MessageBoxIcon.None,
+                null,
+                null);
+
+           result.AsyncWaitHandle.WaitOne();
+          int? choice = Microsoft.Xna.Framework.GamerServices.Guide.EndShowMessageBox(result);
+           if (choice.HasValue)
+           {
+               if (choice.Value == 0)
+                   cameraCapture.Show();
+               else if (choice.Value == 1)
+                   photoChooser.Show();
+           }
         }
 
         private void cameraCaptureTask_Completed(object sender, PhotoResult e)

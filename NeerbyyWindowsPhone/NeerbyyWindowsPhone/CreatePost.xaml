@@ -63,10 +63,7 @@
                 </StackPanel>
 				<StackPanel Orientation="Horizontal">
                     <Button  Content="TEXTE" Background="#FFF3A928" BorderBrush="#002C2C2C" Foreground="White" FontFamily="Segoe WP Semibold" Margin="0" Width="150" HorizontalAlignment="Left" Height="151" Click="RemovePicture"/>
-					<StackPanel Height="150" Width="150">
-						<Button  Content="GALLERIE" Background="#FF6874EA" BorderBrush="#002C2C2C" Foreground="White" FontFamily="Segoe WP Semibold" Margin="0,0,-50,0" Width="150" HorizontalAlignment="Left" Height="75" Click="TakeImage"/>
-						<Button  Content="CAMERA" Background="#FF4E57B6" BorderBrush="#002C2C2C" Foreground="White" FontFamily="Segoe WP Semibold" Width="150" HorizontalAlignment="Left" Height="75" Click="TakePhoto"/>
-					</StackPanel>
+                    <Button  Content="IMAGE" Background="#FF4E57B6" BorderBrush="#002C2C2C" Foreground="White" FontFamily="Segoe WP Semibold" Width="150" HorizontalAlignment="Left" Height="150" Click="TakePhoto"/>
 					<Button  Content="VIDEO" Background="#FFDC5574" BorderBrush="#002C2C2C" Foreground="White" FontFamily="Segoe WP Semibold" Margin="0" Width="150" HorizontalAlignment="Left" Height="151"/>
 				</StackPanel>
 				<Button Click="CreatePostPressed" Foreground="White" BorderBrush="#002C2C2C" Background="#FF3EB88E" FontFamily="Segoe WP Semibold" Content="POSTER MON SOUVENIR !"/>
