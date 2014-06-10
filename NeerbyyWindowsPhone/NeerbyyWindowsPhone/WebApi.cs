@@ -252,25 +252,25 @@ namespace NeerbyyWindowsPhone
         /// <param name="error"></param>
         public delegate void ErrorDelegate(string responseMessage, Exception error);
 
-        private static User user;
+        private User authenticatedUser = null;
 
         /// <summary>
         /// The Authenticated User
         /// </summary>
-        public static User User
+        public User User
         {
             get
             {
-                return user;
+                return authenticatedUser;
             }
             private set
             {
-                user = value;
+                authenticatedUser = value;
 
-                if (user != null)
-                    WebApi.Singleton.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Authorization", "Token token=\"" + WebApi.User.auth_token + "\"");
+                if (authenticatedUser != null)
+                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Authorization", "Token token=\"" + authenticatedUser.auth_token + "\"");
                 else
-                    WebApi.Singleton.client.DefaultRequestHeaders.Authorization = null;
+                    client.DefaultRequestHeaders.Authorization = null;
             }
         }
 
@@ -404,18 +404,18 @@ namespace NeerbyyWindowsPhone
         public async Task AuthenticateAsync(ResultDelegate<UserResult> resultDelegate, ErrorDelegate errorDelegate,
             string email, string password)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            args.Add("email", email);
-            args.Add("password", password);
-
-            FormUrlEncodedContent content = new FormUrlEncodedContent(AddKey(sessionsKey, args));
-            
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                args.Add("email", email);
+                args.Add("password", password);
+
+                FormUrlEncodedContent content = new FormUrlEncodedContent(AddKey(sessionsKey, args));
+            
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(sessionsPath), content);
 
                 UserResult result = await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
-                WebApi.User = result.user;
+                User = result.user;
             }
             catch (Exception e)
             {
@@ -435,10 +435,10 @@ namespace NeerbyyWindowsPhone
         {
             try
             {
-                HttpResponseMessage responseMessage = await client.DeleteAsync(MakeUri(sessionsPath + "/" + WebApi.User.auth_token));
+                HttpResponseMessage responseMessage = await client.DeleteAsync(MakeUri(sessionsPath + "/" + User.auth_token));
 
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
-                WebApi.User = null;
+                User = null;
             }
             catch (Exception e)
             {
@@ -460,19 +460,19 @@ namespace NeerbyyWindowsPhone
         public async Task CreateUserAsync(ResultDelegate<UserResult> resultDelegate, ErrorDelegate errorDelegate,
             string email, string username, string password)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            args.Add("email", email);
-            args.Add("username", username);
-            args.Add("password", password);
-
-            FormUrlEncodedContent content = new FormUrlEncodedContent(AddKey(usersKey, args));
-
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                args.Add("email", email);
+                args.Add("username", username);
+                args.Add("password", password);
+
+                FormUrlEncodedContent content = new FormUrlEncodedContent(AddKey(usersKey, args));
+
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(usersPath), content);
 
                 UserResult result = await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
-                WebApi.User = result.user;
+                User = result.user;
             }
             catch (Exception e)
             {
@@ -498,44 +498,44 @@ namespace NeerbyyWindowsPhone
         public async Task UpdateUserAsync(ResultDelegate<UserResult> resultDelegate, ErrorDelegate errorDelegate,
             string email = null, string username = null, string password = null, string firstname = null, string lastname = null, Stream imageStream = null, string imagename = null)
         {
-            HttpContent httpContent = null;
-            MultipartFormDataContent dataContent = null;
-            FormUrlEncodedContent formContent = null;
-
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            if (email != null)
-                args.Add("email", email);
-            if (username != null)
-                args.Add("username", username);
-            if (password != null)
-                args.Add("password", password);
-            if (firstname != null)
-                args.Add("firstname", firstname);
-            if (lastname != null)
-                args.Add("lastname", lastname);
-
-            formContent = new FormUrlEncodedContent(AddKey(usersKey, args));
-
-            if (imageStream != null)
-            {
-                dataContent = new MultipartFormDataContent();
-
-                if (formContent != null)
-                    dataContent.Add(formContent);
-                dataContent.Add(new StreamContent(imageStream), AddKey(usersKey, "data"), imagename);
-
-                httpContent = dataContent;
-            }
-            else
-                httpContent = formContent;
-
             try
             {
+                HttpContent httpContent = null;
+                MultipartFormDataContent dataContent = null;
+                FormUrlEncodedContent formContent = null;
+
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                if (email != null)
+                    args.Add("email", email);
+                if (username != null)
+                    args.Add("username", username);
+                if (password != null)
+                    args.Add("password", password);
+                if (firstname != null)
+                    args.Add("firstname", firstname);
+                if (lastname != null)
+                    args.Add("lastname", lastname);
+
+                formContent = new FormUrlEncodedContent(AddKey(usersKey, args));
+
+                if (imageStream != null)
+                {
+                    dataContent = new MultipartFormDataContent();
+
+                    if (formContent != null)
+                        dataContent.Add(formContent);
+                    dataContent.Add(new StreamContent(imageStream), AddKey(usersKey, "data"), imagename);
+
+                    httpContent = dataContent;
+                }
+                else
+                    httpContent = formContent;
+
                 HttpResponseMessage responseMessage = await client.PutAsync(MakeUri(usersPath), httpContent);
 
                 UserResult result = await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
-                result.user.auth_token = WebApi.User.auth_token;
-                WebApi.User = result.user;
+                result.user.auth_token = User.auth_token;
+                User = result.user;
             }
             catch (Exception e)
             {
@@ -555,7 +555,7 @@ namespace NeerbyyWindowsPhone
         {
             try
             {
-                HttpResponseMessage responseMessage = await client.DeleteAsync(MakeUri(usersPath + "/" + WebApi.User.id));
+                HttpResponseMessage responseMessage = await client.DeleteAsync(MakeUri(usersPath + "/" + User.id));
 
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
             }
@@ -601,13 +601,13 @@ namespace NeerbyyWindowsPhone
         public async Task RestorePasswordAsync(ResultDelegate<Result> resultDelegate, ErrorDelegate errorDelegate,
             string email)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            args.Add("email", email);
-
-            FormUrlEncodedContent content = new FormUrlEncodedContent(AddKey(passwordResetsKey, args));
-
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                args.Add("email", email);
+
+                FormUrlEncodedContent content = new FormUrlEncodedContent(AddKey(passwordResetsKey, args));
+
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(passwordResetsPath), content);
 
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
@@ -631,12 +631,12 @@ namespace NeerbyyWindowsPhone
         public async Task PlacesAsync(ResultDelegate<PlaceListResult> resultDelegate, ErrorDelegate errorDelegate,
             double latitude, double longitude)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            args.Add("latitude", latitude.ToString());
-            args.Add("longitude", longitude.ToString());
-
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                args.Add("latitude", latitude.ToString());
+                args.Add("longitude", longitude.ToString());
+
                 HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(placesPath, args));
 
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
@@ -655,23 +655,23 @@ namespace NeerbyyWindowsPhone
         /// <param name="resultDelegate"></param>
         /// <param name="errorDelegate"></param>
         /// <param name="place"></param>
-        /// <param name="user"></param>
+        /// <param name="userQuery"></param>
         /// <param name="since_id"></param>
         /// <param name="max_id"></param>
         /// <param name="count"></param>
         /// <returns></returns>
         public async Task PostsForPlaceAsync(ResultDelegate<PostListResult> resultDelegate, ErrorDelegate errorDelegate,
-            Place place = null, User user = null, int? since_id = null, int? max_id = null, int? count = null)
+            Place place = null, User userQuery = null, int? since_id = null, int? max_id = null, int? count = null)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            if (place != null)
-                args.Add("place_id", place.id.ToString());
-            if (user != null)
-                args.Add("user_id", user.id.ToString());
-            AddListOptions(args, since_id, max_id, count);
-            
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                if (place != null)
+                    args.Add("place_id", place.id.ToString());
+                if (userQuery != null)
+                    args.Add("user_id", userQuery.id.ToString());
+                AddListOptions(args, since_id, max_id, count);
+            
                 HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(postsPath, args));
 
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
@@ -698,17 +698,17 @@ namespace NeerbyyWindowsPhone
         public async Task CreatePostWithUrlAsync(ResultDelegate<PostResult> resultDelegate, ErrorDelegate errorDelegate,
             Place place, string content, string url, double latitude, double longitude)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            args.Add("place_id", place.id.ToString());
-            args.Add("content", content);
-            args.Add("link", url);
-            args.Add("latitude", latitude.ToString());
-            args.Add("longitude", longitude.ToString());
-
-            FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(postsKey, args));
-
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                args.Add("place_id", place.id.ToString());
+                args.Add("content", content);
+                args.Add("link", url);
+                args.Add("latitude", latitude.ToString());
+                args.Add("longitude", longitude.ToString());
+
+                FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(postsKey, args));
+
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(postsPath), formContent);
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
             }
@@ -735,19 +735,19 @@ namespace NeerbyyWindowsPhone
         public async Task CreatePostWithFileAsync(ResultDelegate<PostResult> resultDelegate, ErrorDelegate errorDelegate,
             Place place, string content, Stream fileStream, string filename, double latitude, double longitude)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            args.Add("place_id", place.id.ToString());
-            args.Add("content", content);
-            args.Add("latitude", latitude.ToString());
-            args.Add("longitude", longitude.ToString());
-
-            MultipartFormDataContent dataContent = new MultipartFormDataContent();
-
-            dataContent.Add(new FormUrlEncodedContent(AddKey(postsKey, args)));
-            dataContent.Add(new StreamContent(fileStream), AddKey(postsKey, "data"), filename);
-
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                args.Add("place_id", place.id);
+                args.Add("content", content);
+                args.Add("latitude", latitude.ToString());
+                args.Add("longitude", longitude.ToString());
+
+                MultipartFormDataContent dataContent = new MultipartFormDataContent();
+
+                dataContent.Add(new FormUrlEncodedContent(AddKey(postsKey, args)));
+                dataContent.Add(new StreamContent(fileStream), AddKey(postsKey, "file"), filename);
+
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(postsPath), dataContent);
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
             }
@@ -759,6 +759,13 @@ namespace NeerbyyWindowsPhone
             }
         }
 
+        /// <summary>
+        /// Delete a Post
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <param name="post"></param>
+        /// <returns></returns>
         public async Task DeletePostAsync(ResultDelegate<Result> resultDelegate, ErrorDelegate errorDelegate,
             Post post)
         {
@@ -788,12 +795,12 @@ namespace NeerbyyWindowsPhone
         public async Task CommentsForPostAsync(ResultDelegate<CommentListResult> resultDelegate, ErrorDelegate errorDelegate,
             Post post, int? since_id = null, int? max_id = null, int? count = null)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            args.Add("publication_id", post.id.ToString());
-            AddListOptions(args, since_id, max_id, count);
-
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                args.Add("publication_id", post.id.ToString());
+                AddListOptions(args, since_id, max_id, count);
+
                 HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(commentsPath, args));
 
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
@@ -817,14 +824,14 @@ namespace NeerbyyWindowsPhone
         public async Task AddCommentToPostAsync(ResultDelegate<CommentResult> resultDelegate, ErrorDelegate errorDelegate,
             Post post, string content)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            args.Add("publication_id", post.id.ToString());
-            args.Add("content", content);
-
-            FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(commentsKey, args));
-
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                args.Add("publication_id", post.id.ToString());
+                args.Add("content", content);
+
+                FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(commentsKey, args));
+
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(commentsPath), formContent);
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
             }
@@ -870,14 +877,14 @@ namespace NeerbyyWindowsPhone
         public async Task SetVoteOnPostAsync(ResultDelegate<VoteResult> resultDelegate, ErrorDelegate errorDelegate,
             Post post, Boolean value)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            args.Add("publication_id", post.id.ToString());
-            args.Add("value", value ? "true" : "false");
-
-            FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(votesKey, args));
-
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                args.Add("publication_id", post.id.ToString());
+                args.Add("value", value ? "true" : "false");
+
+                FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(votesKey, args));
+
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(votesPath), formContent);
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
             }
@@ -924,15 +931,15 @@ namespace NeerbyyWindowsPhone
         public async Task ReportPostAsync(ResultDelegate<Result> resultDelegate, ErrorDelegate errorDelegate,
             Post post, ReportType reportType, string content)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            args.Add("post_id", post.id.ToString());
-            args.Add("reason", reportType.ToString());
-            args.Add("content", content);
-
-            FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(reportPublicationsKey, args));
-
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                args.Add("post_id", post.id.ToString());
+                args.Add("reason", reportType.ToString());
+                args.Add("content", content);
+
+                FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(reportPublicationsKey, args));
+
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(reportPublicationsPath), formContent);
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
             }
@@ -956,15 +963,15 @@ namespace NeerbyyWindowsPhone
         public async Task ReportCommentAsync(ResultDelegate<Result> resultDelegate, ErrorDelegate errorDelegate,
             Comment comment, ReportType reportType, string content)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            args.Add("comment_id", comment.id.ToString());
-            args.Add("reason", reportType.ToString());
-            args.Add("content", content);
-
-            FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(reportCommentsKey, args));
-
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                args.Add("comment_id", comment.id.ToString());
+                args.Add("reason", reportType.ToString());
+                args.Add("content", content);
+
+                FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(reportCommentsKey, args));
+
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(reportCommentsPath), formContent);
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
             }
@@ -989,12 +996,12 @@ namespace NeerbyyWindowsPhone
         public async Task FollowedPlacesAsync(ResultDelegate<PlaceListResult> resultDelegate, ErrorDelegate errorDelegate,
             int? user_id = null, int? since_id = null, int? max_id = null, int? count = null)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            args.Add("user_id", user_id.ToString());
-            AddListOptions(args, since_id, max_id, count);
-
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                args.Add("user_id", user_id.ToString());
+                AddListOptions(args, since_id, max_id, count);
+
                 HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(followedPlacesPath, args));
 
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
@@ -1017,13 +1024,13 @@ namespace NeerbyyWindowsPhone
         public async Task FollowPlaceAsync(ResultDelegate<PlaceResult> resultDelegate, ErrorDelegate errorDelegate,
             Place place)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            args.Add("place_id", place.id);
-
-            FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(followedPlacesKey, args));
-
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                args.Add("place_id", place.id);
+
+                FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(followedPlacesKey, args));
+
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(followedPlacesPath), formContent);
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
             }
@@ -1070,11 +1077,11 @@ namespace NeerbyyWindowsPhone
         public async Task FeedAsync(ResultDelegate<PostListResult> resultDelegate, ErrorDelegate errorDelegate,
             int? since_id = null, int? max_id = null, int? count = null)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            AddListOptions(args, since_id, max_id, count);
-
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                AddListOptions(args, since_id, max_id, count);
+
                 HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(feedPath, args));
 
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
@@ -1099,11 +1106,11 @@ namespace NeerbyyWindowsPhone
         public async Task ConversationsAsync(ResultDelegate<ConversationListResult> resultDelegate, ErrorDelegate errorDelegate,
             int? since_id = null, int? max_id = null, int? count = null)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            AddListOptions(args, since_id, max_id, count);
-
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                AddListOptions(args, since_id, max_id, count);
+
                 HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(conversationsPath, args));
 
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
@@ -1129,12 +1136,12 @@ namespace NeerbyyWindowsPhone
         public async Task MessagesAsync(ResultDelegate<MessageListResult> resultDelegate, ErrorDelegate errorDelegate,
             Conversation conversation, int? since_id = null, int? max_id = null, int? count = null)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            args.Add("conversation_id", conversation.id.ToString());
-            AddListOptions(args, since_id, max_id, count);
-
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                args.Add("conversation_id", conversation.id.ToString());
+                AddListOptions(args, since_id, max_id, count);
+
                 HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(conversationsPath, args));
 
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
@@ -1158,14 +1165,14 @@ namespace NeerbyyWindowsPhone
         public async Task SendMessageAsync(ResultDelegate<MessageResult> resultDelegate, ErrorDelegate errorDelegate,
             User recipient, string content)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            args.Add("recipient_id", recipient.id.ToString());
-            args.Add("content", content);
-
-            FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(messagesKey, args));
-
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                args.Add("recipient_id", recipient.id.ToString());
+                args.Add("content", content);
+
+                FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(messagesKey, args));
+
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(messagesPath), formContent);
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
             }
@@ -1187,11 +1194,11 @@ namespace NeerbyyWindowsPhone
         public async Task SearchUsersAsync(ResultDelegate<UserListResult> resultDelegate, ErrorDelegate errorDelegate,
             string query)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            args.Add("query", query);
-
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                args.Add("query", query);
+
                 HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(searchUsersPath, args));
 
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
@@ -1238,18 +1245,18 @@ namespace NeerbyyWindowsPhone
         public async Task SetSettingsAsync(ResultDelegate<SettingsResult> resultDelegate, ErrorDelegate errorDelegate,
             bool? allowMessages = null, bool? sendNotificationForComments = null, bool? sendNotificationForMessages = null)
         {
-            SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-            if (allowMessages != null)
-                args.Add("allow_messages", allowMessages.Value ? "true" : "false");
-            if (sendNotificationForComments != null)
-                args.Add("send_notification_for_comments", sendNotificationForComments.Value ? "true" : "false");
-            if (sendNotificationForMessages != null)
-                args.Add("send_notification_for_messages", sendNotificationForMessages.Value ? "true" : "false");
-
-            FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(settingsKey, args));
-
             try
             {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                if (allowMessages != null)
+                    args.Add("allow_messages", allowMessages.Value ? "true" : "false");
+                if (sendNotificationForComments != null)
+                    args.Add("send_notification_for_comments", sendNotificationForComments.Value ? "true" : "false");
+                if (sendNotificationForMessages != null)
+                    args.Add("send_notification_for_messages", sendNotificationForMessages.Value ? "true" : "false");
+
+                FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(settingsKey, args));
+
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(settingsPath), formContent);
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
             }
