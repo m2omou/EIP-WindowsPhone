@@ -22,6 +22,9 @@ namespace NeerbyyWindowsPhone
             InitializeComponent();
         }
 
+
+
+
         /// <summary>
         /// View will appear
         /// </summary>
@@ -29,13 +32,7 @@ namespace NeerbyyWindowsPhone
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             StackListing.Children.Clear();
-            /*WebApi.Singleton.FollowedPlacesAsync((string responseMessage, PlaceListResult result) =>
-                {
-
-                }, (String responseMessage, Exception exception) => {
-
-                }, (*/
-            WebApi.Singleton.PostsForPlaceAsync((string responseMessage, PostListResult result) =>
+            WebApi.Singleton.FeedAsync((string responseMessage, PostListResult result) =>
             {
                 StackListing.Children.Clear();
                 foreach (Post post in result.publications)
@@ -63,7 +60,7 @@ namespace NeerbyyWindowsPhone
             }, (String responseMessage, Exception exception) =>
             {
                 ErrorDisplayer error = new ErrorDisplayer();
-            }, ((App)Application.Current).currentPlace);
+            });
         }
     }
 }

@@ -90,12 +90,20 @@ namespace NeerbyyWindowsPhone
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
+            this.currentPost = PhoneApplicationService.Current.State["current_post"] as Post;
+            this.currentPlace = PhoneApplicationService.Current.State["current_place"] as Place;
+            this.myLatitude =  (double)PhoneApplicationService.Current.State["my_latitude"];
+            this.myLongitude = (double)PhoneApplicationService.Current.State["my_longitude"];
         }
 
         // Code to execute when the application is deactivated (sent to background)
         // This code will not execute when the application is closing
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
+            PhoneApplicationService.Current.State["current_post"] = this.currentPost;
+            PhoneApplicationService.Current.State["current_place"] = this.currentPlace;
+            PhoneApplicationService.Current.State["my_latitude"] = this.myLatitude;
+            PhoneApplicationService.Current.State["my_longitude"] = this.myLongitude;
         }
 
         // Code to execute when the application is closing (eg, user hit Back)
