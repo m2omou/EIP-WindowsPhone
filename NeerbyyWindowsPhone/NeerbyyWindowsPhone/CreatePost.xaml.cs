@@ -16,8 +16,6 @@ namespace NeerbyyWindowsPhone
     /// </summary>
     public partial class CreatePost : PhoneApplicationPage
     {
-
-        private Place currentPlace;
         private PhotoChooserTask photoChooser;
         private CameraCaptureTask cameraCapture;
         private System.IO.Stream image_stream;
@@ -34,14 +32,6 @@ namespace NeerbyyWindowsPhone
             cameraCapture.Completed += new EventHandler<PhotoResult>(this.cameraCaptureTask_Completed);
         }
 
-        /// <summary>
-        /// View will appear
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            currentPlace = ((App)Application.Current).currentPlace;
-        }
 
         /// <summary>
         /// Button pressed to create the post
@@ -61,18 +51,17 @@ namespace NeerbyyWindowsPhone
                     }, (String responseMessage, Exception exception) =>
                     {
                         ErrorDisplayer error = new ErrorDisplayer();
-                    }, currentPlace, content.Text, "", ((App)Application.Current).myLongitude, ((App)Application.Current).myLatitude);
+                    }, ((App)Application.Current).currentPlace, content.Text, "", ((App)Application.Current).myLongitude, ((App)Application.Current).myLatitude);
                 }
                 else  // creation d'une image
                 {
-                    MessageBox.Show(String.Format("{0}", image_stream.Length));
                     WebApi.Singleton.CreatePostWithFileAsync((string responseMessage, PostResult result) =>
                     {
                         MessageBox.Show("Votre souvenir a bien été créé");
                     }, (String responseMessage, Exception exception) =>
                     {
                         ErrorDisplayer error = new ErrorDisplayer();
-                    }, currentPlace, content.Text, image_stream, preview_image.Name, ((App)Application.Current).myLongitude, ((App)Application.Current).myLatitude);
+                    }, ((App)Application.Current).currentPlace, content.Text, image_stream, preview_image.Name, ((App)Application.Current).myLongitude, ((App)Application.Current).myLatitude);
                 }
         }
 

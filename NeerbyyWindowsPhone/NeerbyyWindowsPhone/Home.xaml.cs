@@ -57,8 +57,9 @@ namespace NeerbyyWindowsPhone
             layer = new MapLayer();
             HomeMap.Layers.Add(layer);
 
-            this.UpdatePlaces();
         }
+
+       
 
         /// <summary>
         /// Get the user position
@@ -109,11 +110,14 @@ namespace NeerbyyWindowsPhone
             }
         }
 
+       
+
         /// <summary>
         /// Ask user permission to access to its GPS
         /// </summary>
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
+            this.UpdatePlaces();
             if (IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent"))
             {
                 // User has opted in or out of Location
@@ -136,7 +140,7 @@ namespace NeerbyyWindowsPhone
                 }
 
                 IsolatedStorageSettings.ApplicationSettings.Save();
-            }
+            } 
         }
 
         /// <summary>
@@ -252,7 +256,7 @@ namespace NeerbyyWindowsPhone
             popup_title.Text = infos.name;
             popup_description.Text = String.Format("{2}\n{0}({1})", infos.city, infos.country, infos.address);
 
-            ((App)Application.Current).currentPlace = infos;
+            ((App)Application.Current).setRefPlace(ref infos);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

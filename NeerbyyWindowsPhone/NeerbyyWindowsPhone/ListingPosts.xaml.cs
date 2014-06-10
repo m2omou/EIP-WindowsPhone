@@ -19,7 +19,6 @@ namespace NeerbyyWindowsPhone
     /// </summary>
     public partial class ListingPosts : PhoneApplicationPage
     {
-    private Place currentPlace;
         /// <summary>
         /// Default Constructor
         /// </summary>
@@ -29,16 +28,29 @@ namespace NeerbyyWindowsPhone
         }
 
         /// <summary>
+        /// Display follow/unfollow button
+        /// </summary>
+        private void DisplayFollowButton()
+        {
+            if (((App)Application.Current).currentPlace.followed_place_id == null)
+            {
+                button_follow.Content = "SUIVRE LE LIEU";
+            }
+            else
+            {
+                button_follow.Content = "ARRETER DE SUIVRE LE LIEU";
+            }
+        }
+
+        /// <summary>
         /// View will appear
         /// </summary>
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.NavigationMode != NavigationMode.Back)
-                StackListing.Children.Clear();
-            currentPlace = ((App)Application.Current).currentPlace;
-            Title.Text = currentPlace.name;
-
+            StackListing.Children.Clear();
+            this.DisplayFollowButton();
+            Title.Text = ((App)Application.Current).currentPlace.name;
             WebApi.Singleton.PostsForPlaceAsync((string responseMessage, PostListResult result) =>
             {
                 StackListing.Children.Clear();
@@ -67,7 +79,7 @@ namespace NeerbyyWindowsPhone
             }, (String responseMessage, Exception exception) =>
             {
                 ErrorDisplayer error = new ErrorDisplayer();
-            }, currentPlace);
+            }, ((App)Application.Current).currentPlace);
         }
 
 
@@ -79,6 +91,37 @@ namespace NeerbyyWindowsPhone
         private void GoToCreatePost(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/CreatePost.xaml", UriKind.Relative));
+        }
+
+        /// <summary>
+        /// Callback to follow/unfollow a place
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FollowPlace(object sender, RoutedEventArgs e)
+        {
+            if (((App)Application.Current).currentPlace.followed_place_id == null)
+            {
+                WebApi.Singleton.FollowPlaceAsync((string responseMessage, PlaceResult result) =>
+                {
+                    ((App)Application.Current).currentPlace = result.place;
+                    this.DisplayFollowButton();
+                }, (String responseMessage, Exception exception) =>
+                {
+                    ErrorDisplayer error = new ErrorDisplayer();
+                }, ((App)Application.Current).currentPlace);
+            }
+            else
+            {
+                WebApi.Singleton.StopFollowingPlaceAsync((string responseMessage, Result result) =>
+                {
+                    ((App)Application.Current).currentPlace.followed_place_id = null;
+                    this.DisplayFollowButton();
+                }, (String responseMessage, Exception exception) =>
+                {
+                    ErrorDisplayer error = new ErrorDisplayer();
+                }, ((App)Application.Current).currentPlace);
+            }
         }
     }
 }

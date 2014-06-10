@@ -21,7 +21,6 @@ namespace NeerbyyWindowsPhone
     /// </summary>
     public partial class DisplayPost : PhoneApplicationPage
     {
-        private Post currentPost;
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -37,22 +36,18 @@ namespace NeerbyyWindowsPhone
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
 
-            button_vote_down.BorderBrush.Opacity = 0;
-            button_vote_up.BorderBrush.Opacity = 0;
-            Place currentPlace = ((App)Application.Current).currentPlace;
-            currentPost = ((App)Application.Current).currentPost;
             this.DisplayVotes();
-            //Title.Text = currentPost.;
-            //this.text_content.Text = currentPost.content;
-            this.Place.Text = currentPost.content;
-            this.Title.Text = currentPlace.name;
-            if (currentPost.url != null && currentPost.url != "")
+            //Title.Text = ((App)Application.Current).currentPost.;
+            //this.text_content.Text = ((App)Application.Current).currentPost.content;
+            this.Place.Text = ((App)Application.Current).currentPost.content;
+            this.Title.Text = ((App)Application.Current).currentPlace.name;
+            if (((App)Application.Current).currentPost.url != null && ((App)Application.Current).currentPost.url != "")
             {
                 Uri uri = null;
-                if (currentPost.url.StartsWith("http://"))
-                    uri = new Uri(currentPost.url, UriKind.Absolute);
+                if (((App)Application.Current).currentPost.url.StartsWith("http://"))
+                    uri = new Uri(((App)Application.Current).currentPost.url, UriKind.Absolute);
                 else
-                    uri = new Uri("http://" + currentPost.url, UriKind.Absolute);
+                    uri = new Uri("http://" + ((App)Application.Current).currentPost.url, UriKind.Absolute);
                 var bitmap = new BitmapImage(uri);
                 this.image_content.Source = bitmap;
                 this.image_content.Visibility = System.Windows.Visibility.Visible;
@@ -69,8 +64,19 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         private void DisplayVotes()
         {
-            this.button_vote_down.Content = string.Format("{0}", currentPost.downvotes);
-            this.button_vote_up.Content = string.Format("{0}", currentPost.upvotes);
+            button_vote_down.BorderBrush.Opacity = 0;
+            button_vote_up.BorderBrush.Opacity = 0;
+            if (((App)Application.Current).currentPost.vote != null)
+            if (((App)Application.Current).currentPost.vote.value == false)
+            {
+                button_vote_down.BorderBrush.Opacity = 100;
+            }
+            else
+            {
+                button_vote_up.BorderBrush.Opacity = 100;
+            }
+            this.button_vote_down.Content = string.Format("{0}", ((App)Application.Current).currentPost.downvotes);
+            this.button_vote_up.Content = string.Format("{0}", ((App)Application.Current).currentPost.upvotes);
         }
 
         /// <summary>
@@ -107,7 +113,7 @@ namespace NeerbyyWindowsPhone
             }, (String responseMessage, Exception exception) =>
             {
 
-            }, currentPost);
+            }, ((App)Application.Current).currentPost);
             
         }
 
@@ -140,7 +146,7 @@ namespace NeerbyyWindowsPhone
             }, (String responseMessage, Exception exception) =>
             {
                 ErrorDisplayer error = new ErrorDisplayer();
-            }, currentPost, e.Result);
+            }, ((App)Application.Current).currentPost, e.Result);
         }
 
         /// <summary>
@@ -150,19 +156,32 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void VoteUp(object sender, RoutedEventArgs e)
         {
-
-            WebApi.Singleton.SetVoteOnPostAsync((string responseMessage, VoteResult result) =>
+            if (((App)Application.Current).currentPost.vote == null || ((App)Application.Current).currentPost.vote.value == false)
+            {
+                WebApi.Singleton.SetVoteOnPostAsync((string responseMessage, VoteResult result) =>
+                    {
+                        ((App)Application.Current).currentPost.upvotes = result.publication.upvotes;
+                        ((App)Application.Current).currentPost.downvotes = result.publication.downvotes;
+                        ((App)Application.Current).currentPost.vote = result.vote;
+                        this.DisplayVotes();
+                    }, (String responseMessage, Exception exception) =>
+                    {
+                        ErrorDisplayer error = new ErrorDisplayer();
+                    }, ((App)Application.Current).currentPost, true);
+            }
+            else
+            {
+                WebApi.Singleton.CancelVoteAsync((string responseMessage, VoteResult result) =>
                 {
-                 button_vote_up.BorderBrush.Opacity = 100;
-                 button_vote_down.BorderBrush.Opacity = 0;
-                 currentPost.upvotes = result.publication.upvotes;
-                 currentPost.downvotes = result.publication.downvotes;
-                 this.DisplayVotes();
-
-                }, (String responseMessage, Exception exception) =>
-                {
-                    ErrorDisplayer error = new ErrorDisplayer();
-                }, currentPost, true);
+                    ((App)Application.Current).currentPost.upvotes = result.publication.upvotes;
+                    ((App)Application.Current).currentPost.downvotes = result.publication.downvotes;
+                    ((App)Application.Current).currentPost.vote = result.vote;
+                    this.DisplayVotes();
+                    }, (String responseMessage, Exception exception) =>
+                    {
+                        ErrorDisplayer error = new ErrorDisplayer();
+                        }, ((App)Application.Current).currentPost.vote);
+            }
         }
 
         /// <summary>
@@ -172,19 +191,34 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void VoteDown(object sender, RoutedEventArgs e)
         {
-            WebApi.Singleton.SetVoteOnPostAsync((string responseMessage, VoteResult result) =>
-                {
-                 button_vote_up.BorderBrush.Opacity = 0;
-                 button_vote_down.BorderBrush.Opacity = 100;
-                 currentPost.upvotes = result.publication.upvotes;
-                 currentPost.downvotes = result.publication.downvotes;
-                 this.DisplayVotes();
+            if (((App)Application.Current).currentPost.vote == null || ((App)Application.Current).currentPost.vote.value == true)
+            {
+                WebApi.Singleton.SetVoteOnPostAsync((string responseMessage, VoteResult result) =>
+                    {
+                        ((App)Application.Current).currentPost.upvotes = result.publication.upvotes;
+                        ((App)Application.Current).currentPost.downvotes = result.publication.downvotes;
+                        ((App)Application.Current).currentPost.vote = result.vote;
+                        this.DisplayVotes();
 
+                    }, (String responseMessage, Exception exception) =>
+                    {
+                        ErrorDisplayer error = new ErrorDisplayer();
+                    }, ((App)Application.Current).currentPost, false);
+            }
+            else
+            {
+                WebApi.Singleton.CancelVoteAsync((string responseMessage, VoteResult result) =>
+                {
+                    ((App)Application.Current).currentPost.upvotes = result.publication.upvotes;
+                    ((App)Application.Current).currentPost.downvotes = result.publication.downvotes;
+                    ((App)Application.Current).currentPost.vote = result.vote;
+                    this.DisplayVotes();
                 }, (String responseMessage, Exception exception) =>
                 {
                     ErrorDisplayer error = new ErrorDisplayer();
-                }, currentPost, false);
-                }
+                }, ((App)Application.Current).currentPost.vote);
+            }
+        }
 
         /// <summary>
         /// Display the image in fullscreen

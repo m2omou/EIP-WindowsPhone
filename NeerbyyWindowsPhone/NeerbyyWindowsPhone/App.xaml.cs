@@ -18,7 +18,26 @@ namespace NeerbyyWindowsPhone
         /// <returns>The root frame of the Phone Application.</returns>
         public static PhoneApplicationFrame RootFrame { get; private set; }
         public Place currentPlace { get; set; }
+
+        /// <summary>
+        /// Pass the current place as a reference
+        /// </summary>
+        /// <param name="place"></param>
+        public void setRefPlace(ref Place place) {
+            currentPlace = place;
+        }
+
         public Post currentPost { get; set; }
+
+        /// <summary>
+        /// Pass  the current post as a reference
+        /// </summary>
+        /// <param name="post"></param>
+        public void setRefPost(ref Post post)
+        {
+            currentPost = post;
+        }
+
         public double myLatitude { get; set; }
         public double myLongitude { get; set; }
 

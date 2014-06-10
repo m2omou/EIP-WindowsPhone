@@ -27,7 +27,7 @@ namespace NeerbyyWindowsPhone
 
         private void DisplayPost(object sender, RoutedEventArgs e)
         {
-            ((App)Application.Current).currentPost = my_post;
+            ((App)Application.Current).setRefPost(ref my_post);
             (Application.Current.RootVisual as PhoneApplicationFrame).Navigate(new Uri("/DisplayPost.xaml", UriKind.Relative));
         }
     }
