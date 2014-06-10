@@ -104,6 +104,9 @@
     <Compile Include="DisplayPost.xaml.cs">
       <DependentUpon>DisplayPost.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Favorites.xaml.cs">
+      <DependentUpon>Favorites.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Flux.xaml.cs">
       <DependentUpon>Flux.xaml</DependentUpon>
     </Compile>
@@ -141,6 +144,9 @@
     <Compile Include="UI\ErrorDisplayer.xaml.cs">
       <DependentUpon>ErrorDisplayer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\PlacePreview.xaml.cs">
+      <DependentUpon>PlacePreview.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\PostComment.xaml.cs">
       <DependentUpon>PostComment.xaml</DependentUpon>
     </Compile>
@@ -171,6 +177,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DisplayPost.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Favorites.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -207,6 +217,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\ErrorDisplayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\PlacePreview.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

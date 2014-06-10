@@ -56,7 +56,7 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void GoMyFavorites(object sender, RoutedEventArgs e)
         {
-            
+            NavigationService.Navigate(new Uri("/Favorites.xaml", UriKind.Relative));
         }
 
         /// <summary>
