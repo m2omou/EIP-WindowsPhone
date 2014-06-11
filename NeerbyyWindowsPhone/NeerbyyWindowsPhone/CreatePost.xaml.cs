@@ -97,13 +97,16 @@ namespace NeerbyyWindowsPhone
 
         private void cameraCaptureTask_Completed(object sender, PhotoResult e)
         {
-           if (e.TaskResult == TaskResult.OK)
+
+            if (e.TaskResult == TaskResult.OK)
             {
                 System.Windows.Media.Imaging.BitmapImage bmp = new System.Windows.Media.Imaging.BitmapImage();
-                image_stream = e.ChosenPhoto;
                 bmp.SetSource(e.ChosenPhoto);
                 preview_image.Source = bmp;
+                preview_image.Name = System.IO.Path.GetFileName(e.OriginalFileName);
                 photo_uploader.Visibility = System.Windows.Visibility.Visible;
+                image_stream = e.ChosenPhoto;
+                image_stream.Seek(0, System.IO.SeekOrigin.Begin);
             }
         }
 
@@ -112,10 +115,12 @@ namespace NeerbyyWindowsPhone
             if (e.TaskResult == TaskResult.OK)
             {
                 System.Windows.Media.Imaging.BitmapImage bmp = new System.Windows.Media.Imaging.BitmapImage();
-                image_stream = e.ChosenPhoto;
                 bmp.SetSource(e.ChosenPhoto);
                 preview_image.Source = bmp;
+                preview_image.Name = System.IO.Path.GetFileName(e.OriginalFileName);
                 photo_uploader.Visibility = System.Windows.Visibility.Visible;
+                image_stream = e.ChosenPhoto;
+                image_stream.Seek(0, System.IO.SeekOrigin.Begin);
             }
         }
 

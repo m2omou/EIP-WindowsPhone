@@ -94,6 +94,7 @@ namespace NeerbyyWindowsPhone
             this.currentPlace = PhoneApplicationService.Current.State["current_place"] as Place;
             this.myLatitude =  (double)PhoneApplicationService.Current.State["my_latitude"];
             this.myLongitude = (double)PhoneApplicationService.Current.State["my_longitude"];
+            WebApi.RestoreState(PhoneApplicationService.Current.State);
         }
 
         // Code to execute when the application is deactivated (sent to background)
@@ -104,6 +105,7 @@ namespace NeerbyyWindowsPhone
             PhoneApplicationService.Current.State["current_place"] = this.currentPlace;
             PhoneApplicationService.Current.State["my_latitude"] = this.myLatitude;
             PhoneApplicationService.Current.State["my_longitude"] = this.myLongitude;
+            WebApi.SaveState(PhoneApplicationService.Current.State);
         }
 
         // Code to execute when the application is closing (eg, user hit Back)

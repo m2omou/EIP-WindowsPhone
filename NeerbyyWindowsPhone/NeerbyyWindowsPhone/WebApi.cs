@@ -268,9 +268,13 @@ namespace NeerbyyWindowsPhone
                 authenticatedUser = value;
 
                 if (authenticatedUser != null)
-                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Authorization", "Token token=\"" + authenticatedUser.auth_token + "\"");
+                {
+                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Token", "token=\"" + authenticatedUser.auth_token + "\"");
+                }
                 else
+                {
                     client.DefaultRequestHeaders.Authorization = null;
+                }
             }
         }
 
@@ -280,7 +284,7 @@ namespace NeerbyyWindowsPhone
 
         private WebApi()
         {
-            client = new HttpClient();
+            client = new HttpClient(new HttpClientHandler { UseCookies = false });
             client.BaseAddress = new Uri(webApiUrl);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
@@ -295,6 +299,21 @@ namespace NeerbyyWindowsPhone
             {
                 return singleton;
             }
+        }
+
+        private static readonly string userStateKey = "userStateKey";
+
+        public static void SaveState(IDictionary<string, object> state)
+        {
+            if (WebApi.Singleton.User != null)
+                state[userStateKey] = WebApi.Singleton.User;
+        }
+
+        public static void RestoreState(IDictionary<string, object> state)
+        {
+            User user = state[userStateKey] as User;
+            if (user != null)
+                WebApi.Singleton.User = user;
         }
 
         private string MakeUri(string path, IDictionary<string, string> args = null)
@@ -744,9 +763,14 @@ namespace NeerbyyWindowsPhone
                 args.Add("longitude", longitude.ToString());
 
                 MultipartFormDataContent dataContent = new MultipartFormDataContent();
+                
+                StreamContent streamContent = new StreamContent(fileStream);
+                dataContent.Add(streamContent, AddKey(postsKey, "file"), filename);
 
-                dataContent.Add(new FormUrlEncodedContent(AddKey(postsKey, args)));
-                dataContent.Add(new StreamContent(fileStream), AddKey(postsKey, "file"), filename);
+                dataContent.Add(new StringContent(place.id), AddKey(postsKey, "place_id"));
+                dataContent.Add(new StringContent(content), AddKey(postsKey, "content"));
+                dataContent.Add(new StringContent(latitude.ToString()), AddKey(postsKey, "latitude"));
+                dataContent.Add(new StringContent(longitude.ToString()), AddKey(postsKey, "longitude"));
 
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(postsPath), dataContent);
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
