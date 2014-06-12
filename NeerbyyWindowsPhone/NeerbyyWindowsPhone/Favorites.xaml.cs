@@ -31,7 +31,8 @@ namespace NeerbyyWindowsPhone
                 {
                     PlacePreview display_place = new PlacePreview();
                     display_place.infos.Text = String.Format("{0}, {1}({2})", place.name, place.address, place.city);
-                    display_place.number.Text = String.Format("{0} souvenirs", 12);
+                    //display_place.number.Text = String.Format("{0} souvenirs", 12);
+                    display_place.number.Text = place.country;
                     display_place.my_place = place;
                     StackListing.Children.Add(display_place);
                 }
