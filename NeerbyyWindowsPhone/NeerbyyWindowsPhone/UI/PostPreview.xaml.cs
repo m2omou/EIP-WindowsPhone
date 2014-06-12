@@ -17,7 +17,6 @@ namespace NeerbyyWindowsPhone
     public partial class PostPreview : UserControl
     {
         public Post my_post;
-        public Place my_place;
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -28,9 +27,7 @@ namespace NeerbyyWindowsPhone
 
         private void DisplayPost(object sender, RoutedEventArgs e)
         {
-            my_place = my_post.place;
             ((App)Application.Current).setRefPost(ref my_post);
-            ((App)Application.Current).setRefPlace(ref my_place);
             (Application.Current.RootVisual as PhoneApplicationFrame).Navigate(new Uri("/DisplayPost.xaml", UriKind.Relative));
         }
     }
