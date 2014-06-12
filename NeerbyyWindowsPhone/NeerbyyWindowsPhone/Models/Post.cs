@@ -27,6 +27,11 @@ namespace NeerbyyWindowsPhone
         public string place_id { get; set; }
 
         /// <summary>
+        /// The Place
+        /// </summary>
+        public Place place { get; set; }
+
+        /// <summary>
         /// The content of the Post
         /// </summary>
         public string content { get; set; }

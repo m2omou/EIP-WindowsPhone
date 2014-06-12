@@ -481,6 +481,9 @@ namespace NeerbyyWindowsPhone
         {
             try
             {
+                if (this.User == null)
+                    return;
+
                 SortedDictionary<string, string> args = new SortedDictionary<string, string>();
                 args.Add("email", email);
                 args.Add("username", username);
