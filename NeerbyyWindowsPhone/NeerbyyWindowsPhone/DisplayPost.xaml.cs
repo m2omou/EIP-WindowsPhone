@@ -40,7 +40,7 @@ namespace NeerbyyWindowsPhone
             //Title.Text = ((App)Application.Current).currentPost.;
             //this.text_content.Text = ((App)Application.Current).currentPost.content;
             this.Place.Text = ((App)Application.Current).currentPost.content;
-            this.Title.Text = ((App)Application.Current).currentPlace.name;
+            this.Title.Text = ((App)Application.Current).currentPost.place.name;
             if (((App)Application.Current).currentPost.url != null && ((App)Application.Current).currentPost.url != "")
             {
                 Uri uri = null;
