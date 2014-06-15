@@ -21,11 +21,17 @@ namespace NeerbyyWindowsPhone
     /// </summary>
     public partial class DisplayPost : PhoneApplicationPage
     {
+        private int max_id;
+        private int since_id;
+        private int count;
         /// <summary>
         /// Default constructor
         /// </summary>
         public DisplayPost()
         {
+            max_id = 0;
+            since_id = 0;
+            count = 5;
             InitializeComponent();
         }
 
@@ -82,7 +88,7 @@ namespace NeerbyyWindowsPhone
         /// <summary>
         /// Add a comment to the displayed one
         /// </summary>
-        private void AddComment(Comment comment)
+        private void AddComment(Comment comment, bool first)
         {
             PostComment display_comment = new PostComment();
 
@@ -93,7 +99,14 @@ namespace NeerbyyWindowsPhone
             uri = new Uri(comment.user.avatar, UriKind.Absolute);
             var bitmap = new BitmapImage(uri);
             display_comment.Avatar.Source = bitmap;
-            ListingComments.Children.Add(display_comment);
+            if (first)
+            {
+                ListingComments.Children.Insert(0, display_comment);
+            }
+            else
+            {
+                ListingComments.Children.Add(display_comment);
+            }
             ScrollingView.UpdateLayout();
         }
 
@@ -104,17 +117,44 @@ namespace NeerbyyWindowsPhone
         private void DisplayComments()
         {
             ListingComments.Children.Clear();
+            bool first = false;
             WebApi.Singleton.CommentsForPostAsync((string responseMessage, CommentListResult result) =>
             {
                 foreach (Comment comment in result.comments)
                 {
-                    this.AddComment(comment);
+                    if (!first)
+                    {
+                        since_id = comment.id;
+                        first = true;
+                    }
+                    this.AddComment(comment, false);
+                    max_id = comment.id;
                 }
             }, (String responseMessage, Exception exception) =>
             {
 
-            }, ((App)Application.Current).currentPost);
+            }, ((App)Application.Current).currentPost, null, null, this.count);
             
+        }
+
+        /// <summary>
+        /// Input box to post a comment
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MoreComments(object sender, RoutedEventArgs e)
+        {
+            WebApi.Singleton.CommentsForPostAsync((string responseMessage, CommentListResult result) =>
+            {
+                foreach (Comment comment in result.comments)
+                {
+                    this.AddComment(comment, false);
+                    max_id = comment.id;
+                }
+            }, (String responseMessage, Exception exception) =>
+            {
+
+            }, ((App)Application.Current).currentPost, null, this.max_id, this.count); 
         }
 
         /// <summary>
@@ -132,6 +172,30 @@ namespace NeerbyyWindowsPhone
         }
 
         /// <summary>
+        /// Load new comments
+        /// </summary>
+        private void NewComments()
+        {
+            bool first = false;
+            WebApi.Singleton.CommentsForPostAsync((string responseMessage, CommentListResult result) =>
+            {
+                foreach (Comment comment in result.comments)
+                {
+                    if (!first)
+                    {
+                        since_id = comment.id;
+                        first = true;
+                    }
+                    this.AddComment(comment, true);
+                    max_id = comment.id;
+                }
+            }, (String responseMessage, Exception exception) =>
+            {
+
+            }, ((App)Application.Current).currentPost, this.since_id, null, this.count);
+        }
+
+        /// <summary>
         /// Commenter un poste
         /// </summary>
         /// <param name="sender"></param>
@@ -142,7 +206,7 @@ namespace NeerbyyWindowsPhone
             if (e.Result != "")
                 WebApi.Singleton.AddCommentToPostAsync((string responseMessage, CommentResult result) =>
             {
-                this.AddComment(result.comment);   
+                this.NewComments();
             }, (String responseMessage, Exception exception) =>
             {
                 ErrorDisplayer error = new ErrorDisplayer();

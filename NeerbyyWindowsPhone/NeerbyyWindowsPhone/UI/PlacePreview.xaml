@@ -10,17 +10,17 @@
     d:DesignHeight="184" d:DesignWidth="480">
 
     <StackPanel x:Name="Place" Height="154" Width="456" Orientation="Horizontal" Background="#FFEAEAEA" Margin="0,0,0,25">
-    	<StackPanel Width="456">
-    		<StackPanel Height="154" Margin="10">
-    			<TextBlock x:Name="infos" TextWrapping="Wrap" Foreground="#FF3C3C3C" Height="66">
+        <StackPanel Width="456">
+            <StackPanel Height="154" Margin="10">
+                <TextBlock x:Name="infos" TextWrapping="Wrap" Foreground="#FF3C3C3C" Height="66">
     				<Run Text="Tour eiffel, Paris "/>
     				<Run Text="à 2000km"/>
-    			</TextBlock>
-    			<StackPanel Height="77" Orientation="Horizontal">
-    				<TextBlock x:Name="number" TextWrapping="Wrap" Text="1390 souvenirs" Foreground="#FF7A7A7A" Width="228" Margin="0,0,0,10"/>
-    				<Button Content="VISUALISER" Width="209" Background="#FF109C76" FontSize="18.667" BorderBrush="{x:Null}" Click="DisplayPlace"/>
-    			</StackPanel>
-    		</StackPanel>
-    	</StackPanel>
+                </TextBlock>
+                <StackPanel Height="77" Orientation="Horizontal">
+                    <TextBlock x:Name="number" TextWrapping="Wrap" Text="1390 souvenirs" Foreground="#FF7A7A7A" Width="228" Margin="0,0,0,10"/>
+                    <Button Content="VISUALISER" Width="209" Background="#FF109C76" FontSize="18.667" BorderBrush="{x:Null}" Click="DisplayPlace"/>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
     </StackPanel>
 </UserControl>
