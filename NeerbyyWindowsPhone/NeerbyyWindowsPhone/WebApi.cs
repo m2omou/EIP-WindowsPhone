@@ -451,7 +451,8 @@ namespace NeerbyyWindowsPhone
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(sessionsPath), content);
 
                 UserResult result = await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
-                AuthenticatedUser = result.user;
+                if (result != null)
+                    AuthenticatedUser = result.user;
             }
             catch (Exception e)
             {
@@ -545,7 +546,8 @@ namespace NeerbyyWindowsPhone
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(usersPath), httpContent);
 
                 UserResult result = await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
-                AuthenticatedUser = result.user;
+                if (result != null)
+                    AuthenticatedUser = result.user;
             }
             catch (Exception e)
             {
@@ -619,9 +621,12 @@ namespace NeerbyyWindowsPhone
                 HttpResponseMessage responseMessage = await client.PutAsync(MakeUri(usersPath + "/" + AuthenticatedUser.id), httpContent);
 
                 UserResult result = await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
-                result.user.auth_token = AuthenticatedUser.auth_token;
-                result.user.settings_id = AuthenticatedUser.settings_id;
-                AuthenticatedUser = result.user;
+                if (result != null)
+                {
+                    result.user.auth_token = AuthenticatedUser.auth_token;
+                    result.user.settings_id = AuthenticatedUser.settings_id;
+                    AuthenticatedUser = result.user;
+                }
             }
             catch (Exception e)
             {
