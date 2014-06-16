@@ -257,7 +257,7 @@ namespace NeerbyyWindowsPhone
         /// <summary>
         /// The Authenticated User
         /// </summary>
-        public User User
+        public User AuthenticatedUser
         {
             get
             {
@@ -305,15 +305,15 @@ namespace NeerbyyWindowsPhone
 
         public static void SaveState(IDictionary<string, object> state)
         {
-            if (WebApi.Singleton.User != null)
-                state[userStateKey] = WebApi.Singleton.User;
+            if (WebApi.Singleton.AuthenticatedUser != null)
+                state[userStateKey] = WebApi.Singleton.AuthenticatedUser;
         }
 
         public static void RestoreState(IDictionary<string, object> state)
         {
             User user = state[userStateKey] as User;
             if (user != null)
-                WebApi.Singleton.User = user;
+                WebApi.Singleton.AuthenticatedUser = user;
         }
 
         private string MakeUri(string path, IDictionary<string, string> args = null)
@@ -418,7 +418,7 @@ namespace NeerbyyWindowsPhone
         /// <returns></returns>
         public Boolean IsUserAuthenticated()
         {
-            return User != null;
+            return AuthenticatedUser != null;
         }
 
         /// <summary>
@@ -443,7 +443,7 @@ namespace NeerbyyWindowsPhone
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(sessionsPath), content);
 
                 UserResult result = await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
-                User = result.user;
+                AuthenticatedUser = result.user;
             }
             catch (Exception e)
             {
@@ -463,10 +463,10 @@ namespace NeerbyyWindowsPhone
         {
             try
             {
-                HttpResponseMessage responseMessage = await client.DeleteAsync(MakeUri(sessionsPath + "/" + User.auth_token));
+                HttpResponseMessage responseMessage = await client.DeleteAsync(MakeUri(sessionsPath + "/" + AuthenticatedUser.auth_token));
 
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
-                User = null;
+                AuthenticatedUser = null;
             }
             catch (Exception e)
             {
@@ -490,7 +490,7 @@ namespace NeerbyyWindowsPhone
         {
             try
             {
-                if (this.User == null)
+                if (this.AuthenticatedUser == null)
                     return;
 
                 SortedDictionary<string, string> args = new SortedDictionary<string, string>();
@@ -503,7 +503,7 @@ namespace NeerbyyWindowsPhone
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(usersPath), content);
 
                 UserResult result = await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
-                User = result.user;
+                AuthenticatedUser = result.user;
             }
             catch (Exception e)
             {
@@ -574,12 +574,12 @@ namespace NeerbyyWindowsPhone
                     httpContent = formContent;
                 }
 
-                HttpResponseMessage responseMessage = await client.PutAsync(MakeUri(usersPath + "/" + User.id), httpContent);
+                HttpResponseMessage responseMessage = await client.PutAsync(MakeUri(usersPath + "/" + AuthenticatedUser.id), httpContent);
 
                 UserResult result = await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
-                result.user.auth_token = User.auth_token;
-                result.user.settings_id = User.settings_id;
-                User = result.user;
+                result.user.auth_token = AuthenticatedUser.auth_token;
+                result.user.settings_id = AuthenticatedUser.settings_id;
+                AuthenticatedUser = result.user;
             }
             catch (Exception e)
             {
@@ -599,7 +599,7 @@ namespace NeerbyyWindowsPhone
         {
             try
             {
-                HttpResponseMessage responseMessage = await client.DeleteAsync(MakeUri(usersPath + "/" + User.id));
+                HttpResponseMessage responseMessage = await client.DeleteAsync(MakeUri(usersPath + "/" + AuthenticatedUser.id));
 
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
             }
@@ -1264,7 +1264,7 @@ namespace NeerbyyWindowsPhone
         {
             try
             {
-                HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(settingsPath + "/" + User.settings_id));
+                HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(settingsPath + "/" + AuthenticatedUser.settings_id));
 
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
             }
@@ -1300,7 +1300,7 @@ namespace NeerbyyWindowsPhone
 
                 FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(settingsKey, args));
 
-                HttpResponseMessage responseMessage = await client.PutAsync(MakeUri(settingsPath + "/" + User.settings_id), formContent);
+                HttpResponseMessage responseMessage = await client.PutAsync(MakeUri(settingsPath + "/" + AuthenticatedUser.settings_id), formContent);
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
             }
             catch (Exception e)
