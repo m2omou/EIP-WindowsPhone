@@ -486,21 +486,51 @@ namespace NeerbyyWindowsPhone
         /// <param name="password"></param>
         /// <returns></returns>
         public async Task CreateUserAsync(ResultDelegate<UserResult> resultDelegate, ErrorDelegate errorDelegate,
-            string email, string username, string password)
+            string email, string username, string password, string firstname = null, string lastname = null, Stream imageStream = null, string imagename = null)
         {
             try
             {
-                if (this.AuthenticatedUser == null)
-                    return;
+                HttpContent httpContent = null;
 
-                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-                args.Add("email", email);
-                args.Add("username", username);
-                args.Add("password", password);
+                if (imageStream != null && imagename != null)
+                {
+                    MultipartFormDataContent dataContent = new MultipartFormDataContent();
 
-                FormUrlEncodedContent content = new FormUrlEncodedContent(AddKey(usersKey, args));
+                    StreamContent streamContent = new StreamContent(imageStream);
+                    dataContent.Add(streamContent, AddKey(postsKey, "avatar"), imagename);
 
-                HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(usersPath), content);
+                    dataContent.Add(new StringContent(email), AddKey(postsKey, "email"));
+                    dataContent.Add(new StringContent(username), AddKey(postsKey, "username"));
+                    dataContent.Add(new StringContent(password), AddKey(postsKey, "password"));
+
+                    if (firstname != null)
+                        dataContent.Add(new StringContent(firstname), AddKey(postsKey, "firstname"));
+                    if (lastname != null)
+                        dataContent.Add(new StringContent(lastname), AddKey(postsKey, "lastname"));
+
+                    httpContent = dataContent;
+                }
+                else
+                {
+                    FormUrlEncodedContent formContent = null;
+
+                    SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+
+                    args.Add("email", email);
+                    args.Add("username", username);
+                    args.Add("password", password);
+
+                    if (firstname != null)
+                        args.Add("firstname", firstname);
+                    if (lastname != null)
+                        args.Add("lastname", lastname);
+
+                    formContent = new FormUrlEncodedContent(AddKey(usersKey, args));
+
+                    httpContent = formContent;
+                }
+
+                HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(usersPath), httpContent);
 
                 UserResult result = await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
                 AuthenticatedUser = result.user;
