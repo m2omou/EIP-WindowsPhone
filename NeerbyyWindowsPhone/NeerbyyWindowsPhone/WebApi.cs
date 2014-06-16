@@ -303,12 +303,20 @@ namespace NeerbyyWindowsPhone
 
         private static readonly string userStateKey = "userStateKey";
 
+        /// <summary>
+        /// Allow the WebApi to save its state when leaving the app
+        /// </summary>
+        /// <param name="state"></param>
         public static void SaveState(IDictionary<string, object> state)
         {
             if (WebApi.Singleton.AuthenticatedUser != null)
                 state[userStateKey] = WebApi.Singleton.AuthenticatedUser;
         }
 
+        /// <summary>
+        /// Allow the WebApi to restore its state when returning to the app
+        /// </summary>
+        /// <param name="state"></param>
         public static void RestoreState(IDictionary<string, object> state)
         {
             User user = state[userStateKey] as User;
@@ -484,6 +492,10 @@ namespace NeerbyyWindowsPhone
         /// <param name="email"></param>
         /// <param name="username"></param>
         /// <param name="password"></param>
+        /// <param name="firstname"></param>
+        /// <param name="lastname"></param>
+        /// <param name="imageStream"></param>
+        /// <param name="imagename"></param>
         /// <returns></returns>
         public async Task CreateUserAsync(ResultDelegate<UserResult> resultDelegate, ErrorDelegate errorDelegate,
             string email, string username, string password, string firstname = null, string lastname = null, Stream imageStream = null, string imagename = null)
