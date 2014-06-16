@@ -26,10 +26,10 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         public int publication_id { get; set; }
 
-        /// <summary>
-        /// The ID of the user having posted the comment
-        /// </summary>
-        public int user_id { get; set; }
+        ///// <summary>
+        ///// The ID of the user having posted the comment
+        ///// </summary>
+        //public int user_id { get; set; }
         
         /// <summary>
         /// The User that posted the Comment
@@ -37,12 +37,12 @@ namespace NeerbyyWindowsPhone
         public User user { get; set; }
 
         /// <summary>
-        /// 
+        /// Date of the creation of the Comment
         /// </summary>
         public string created_at { get; set; }
 
         /// <summary>
-        /// 
+        /// Date of the last Update of the Comment
         /// </summary>
         public string updated_at { get; set; }
     }

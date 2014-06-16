@@ -31,7 +31,14 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         public bool value { get; set; }
 
+        /// <summary>
+        /// Date of the Creation of the Vote
+        /// </summary>
         public string created_at { get; set; }
+
+        /// <summary>
+        /// Date of the Update of the Vote
+        /// </summary>
         public string updated_at { get; set; }
     }
 }

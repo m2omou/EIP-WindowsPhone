@@ -37,12 +37,12 @@ namespace NeerbyyWindowsPhone
         public string content { get; set; }
 
         /// <summary>
-        /// 
+        /// Creation date of the Post
         /// </summary>
         public string created_at { get; set; }
 
         /// <summary>
-        /// 
+        /// Update date of the Post
         /// </summary>
         public string updated_at { get; set; }
 

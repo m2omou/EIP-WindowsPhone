@@ -16,9 +16,14 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         public int id { get; set; }
 
+        /// <summary>
+        /// The User ID of th Sender
+        /// </summary>
         public int sender_id { get; set; }
 
-        public int recipient_id { get; set; }
+        /// <summary>
+        /// The content of the Message
+        /// </summary>
         public string content { get; set; }
     }
 }

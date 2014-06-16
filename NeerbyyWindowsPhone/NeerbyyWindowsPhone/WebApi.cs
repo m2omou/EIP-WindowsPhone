@@ -337,7 +337,7 @@ namespace NeerbyyWindowsPhone
                     uriString.Append(pair.Key + "=" + HttpUtility.UrlEncode(pair.Value));
                 }
             }
-            return uriString.ToString(); ;
+            return uriString.ToString();
         }
 
         private IDictionary<string, string> AddKey(string mainKey, IDictionary<string, string> dict)
@@ -410,6 +410,15 @@ namespace NeerbyyWindowsPhone
                 errorDelegate(errorMessage, e);
             }
             return default(T);
+        }
+
+        /// <summary>
+        /// Check if the user is Authenticated
+        /// </summary>
+        /// <returns></returns>
+        public Boolean IsUserAuthenticated()
+        {
+            return User != null;
         }
 
         /// <summary>
@@ -523,40 +532,53 @@ namespace NeerbyyWindowsPhone
             try
             {
                 HttpContent httpContent = null;
-                MultipartFormDataContent dataContent = null;
-                FormUrlEncodedContent formContent = null;
 
-                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-                if (email != null)
-                    args.Add("email", email);
-                if (username != null)
-                    args.Add("username", username);
-                if (password != null)
-                    args.Add("password", password);
-                if (firstname != null)
-                    args.Add("firstname", firstname);
-                if (lastname != null)
-                    args.Add("lastname", lastname);
-
-                formContent = new FormUrlEncodedContent(AddKey(usersKey, args));
-
-                if (imageStream != null)
+                if (imageStream != null && imagename != null)
                 {
-                    dataContent = new MultipartFormDataContent();
+                    MultipartFormDataContent dataContent = new MultipartFormDataContent();
 
-                    if (formContent != null)
-                        dataContent.Add(formContent);
-                    dataContent.Add(new StreamContent(imageStream), AddKey(usersKey, "data"), imagename);
+                    StreamContent streamContent = new StreamContent(imageStream);
+                    dataContent.Add(streamContent, AddKey(postsKey, "avatar"), imagename);
+
+                    if (email != null)
+                        dataContent.Add(new StringContent(email), AddKey(postsKey, "email"));
+                    if (username != null)
+                        dataContent.Add(new StringContent(username), AddKey(postsKey, "username"));
+                    if (password != null)
+                        dataContent.Add(new StringContent(password), AddKey(postsKey, "password"));
+                    if (firstname != null)
+                        dataContent.Add(new StringContent(firstname), AddKey(postsKey, "firstname"));
+                    if (lastname != null)
+                        dataContent.Add(new StringContent(lastname), AddKey(postsKey, "lastname"));
 
                     httpContent = dataContent;
                 }
                 else
-                    httpContent = formContent;
+                {
+                    FormUrlEncodedContent formContent = null;
 
-                HttpResponseMessage responseMessage = await client.PutAsync(MakeUri(usersPath), httpContent);
+                    SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                    if (email != null)
+                        args.Add("email", email);
+                    if (username != null)
+                        args.Add("username", username);
+                    if (password != null)
+                        args.Add("password", password);
+                    if (firstname != null)
+                        args.Add("firstname", firstname);
+                    if (lastname != null)
+                        args.Add("lastname", lastname);
+
+                    formContent = new FormUrlEncodedContent(AddKey(usersKey, args));
+
+                    httpContent = formContent;
+                }
+
+                HttpResponseMessage responseMessage = await client.PutAsync(MakeUri(usersPath + "/" + User.id), httpContent);
 
                 UserResult result = await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
                 result.user.auth_token = User.auth_token;
+                result.user.settings_id = User.settings_id;
                 User = result.user;
             }
             catch (Exception e)
@@ -759,12 +781,6 @@ namespace NeerbyyWindowsPhone
         {
             try
             {
-                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-                args.Add("place_id", place.id);
-                args.Add("content", content);
-                args.Add("latitude", latitude.ToString());
-                args.Add("longitude", longitude.ToString());
-
                 MultipartFormDataContent dataContent = new MultipartFormDataContent();
                 
                 StreamContent streamContent = new StreamContent(fileStream);
@@ -1248,7 +1264,7 @@ namespace NeerbyyWindowsPhone
         {
             try
             {
-                HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(settingsPath));
+                HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(settingsPath + "/" + User.settings_id));
 
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
             }
@@ -1284,7 +1300,7 @@ namespace NeerbyyWindowsPhone
 
                 FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(settingsKey, args));
 
-                HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(settingsPath), formContent);
+                HttpResponseMessage responseMessage = await client.PutAsync(MakeUri(settingsPath + "/" + User.settings_id), formContent);
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
             }
             catch (Exception e)

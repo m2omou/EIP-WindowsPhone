@@ -38,12 +38,12 @@ namespace NeerbyyWindowsPhone
         public string email { get; set; }
 
         /// <summary>
-        /// 
+        /// The date of the Creation of the User
         /// </summary>
         public string created_at { get; set; }
 
         /// <summary>
-        /// 
+        /// The date of the Update of the User
         /// </summary>
         public string updated_at { get; set; }
 
@@ -58,22 +58,18 @@ namespace NeerbyyWindowsPhone
         public string password { get; set; }
 
         /// <summary>
-        /// 
+        /// Avatar URL
         /// </summary>
         public string avatar { get; set; }
 
         /// <summary>
-        /// 
+        /// Avatar Thumbnail URL
         /// </summary>
         public string avatar_thumb { get; set; }
 
         /// <summary>
-        /// Called to know if the object should be serialized
+        /// The ID for the User's Settings
         /// </summary>
-        /// <returns></returns>
-        public bool ShouldSerializeid()
-        {
-            return (id != -1);
-        }
+        public int? settings_id { get; set; }
     }
 }
