@@ -59,7 +59,7 @@ namespace NeerbyyWindowsPhone
             }, (String responseMessage, Exception e) =>
             {
                 asynchronousDisplayer.stack_panel.Visibility = System.Windows.Visibility.Collapsed;
-                asynchronousDisplayer.display_status.Text = responseMessage;
+                MessageBox.Show("Informations incorrectes");
             }, mail.Text, password.Password);
         }
 

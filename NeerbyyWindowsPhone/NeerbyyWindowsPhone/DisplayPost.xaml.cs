@@ -187,7 +187,6 @@ namespace NeerbyyWindowsPhone
                         first = true;
                     }
                     this.AddComment(comment, true);
-                    max_id = comment.id;
                 }
             }, (String responseMessage, Exception exception) =>
             {

@@ -60,11 +60,26 @@
                     <Image x:Name="preview_image" Tap="Image_Tap" Height="90" Width="90" RenderTransformOrigin="-1.435,0.52" Source="default.jpg"/>
                     <Button  Content="SUPPRIMER" Background="Red" BorderBrush="#002C2C2C" Foreground="White" FontFamily="Segoe WP Semibold" Margin="0" Width="200" HorizontalAlignment="Right" Height="81" Click="RemovePicture" Visibility="Collapsed" x:Name="button_reset"/>
                 </StackPanel>
-                <TextBlock TextWrapping="Wrap" FontFamily="Segoe WP" Text="Nom" Foreground="#FF151515"/>
-                <TextBox Text="titi" Height="72" TextWrapping="Wrap" Width="456" InputScope="LogOnName" x:Name="lastname" Background="#BFCBCBCB"/>
-                <TextBlock TextWrapping="Wrap" Foreground="#FF151515" Text="Prénom">
-                </TextBlock>
-                <TextBox Text="titi42@gmail.com"  x:Name="firstname" Height="72" TextWrapping="Wrap" Width="456" Background="#BFCBCBCB"/>
+                <StackPanel Height="100" Width="458" Orientation="Horizontal">
+                	<StackPanel Width="227">
+                		<TextBlock TextWrapping="Wrap" FontFamily="Segoe WP" Text="Pseudonyme" Foreground="#FF151515" Margin="0,0,56,0" Height="27"/>
+                		<TextBox Text="titi" TextWrapping="Wrap" InputScope="LogOnName" x:Name="username" Background="#BFCBCBCB" Height="72"/>
+                	</StackPanel>
+                	<StackPanel Width="225">
+                		<TextBlock TextWrapping="Wrap" Foreground="#FF151515" Text="Mail" Margin="0,0,-109,0"/>
+                		<TextBox Text="titi42@gmail.com"  x:Name="mail" Height="72" TextWrapping="Wrap" Background="#BFCBCBCB" Margin="0,0,-109,0"/>
+                	</StackPanel>
+                </StackPanel>
+                <StackPanel Height="100" Width="458" Orientation="Horizontal">
+                	<StackPanel Width="227">
+                		<TextBlock TextWrapping="Wrap" FontFamily="Segoe WP" Text="Nom" Foreground="#FF151515" Margin="0,0,56,0" Height="27"/>
+                		<TextBox Text="titi" TextWrapping="Wrap" InputScope="LogOnName" x:Name="lastname" Background="#BFCBCBCB" Height="72"/>
+                	</StackPanel>
+                	<StackPanel Width="225">
+                		<TextBlock TextWrapping="Wrap" Foreground="#FF151515" Text="Prénom" Margin="0,0,-109,0"/>
+                		<TextBox Text="titi42@gmail.com"  x:Name="firstname" Height="72" TextWrapping="Wrap" Background="#BFCBCBCB" Margin="0,0,-109,0"/>
+                	</StackPanel>
+                </StackPanel>
                 <Button Content="METTRE A JOUR" Click="register" Foreground="White" BorderBrush="#002C2C2C" Background="#FF3EB88E" FontFamily="Segoe WP Semibold"/>
                 <TextBlock TextWrapping="Wrap" Text="Mot de passe" Foreground="#FF151515"/>
                 <PasswordBox Password="test"  x:Name="password" Background="#BFCBCBCB"/>

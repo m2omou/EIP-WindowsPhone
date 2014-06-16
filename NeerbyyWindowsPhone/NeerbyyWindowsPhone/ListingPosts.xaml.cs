@@ -98,7 +98,6 @@ namespace NeerbyyWindowsPhone
                         first = true;
                     }
                     this.AddAPostToTheListing(post, true);
-                    max_id = post.id;
                 }
             }, (String responseMessage, Exception exception) =>
             {

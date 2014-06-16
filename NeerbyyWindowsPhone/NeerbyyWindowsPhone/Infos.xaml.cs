@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace NeerbyyWindowsPhone
 {
@@ -15,9 +16,11 @@ namespace NeerbyyWindowsPhone
     {
         private PhotoChooserTask photoChooser;
         private CameraCaptureTask cameraCapture;
-        private Image default_picture;
+        private System.IO.Stream image_stream;
+        private bool upload_avatar;
         public Infos()
         {
+            upload_avatar = false;
             InitializeComponent();
             photoChooser = new PhotoChooserTask();
             photoChooser.Completed += new EventHandler<PhotoResult>(this.photoChooserTask_Completed);
@@ -25,8 +28,11 @@ namespace NeerbyyWindowsPhone
             cameraCapture = new CameraCaptureTask();
             cameraCapture.Completed += new EventHandler<PhotoResult>(this.cameraCaptureTask_Completed);
 
-            default_picture = new Image();
-            default_picture.Source = preview_image.Source;
+
+            username.Text = WebApi.Singleton.AuthenticatedUser.username;
+            mail.Text = WebApi.Singleton.AuthenticatedUser.email;
+            lastname.Text = WebApi.Singleton.AuthenticatedUser.lastname;
+            firstname.Text = WebApi.Singleton.AuthenticatedUser.firstname;
         }
 
         /// <summary>
@@ -35,31 +41,37 @@ namespace NeerbyyWindowsPhone
         private void register(object sender, RoutedEventArgs args)
         {
             asynchronousDisplayer.Visibility = System.Windows.Visibility.Visible;
-            //firstname.Text; lastname.Text; 
-            /*WebApi.Singleton.CreateUser(username.Text, password.Password, mail.Text, (User user) =>
+            System.IO.Stream image = null;
+            String name = null;
+            if (upload_avatar)
             {
-                display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
-                MessageBox.Show("Compte crée.");
-            }, (WebException e) =>
+                image = image_stream;
+                name = preview_image.Name;
+            }
+            WebApi.Singleton.UpdateUserAsync((string responseMessage, UserResult result) =>
             {
-                display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
-                MessageBox.Show(e.Message);
-            });*/
+                MessageBox.Show("Informations bien prises en compte");
+            }, (String responseMessage, Exception exception) =>
+            {
+                ErrorDisplayer error = new ErrorDisplayer();
+            }, mail.Text, username.Text, null, firstname.Text, lastname.Text, image, name);
         }
 
         private void updatePassword(object sender, RoutedEventArgs args)
         {
             asynchronousDisplayer.Visibility = System.Windows.Visibility.Visible;
-            //password.Password; 
-            /*WebApi.Singleton.CreateUser(username.Text, password.Password, mail.Text, (User user) =>
+            if (password.Password != password2.Password)
             {
-                display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
-                MessageBox.Show("Compte crée.");
-            }, (WebException e) =>
+                MessageBox.Show("Les mots de passe ne correspondent pas");
+                return;
+            }
+            WebApi.Singleton.UpdateUserAsync((string responseMessage, UserResult result) =>
             {
-                display_progress_bar.Visibility = System.Windows.Visibility.Collapsed;
-                MessageBox.Show(e.Message);
-            });*/
+                MessageBox.Show("Informations bien prises en compte");
+            }, (String responseMessage, Exception exception) =>
+            {
+                ErrorDisplayer error = new ErrorDisplayer();
+            }, null, null, password2.Password, null, null, null, null);
         }
 
         /// <summary>
@@ -99,6 +111,9 @@ namespace NeerbyyWindowsPhone
                 bmp.SetSource(e.ChosenPhoto);
                 preview_image.Source = bmp;
                 button_reset.Visibility = System.Windows.Visibility.Visible;
+                image_stream = e.ChosenPhoto;
+                image_stream.Seek(0, System.IO.SeekOrigin.Begin);
+                upload_avatar = true;
             }
         }
 
@@ -110,13 +125,17 @@ namespace NeerbyyWindowsPhone
                 bmp.SetSource(e.ChosenPhoto);
                 preview_image.Source = bmp;
                 button_reset.Visibility = System.Windows.Visibility.Visible;
+                image_stream = e.ChosenPhoto;
+                image_stream.Seek(0, System.IO.SeekOrigin.Begin);
+                upload_avatar = true;
             }
         }
 
         private void RemovePicture(object sender, RoutedEventArgs e)
         {
-            preview_image.Source = default_picture.Source;
+            preview_image.Source = new BitmapImage(new Uri("default.jpg", UriKind.Relative));
             button_reset.Visibility = System.Windows.Visibility.Collapsed;
+            upload_avatar = false;
         }
     }
 }
