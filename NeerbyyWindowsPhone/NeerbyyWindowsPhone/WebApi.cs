@@ -1204,16 +1204,19 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         /// <param name="resultDelegate"></param>
         /// <param name="errorDelegate"></param>
+        /// <param name="user"></param>
         /// <param name="since_id"></param>
         /// <param name="max_id"></param>
         /// <param name="count"></param>
         /// <returns></returns>
         public async Task ConversationsAsync(ResultDelegate<ConversationListResult> resultDelegate, ErrorDelegate errorDelegate,
-            int? since_id = null, int? max_id = null, int? count = null)
+            User user = null, int? since_id = null, int? max_id = null, int? count = null)
         {
             try
             {
                 SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                if (user != null)
+                    args.Add("user_id", user.id.ToString());
                 AddListOptions(args, since_id, max_id, count);
 
                 HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(conversationsPath, args));
