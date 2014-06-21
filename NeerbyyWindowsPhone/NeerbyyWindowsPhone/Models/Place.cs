@@ -60,5 +60,20 @@ namespace NeerbyyWindowsPhone
         /// The ID of to reference following this place or null
         /// </summary>
         public int? followed_place_id { get; set; }
+
+        /// <summary>
+        /// The Distance of the user to that place
+        /// </summary>
+        public int? distance { get; set; }
+
+        /// <summary>
+        /// The Distance from the User to the Boundary around the Place
+        /// </summary>
+        public int? distance_boundary { get; set; }
+
+        /// <summary>
+        /// A Boolean to know if the User can publish in a Place
+        /// </summary>
+        public Boolean? can_publish { get; set; }
     }
 }

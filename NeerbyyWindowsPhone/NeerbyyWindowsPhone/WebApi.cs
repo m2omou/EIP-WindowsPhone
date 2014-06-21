@@ -369,12 +369,12 @@ namespace NeerbyyWindowsPhone
 
         private IDictionary<string, string> AddListOptions(IDictionary<string, string> dict, int? since_id, int? max_id, int? count)
         {
-            if (since_id != null)
-                dict.Add("since_id", since_id.ToString());
-            if (max_id != null)
-                dict.Add("max_id", max_id.ToString());
-            if (count != null)
-                dict.Add("count", count.ToString());
+            if (since_id.HasValue)
+                dict.Add("since_id", since_id.Value.ToString());
+            if (max_id.HasValue)
+                dict.Add("max_id", max_id.Value.ToString());
+            if (count.HasValue)
+                dict.Add("count", count.Value.ToString());
             return dict;
         }
 
@@ -718,15 +718,22 @@ namespace NeerbyyWindowsPhone
         /// <param name="errorDelegate"></param>
         /// <param name="latitude"></param>
         /// <param name="longitude"></param>
+        /// <param name="user_latitude"></param>
+        /// <param name="user_longitude"></param>
         /// <returns></returns>
         public async Task PlacesAsync(ResultDelegate<PlaceListResult> resultDelegate, ErrorDelegate errorDelegate,
-            double latitude, double longitude)
+            double latitude, double longitude, double? user_latitude = null, double? user_longitude = null)
         {
             try
             {
                 SortedDictionary<string, string> args = new SortedDictionary<string, string>();
                 args.Add("latitude", latitude.ToString());
                 args.Add("longitude", longitude.ToString());
+                if (user_latitude.HasValue && user_longitude.HasValue)
+                {
+                    args.Add("user_latitude", user_latitude.Value.ToString());
+                    args.Add("user_longitude", user_longitude.Value.ToString());
+                }
 
                 HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(placesPath, args));
 
@@ -1082,15 +1089,23 @@ namespace NeerbyyWindowsPhone
         /// <param name="since_id"></param>
         /// <param name="max_id"></param>
         /// <param name="count"></param>
+        /// <param name="user_latitude"></param>
+        /// <param name="user_longitude"></param>
         /// <returns></returns>
         public async Task FollowedPlacesAsync(ResultDelegate<PlaceListResult> resultDelegate, ErrorDelegate errorDelegate,
-            int? user_id = null, int? since_id = null, int? max_id = null, int? count = null)
+            int? user_id = null, int? since_id = null, int? max_id = null, int? count = null, double? user_latitude = null, double? user_longitude = null)
         {
             try
             {
                 SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-                args.Add("user_id", user_id.ToString());
+                if (user_id.HasValue)
+                    args.Add("user_id", user_id.ToString());
                 AddListOptions(args, since_id, max_id, count);
+                if (user_latitude.HasValue && user_longitude.HasValue)
+                {
+                    args.Add("user_latitude", user_latitude.Value.ToString());
+                    args.Add("user_longitude", user_longitude.Value.ToString());
+                }
 
                 HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(followedPlacesPath, args));
 
