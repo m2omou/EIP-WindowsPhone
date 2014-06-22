@@ -181,19 +181,23 @@ namespace NeerbyyWindowsPhone
         /// <summary>
         /// A Report Type that doesn't match the others
         /// </summary>
-        Custom,
+        Custom = 0,
         /// <summary>
         /// A Report for Copyright infringment
         /// </summary>
-        Copyright,
+        Copyright = 1,
         /// <summary>
-        /// A Report for not respecting a person's right the their image
+        /// A Report for not respecting a person's rights to the their image
         /// </summary>
-        ImageRights,
+        ImageRights = 2,
         /// <summary>
-        /// A Report for Inappropriate Sexual Content
+        /// A Report for Inappropriate Content
         /// </summary>
-        SexualContent
+        InappropriateContent = 3,
+        /// <summary>
+        /// A Report for Discriminatory Content
+        /// </summary>
+        DiscriminatoryContent = 4
     };
 
     /// <summary>
@@ -802,8 +806,8 @@ namespace NeerbyyWindowsPhone
                 args.Add("place_id", place.id.ToString());
                 args.Add("content", content);
                 args.Add("link", url);
-                args.Add("latitude", latitude.ToString());
-                args.Add("longitude", longitude.ToString());
+                args.Add("user_latitude", latitude.ToString());
+                args.Add("user_longitude", longitude.ToString());
 
                 FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(postsKey, args));
 
@@ -842,8 +846,8 @@ namespace NeerbyyWindowsPhone
 
                 dataContent.Add(new StringContent(place.id), AddKey(postsKey, "place_id"));
                 dataContent.Add(new StringContent(content), AddKey(postsKey, "content"));
-                dataContent.Add(new StringContent(latitude.ToString()), AddKey(postsKey, "latitude"));
-                dataContent.Add(new StringContent(longitude.ToString()), AddKey(postsKey, "longitude"));
+                dataContent.Add(new StringContent(latitude.ToString()), AddKey(postsKey, "user_latitude"));
+                dataContent.Add(new StringContent(longitude.ToString()), AddKey(postsKey, "user_longitude"));
 
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(postsPath), dataContent);
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);

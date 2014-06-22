@@ -19,7 +19,7 @@ namespace NeerbyyWindowsPhone
         /// <summary>
         /// The other User in the Conversation
         /// </summary>
-        public User user { get; set; }
+        public User recipient { get; set; }
 
         /// <summary>
         /// A list of Messages in the Conversation
