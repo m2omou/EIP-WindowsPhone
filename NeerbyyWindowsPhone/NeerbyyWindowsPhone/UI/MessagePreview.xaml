@@ -9,16 +9,16 @@
     Foreground="{StaticResource PhoneForegroundBrush}" Height="186" Width="450" Margin="0,0,0,10" Background="White">
 	<Grid x:Name="LayoutRoot1" Background="#FFE6E6E6" Margin="0,0,0,19">
 		<StackPanel HorizontalAlignment="Left" Height="166" VerticalAlignment="Top" Width="456" Orientation="Horizontal">
-			<Image Width="120" Margin="10,10,0,10" Source="/NeerbyyWindowsPhone;component/default.jpg" Height="120"/>
+			<Image x:Name="avatar" Width="120" Margin="10,10,0,10" Source="/NeerbyyWindowsPhone;component/default.jpg" Height="120"/>
 			<StackPanel Margin="10,1,0,0" Width="316">
-				<TextBlock TextWrapping="Wrap" Text="J.R Oppenheimer" Width="311" Margin="0,14,0,0" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FF474747"/>
-				<TextBlock TextWrapping="Wrap" Text="Hey, comment vas tu ?" Foreground="#FF9E9E9E" FontFamily="Segoe WP Light" FontStyle="Italic" FontSize="16"/>
-				<TextBlock TextWrapping="Wrap" Foreground="#FF807E7E" FontFamily="Segoe WP Light" FontSize="14.667" TextAlignment="Right" Margin="0,0,20,0" Height="25">
+				<TextBlock x:Name="username" TextWrapping="Wrap" Text="J.R Oppenheimer" Width="311" Margin="0,14,0,0" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FF474747"/>
+				<TextBlock x:Name="preview" TextWrapping="Wrap" Text="Hey, comment vas tu ?" Foreground="#FF9E9E9E" FontFamily="Segoe WP Light" FontStyle="Italic" FontSize="16"/>
+				<TextBlock x:Name="date" TextWrapping="Wrap" Foreground="#FF807E7E" FontFamily="Segoe WP Light" FontSize="14.667" TextAlignment="Right" Margin="0,0,20,0" Height="25">
 					<Run Text="Aujourd'hui a 13h42"/>
 					<LineBreak/>
 					<Run/>
 				</TextBlock>
-				<Button Content="VOIR" Height="67" Margin="129,0,3,0" BorderBrush="Transparent" Background="#FFFF9F9F"/>
+				<Button Content="VOIR" Height="67" Margin="129,0,3,0" BorderBrush="Transparent" Background="#FFFF9F9F" Click="Button_Click"/>
 			</StackPanel>
 		</StackPanel>
 

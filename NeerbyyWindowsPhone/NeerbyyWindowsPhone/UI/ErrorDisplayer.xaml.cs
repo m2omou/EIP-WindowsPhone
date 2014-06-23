@@ -21,7 +21,7 @@ namespace NeerbyyWindowsPhone
         public ErrorDisplayer()
         {
             InitializeComponent();
-            MessageBox.Show("An error occured, please check your internet connection.");
+            MessageBox.Show("Une erreur est survenue.");
         }
     }
 }

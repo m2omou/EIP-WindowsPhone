@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.Windows.Media.Imaging;
 
 namespace NeerbyyWindowsPhone
 {
@@ -27,6 +28,33 @@ namespace NeerbyyWindowsPhone
         }
 
         /// <summary>
+        ///  Display a conversation in the listing
+        /// </summary>
+        /// <param name="conversation"></param>
+        /// <param name="first"></param>
+        private void AddConversation(Conversation conversation, bool first) {
+            UI.MessagePreview display_message = new UI.MessagePreview();
+
+            display_message.preview.Text = conversation.messages.Last<Message>().content;
+            display_message.username.Text = conversation.recipient.username;
+            display_message.user = conversation.recipient;
+            Uri uri = null;
+            uri = new Uri(conversation.recipient.avatar, UriKind.Absolute);
+            var bitmap = new BitmapImage(uri);
+            display_message.avatar.Source = bitmap;
+            
+            if (first)
+            {
+                StackListing.Children.Insert(0, display_message);
+            }
+            else
+            {
+                StackListing.Children.Add(display_message);
+            }
+            ScrollViewer.UpdateLayout();
+        }
+
+        /// <summary>
         /// view will appear
         /// </summary>
         /// <param name="e"></param>
@@ -35,6 +63,44 @@ namespace NeerbyyWindowsPhone
             count = 5;
             max_id = 0;
             since_id = 0;
+            WebApi.Singleton.ConversationsAsync((string responseMessage, ConversationListResult result) =>
+            {
+                bool first = false;
+                foreach (Conversation conversation in result.conversations)
+                {
+                        if (!first)
+                        {
+                            since_id = conversation.id;
+                            first = true;
+                        }
+                    this.AddConversation(conversation, false);
+                        this.max_id = conversation.id;
+                }
+            }, (String responseMessage, Exception exception) =>
+            {
+                ErrorDisplayer edisp = new ErrorDisplayer();
+            });
+        }
+
+        /// <summary>
+        /// Display More Conversations
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Load_More(object sender, RoutedEventArgs e)
+        {
+            WebApi.Singleton.ConversationsAsync((string responseMessage, ConversationListResult result) =>
+            {
+                foreach (Conversation conversation in result.conversations)
+                {
+                    this.AddConversation(conversation, false);
+                    this.max_id = conversation.id;
+                }
+            }, (String responseMessage, Exception exception) =>
+            {
+                ErrorDisplayer edisp = new ErrorDisplayer();
+            }, null, 0, this.max_id, count);
+
         }
     }
 }
