@@ -28,9 +28,6 @@ namespace NeerbyyWindowsPhone
         public ListingPosts()
         {
             InitializeComponent();
-            since_id = 0;
-            max_id = 0;
-            count = 5;
         }
 
         /// <summary>
@@ -120,6 +117,9 @@ namespace NeerbyyWindowsPhone
             {
                 StackListing.Children.Clear();
             }
+            since_id = 0;
+            max_id = 0;
+            count = 5;
             this.DisplayFollowButton();
             Title.Text = ((App)Application.Current).currentPlace.name;
             WebApi.Singleton.PostsForPlaceAsync((string responseMessage, PostListResult result) =>

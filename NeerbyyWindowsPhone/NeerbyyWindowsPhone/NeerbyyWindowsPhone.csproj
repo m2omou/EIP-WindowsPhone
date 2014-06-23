@@ -120,6 +120,9 @@
     <Compile Include="Infos.xaml.cs">
       <DependentUpon>Infos.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ListingMessages.xaml.cs">
+      <DependentUpon>ListingMessages.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ListingPosts.xaml.cs">
       <DependentUpon>ListingPosts.xaml</DependentUpon>
     </Compile>
@@ -130,6 +133,9 @@
     <Compile Include="Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Messenger.xaml.cs">
+      <DependentUpon>Messenger.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Conversation.cs" />
     <Compile Include="Models\Message.cs" />
@@ -138,11 +144,23 @@
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Vote.cs" />
+    <Compile Include="Profile.xaml.cs">
+      <DependentUpon>Profile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Report.xaml.cs">
+      <DependentUpon>Report.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\AsynchronousDisplay.xaml.cs">
       <DependentUpon>AsynchronousDisplay.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\ErrorDisplayer.xaml.cs">
       <DependentUpon>ErrorDisplayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Message.xaml.cs">
+      <DependentUpon>Message.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\MessagePreview.xaml.cs">
+      <DependentUpon>MessagePreview.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\PlacePreview.xaml.cs">
       <DependentUpon>PlacePreview.xaml</DependentUpon>
@@ -200,6 +218,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ListingMessages.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ListingPosts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -212,11 +234,31 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Messenger.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Profile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Report.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\AsynchronousDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\ErrorDisplayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Message.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\MessagePreview.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

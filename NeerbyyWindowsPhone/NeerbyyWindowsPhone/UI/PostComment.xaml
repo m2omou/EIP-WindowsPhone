@@ -7,7 +7,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}" Height="101" Width="456">
-	<StackPanel x:Name="Comment" HorizontalAlignment="Left" Height="101" VerticalAlignment="Top" Width="456" Orientation="Horizontal" Background="#FFFBFBFB">
+	<StackPanel x:Name="Comment" HorizontalAlignment="Left" Height="101" VerticalAlignment="Top" Width="456" Orientation="Horizontal" Background="#FFFBFBFB" Tap="Comment_Tap">
 		<Image x:Name="Avatar" Width="81" Source="default.jpg" Margin="10,10,0,0" Height="81" VerticalAlignment="Top"/>
 		<StackPanel Width="356" Margin="0">
 			<TextBlock x:Name="Value" TextWrapping="Wrap" Text="Bla blabl bal bal bal bal bal ba lba lbal bal bal bal bal bal bal bal bal bal bal balb al bal bal bal balb al bal bal bla blab al bal bal bal blab lab al bal bal bal bal balbalbal ba lbal" Height="64" Margin="10,10,0,0" Foreground="Black" FontSize="16"/>

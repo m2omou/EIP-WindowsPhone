@@ -12,9 +12,19 @@ namespace NeerbyyWindowsPhone
 {
     public partial class PostComment : UserControl
     {
+        public User user;
         public PostComment()
         {
             InitializeComponent();
         }
+
+        private void Comment_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+            ((App)Application.Current).currentUser = this.user;
+            (Application.Current.RootVisual as PhoneApplicationFrame).Navigate(new Uri("/Profile.xaml", UriKind.Relative));
+        }
+
+
     }
 }

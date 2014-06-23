@@ -29,9 +29,6 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         public DisplayPost()
         {
-            max_id = 0;
-            since_id = 0;
-            count = 5;
             InitializeComponent();
         }
 
@@ -42,10 +39,13 @@ namespace NeerbyyWindowsPhone
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
 
+            max_id = 0;
+            since_id = 0;
+            count = 5;
+
             this.DisplayVotes();
             //Title.Text = ((App)Application.Current).currentPost.;
             //this.text_content.Text = ((App)Application.Current).currentPost.content;
-            this.Place.Text = ((App)Application.Current).currentPost.content;
             this.Title.Text = ((App)Application.Current).currentPost.place.name;
             if (((App)Application.Current).currentPost.url != null && ((App)Application.Current).currentPost.url != "")
             {
@@ -93,6 +93,7 @@ namespace NeerbyyWindowsPhone
             PostComment display_comment = new PostComment();
 
             display_comment.Value.Text = comment.content;
+            display_comment.user = comment.user;
             String infos = string.Format("{0} le {1}", comment.user.username, comment.created_at);
             display_comment.Username.Text = infos;
             Uri uri = null;
@@ -118,6 +119,11 @@ namespace NeerbyyWindowsPhone
         {
             ListingComments.Children.Clear();
             bool first = false;
+            Comment content = new Comment();
+            content.created_at = ((App)Application.Current).currentPost.created_at;
+            content.content = ((App)Application.Current).currentPost.content;
+            content.user = ((App)Application.Current).currentPost.user;
+            this.AddComment(content, false);
             WebApi.Singleton.CommentsForPostAsync((string responseMessage, CommentListResult result) =>
             {
                 foreach (Comment comment in result.comments)
@@ -134,7 +140,6 @@ namespace NeerbyyWindowsPhone
             {
 
             }, ((App)Application.Current).currentPost, null, null, this.count);
-            
         }
 
         /// <summary>
@@ -186,7 +191,7 @@ namespace NeerbyyWindowsPhone
                         since_id = comment.id;
                         first = true;
                     }
-                    this.AddComment(comment, true);
+                    this.AddComment(comment, false);
                 }
             }, (String responseMessage, Exception exception) =>
             {
@@ -292,6 +297,17 @@ namespace NeerbyyWindowsPhone
         {
             string context = ((sender as Image).Source as BitmapImage).UriSource.ToString();
             NavigationService.Navigate(new Uri(String.Concat("/FullScreenImage.xaml?context=", context), UriKind.RelativeOrAbsolute));
+        }
+
+        /// <summary>
+        /// Report a post
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ReportPost(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Report.xaml", UriKind.RelativeOrAbsolute));
+
         }
 
     }

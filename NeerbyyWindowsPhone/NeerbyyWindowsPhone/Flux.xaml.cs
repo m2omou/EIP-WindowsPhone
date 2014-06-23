@@ -23,9 +23,6 @@ namespace NeerbyyWindowsPhone
         public Flux()
         {
             InitializeComponent();
-            max_id = 0;
-            since_id = 0;
-            count = 5;
         }
 
 
@@ -118,6 +115,9 @@ namespace NeerbyyWindowsPhone
                 return;
             }
             StackListing.Children.Clear();
+            max_id = 0;
+            since_id = 0;
+            count = 5;
             WebApi.Singleton.FeedAsync((string responseMessage, PostListResult result) =>
             {
                 bool first = false;

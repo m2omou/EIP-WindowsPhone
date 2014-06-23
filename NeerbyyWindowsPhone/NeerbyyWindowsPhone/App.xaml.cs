@@ -29,6 +29,8 @@ namespace NeerbyyWindowsPhone
 
         public Post currentPost { get; set; }
 
+        public User currentUser { get; set; }
+
         /// <summary>
         /// Pass  the current post as a reference
         /// </summary>

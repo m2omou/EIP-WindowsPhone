@@ -23,9 +23,6 @@ namespace NeerbyyWindowsPhone
         public Favorites()
         {
             InitializeComponent();
-            this.max_id = 0;
-            this.since_id = 0;
-            this.count = 5;
         }
 
         private void AddPlaceToTheListing(Place place, bool first)
@@ -70,6 +67,9 @@ namespace NeerbyyWindowsPhone
             {
                 return;
             }
+            this.max_id = 0;
+            this.since_id = 0;
+            this.count = 5;
             StackListing.Children.Clear();
             WebApi.Singleton.FollowedPlacesAsync((string responseMessage, PlaceListResult result) =>
             {

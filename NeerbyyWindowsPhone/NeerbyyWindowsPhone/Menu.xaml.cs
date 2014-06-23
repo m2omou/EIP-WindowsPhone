@@ -66,7 +66,7 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void GoMessages(object sender, RoutedEventArgs e)
         {
-           
+            NavigationService.Navigate(new Uri("/ListingMessages.xaml", UriKind.Relative));
         }
 
         /// <summary>

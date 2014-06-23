@@ -54,7 +54,7 @@
         		<TextBlock TextWrapping="Wrap" Text="Adresse mail ou nom d'utilisateur" FontFamily="Segoe WP" Foreground="#FF151515"/>
         		<TextBox Text="neerbyy" Height="72" TextWrapping="Wrap" Width="456" InputScope="EmailUserName" x:Name="mail" Background="#BFCBCBCB"/>
         		<TextBlock TextWrapping="Wrap" Text="Mot de passe" Foreground="#FF151515"/>
-        		<PasswordBox Password="password" x:Name="password" Background="#BFCBCBCB"/>
+        		<PasswordBox Password="test" x:Name="password" Background="#BFCBCBCB"/>
         		<Button Click="tryToLogin" Content="SE CONNECTER" Background="#FF3EB88E" BorderBrush="#002C2C2C" Foreground="White" FontFamily="Segoe WP Semibold"/>
         		<TextBlock TextWrapping="Wrap" Text="Pas encore de compte ? Inscrivez vous !" Foreground="#FF151515" FontStyle="Italic"/>
                 <Button Click="goToSignUp" Foreground="White" BorderBrush="#002C2C2C" Background="#FF3EB88E" FontFamily="Segoe WP Semibold" Content="INSCRIPTION"/>

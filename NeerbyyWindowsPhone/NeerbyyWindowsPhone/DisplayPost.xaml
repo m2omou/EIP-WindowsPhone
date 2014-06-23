@@ -31,22 +31,19 @@
           
 			<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="646">
 				<TextBlock x:Name="Title" TextWrapping="Wrap" Text="PARIS" Width="454" Foreground="#FF3EB88E" FontFamily="Segoe WP Black" FontSize="37.333" HorizontalAlignment="Center" Height="49"/>
-                <StackPanel Height="246" Width="458" HorizontalAlignment="Left">
-                	<Image Tap="image_content_Tap" Margin="1,0,0,9" x:Name="image_content" Stretch="UniformToFill" Width="100" Height="100" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                	<TextBlock x:Name="Place" TextWrapping="Wrap" Text="à la Tour Eiffel su su su su s us us us us u sus us us us us us us su us s us us us us us us us us us us us us usus us us us us us us us u" Foreground="#FF535353" FontFamily="Segoe WP Black" FontSize="26.667" HorizontalAlignment="Right" Margin="0" Width="454"/>
-                </StackPanel>
+				<Image Tap="image_content_Tap" Margin="0,0,0,9" x:Name="image_content" Stretch="UniformToFill" Width="248" Height="247" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 				<StackPanel>
-					<StackPanel Height="70" Orientation="Horizontal">
-						<Button Content="SIGNALER" Background="#FFF33232" FontSize="18.667" Width="216"/>
+					<StackPanel Height="70" Orientation="Horizontal" Margin="0,-10,0,0">
+						<Button Content="SIGNALER" Background="#FFF33232" FontSize="18.667" Width="216" Click="ReportPost" BorderThickness="0,3,3,3"/>
 						<Button x:Name="button_vote_up" Click="VoteUp" Content="745" Background="#FF3EB88E" FontSize="18.667" Width="120" BorderBrush="#FF2D8969"/>
                         <Button x:Name="button_vote_down" Click="VoteDown"  Content="012" Background="#FFF38A32" FontSize="18.667" Width="120" BorderBrush="#FFD47B2F"/>
 					</StackPanel>
-					<Button Content="COMMENTER" Background="#FF444444" FontSize="18.667" Height="70" Click="WriteComment"/>
+					<Button Content="COMMENTER" Background="#FF444444" FontSize="18.667" Height="70" Click="WriteComment" Margin="0,-20,0,0"/>
 				</StackPanel>
-                <ScrollViewer x:Name="ScrollingView" Height="144">
+                <ScrollViewer x:Name="ScrollingView" Height="209" Margin="0,-10,0,0">
 					<StackPanel x:Name="ListingComments"/>
 				</ScrollViewer>
-                <Button Content="CHARGER PLUS DE COMMENTAIRES" Background="#FF3B76F5" FontSize="14.667" Height="71" Click="MoreComments" BorderBrush="#FF3B76F5"/>
+                <Button Content="CHARGER PLUS DE COMMENTAIRES" Background="#FF3B76F5" FontSize="14.667" Height="55" Click="MoreComments" BorderBrush="#FF3B76F5" Margin="0,-10,0,0" BorderThickness="0"/>
 			</StackPanel>
 		</Grid>
 	</Grid>

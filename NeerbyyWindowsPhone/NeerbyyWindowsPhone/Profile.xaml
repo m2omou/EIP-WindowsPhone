@@ -1,0 +1,78 @@
+﻿<phone:PhoneApplicationPage
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:UI="clr-namespace:NeerbyyWindowsPhone.UI"
+    x:Class="NeerbyyWindowsPhone.Profile"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+
+	<Grid x:Name="LayoutRoot" Background="White">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<!-- LOCALIZATION NOTE:
+            To localize the displayed strings copy their values to appropriately named
+            keys in the app's neutral language resource file (AppResources.resx) then
+            replace the hard-coded text value between the attributes' quotation marks
+            with the binding clause whose path points to that string name.
+
+            For example:
+
+                Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
+
+            This binding points to the template's string resource named "ApplicationTitle".
+
+            Adding supported languages in the Project Properties tab will create a
+            new resx file per language that can carry the translated values of your
+            UI strings. The binding in these examples will cause the value of the
+            attributes to be drawn from the .resx file that matches the
+            CurrentUICulture of the app at run time.
+         -->
+
+		<!--Uncomment to see an alignment grid to help ensure your controls are
+            aligned on common boundaries.  The image has a top margin of -32px to
+            account for the System Tray. Set this to 0 (or remove the margin altogether)
+            if the System Tray is hidden.
+
+            Before shipping remove this XAML and the image itself.-->
+		<!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
+    <!--TitlePanel contains the name of the application and page title-->
+		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,204,28" Background="#FF3EB88E">
+			<TextBlock Text="Neerby" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0" FontFamily="Segoe WP Black"/>
+			<TextBlock Text="Profil" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="GeosansLight"/>
+		</StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+			<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="607">
+				<StackPanel Height="151" Width="455" Orientation="Horizontal" Background="#FFEAEAEA">
+					<Image Width="150" Source="default.jpg" x:Name="avatar"/>
+					<StackPanel Width="305">
+						<TextBlock TextWrapping="Wrap" Text="Albert E" Foreground="#FF616161" Margin="20,20,20,0" x:Name="username"/>
+						<TextBlock TextWrapping="Wrap" Text="Albert Einstein" Foreground="#FF616161" Margin="20,20,20,0" Height="71" x:Name="fullname"/>
+					</StackPanel>
+				</StackPanel>
+				<Button Content="CONTACTER" BorderBrush="#FF3EB88E" Background="#FF3EB88E" Click="Contact_Click"/>
+				<StackPanel Height="77" Width="456" Orientation="Horizontal" Margin="0,-15,0,0">
+					<Button Content="DERNIERS LIEUX" Width="242" Background="#FF3EB88E" FontSize="16"/>
+					<Button Content="DERNIERS SOUVENIRS" Width="230" Background="#FF3EB88E" FontSize="16" Margin="-12,0,0,0"/>
+				</StackPanel>
+				<ScrollViewer x:Name="ScrollingView" HorizontalAlignment="Left" Height="307" VerticalAlignment="Top" Width="454">
+					<StackPanel x:Name="StackListing" Height="307" Width="454" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+				</ScrollViewer>
+			</StackPanel>
+		</Grid>
+
+	</Grid>
+
+</phone:PhoneApplicationPage>
