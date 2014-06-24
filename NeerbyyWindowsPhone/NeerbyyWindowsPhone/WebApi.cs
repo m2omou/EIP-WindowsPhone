@@ -1041,7 +1041,7 @@ namespace NeerbyyWindowsPhone
             try
             {
                 SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-                args.Add("post_id", post.id.ToString());
+                args.Add("publication_id", post.id.ToString());
                 args.Add("reason", reportType.ToString());
                 args.Add("content", content);
 
