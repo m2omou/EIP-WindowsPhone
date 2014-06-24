@@ -64,10 +64,10 @@
 				</StackPanel>
 				<Button Content="CONTACTER" BorderBrush="#FF3EB88E" Background="#FF3EB88E" Click="Contact_Click"/>
 				<StackPanel Height="77" Width="456" Orientation="Horizontal" Margin="0,-15,0,0">
-					<Button Content="DERNIERS LIEUX" Width="242" Background="#FF3EB88E" FontSize="16"/>
-					<Button Content="DERNIERS SOUVENIRS" Width="230" Background="#FF3EB88E" FontSize="16" Margin="-12,0,0,0"/>
+					<Button Content="DERNIERS LIEUX" Width="242" Background="#FF3EB88E" FontSize="16" Click="Places_Click" />
+					<Button Content="DERNIERS SOUVENIRS" Width="230" Background="#FF3EB88E" FontSize="16" Margin="-12,0,0,0" Click="Posts_Click"/>
 				</StackPanel>
-				<ScrollViewer x:Name="ScrollingView" HorizontalAlignment="Left" Height="307" VerticalAlignment="Top" Width="454">
+				<ScrollViewer x:Name="ScrollingView" HorizontalAlignment="Left" Height="324" VerticalAlignment="Top" Width="454">
 					<StackPanel x:Name="StackListing" Height="307" Width="454" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 				</ScrollViewer>
 			</StackPanel>

@@ -25,6 +25,11 @@ namespace NeerbyyWindowsPhone
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Add a place to the stack listing
+        /// </summary>
+        /// <param name="place"></param>
+        /// <param name="first"></param>
         private void AddPlaceToTheListing(Place place, bool first)
         {
 
