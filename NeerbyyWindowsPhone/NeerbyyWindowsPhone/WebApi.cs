@@ -809,6 +809,9 @@ namespace NeerbyyWindowsPhone
                 args.Add("user_latitude", latitude.ToString());
                 args.Add("user_longitude", longitude.ToString());
 
+                args.Add("latitude", latitude.ToString());
+                args.Add("longitude", longitude.ToString());
+
                 FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(postsKey, args));
 
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(postsPath), formContent);
@@ -848,6 +851,9 @@ namespace NeerbyyWindowsPhone
                 dataContent.Add(new StringContent(content), AddKey(postsKey, "content"));
                 dataContent.Add(new StringContent(latitude.ToString()), AddKey(postsKey, "user_latitude"));
                 dataContent.Add(new StringContent(longitude.ToString()), AddKey(postsKey, "user_longitude"));
+
+                dataContent.Add(new StringContent(latitude.ToString()), AddKey(postsKey, "latitude"));
+                dataContent.Add(new StringContent(longitude.ToString()), AddKey(postsKey, "longitude"));
 
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(postsPath), dataContent);
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
@@ -1254,7 +1260,7 @@ namespace NeerbyyWindowsPhone
                 args.Add("conversation_id", conversation.id.ToString());
                 AddListOptions(args, since_id, max_id, count);
 
-                HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(conversationsPath, args));
+                HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(messagesPath, args));
 
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
             }
