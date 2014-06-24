@@ -12,7 +12,7 @@
 			<Image x:Name="avatar" Width="120" Margin="10,10,0,10" Source="/NeerbyyWindowsPhone;component/default.jpg" Height="120"/>
 			<StackPanel Margin="10,1,0,0" Width="316">
 				<TextBlock x:Name="username" TextWrapping="Wrap" Text="J.R Oppenheimer" Width="311" Margin="0,14,0,0" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FF474747"/>
-				<TextBlock x:Name="preview" TextWrapping="Wrap" Text="Hey, comment vas tu ?" Foreground="#FF9E9E9E" FontFamily="Segoe WP Light" FontStyle="Italic" FontSize="16"/>
+				<TextBlock x:Name="preview" TextWrapping="Wrap" Text="Hey, comment vas tu ?" Foreground="#FF9E9E9E" FontFamily="Segoe WP Light" FontStyle="Italic" FontSize="16" Height="22"/>
 				<TextBlock x:Name="date" TextWrapping="Wrap" Foreground="#FF807E7E" FontFamily="Segoe WP Light" FontSize="14.667" TextAlignment="Right" Margin="0,0,20,0" Height="25">
 					<Run Text="Aujourd'hui a 13h42"/>
 					<LineBreak/>

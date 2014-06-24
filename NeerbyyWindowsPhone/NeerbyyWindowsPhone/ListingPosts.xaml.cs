@@ -150,6 +150,11 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void GoToCreatePost(object sender, RoutedEventArgs e)
         {
+            if (!WebApi.Singleton.IsUserAuthenticated())
+            {
+                ErrorDisplayer error = new ErrorDisplayer(e_err_status.LOGIN);
+                return;
+            }
             NavigationService.Navigate(new Uri("/CreatePost.xaml", UriKind.Relative));
         }
 
@@ -180,6 +185,11 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void FollowPlace(object sender, RoutedEventArgs e)
         {
+            if (!WebApi.Singleton.IsUserAuthenticated())
+            {
+                ErrorDisplayer error = new ErrorDisplayer(e_err_status.LOGIN);
+                return;
+            }
             if (((App)Application.Current).currentPlace.followed_place_id == null)
             {
                 WebApi.Singleton.FollowPlaceAsync((string responseMessage, PlaceResult result) =>

@@ -20,6 +20,30 @@ namespace NeerbyyWindowsPhone
             InitializeComponent();
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (WebApi.Singleton.IsUserAuthenticated() == true)
+            {
+                button_connect.Visibility = System.Windows.Visibility.Collapsed;
+                button_disc.Visibility = System.Windows.Visibility.Visible;
+                button_fav.Visibility = System.Windows.Visibility.Visible;
+                button_flux.Visibility = System.Windows.Visibility.Visible;
+                button_infos.Visibility = System.Windows.Visibility.Visible;
+                button_msg.Visibility = System.Windows.Visibility.Visible;
+                button_settings.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                button_connect.Visibility = System.Windows.Visibility.Visible;
+                button_disc.Visibility = System.Windows.Visibility.Collapsed;
+                button_fav.Visibility = System.Windows.Visibility.Collapsed;
+                button_flux.Visibility = System.Windows.Visibility.Collapsed;
+                button_infos.Visibility = System.Windows.Visibility.Collapsed;
+                button_msg.Visibility = System.Windows.Visibility.Collapsed;
+                button_settings.Visibility = System.Windows.Visibility.Collapsed;
+            }
+        }
+
         /// <summary>
         /// Do nothing when back button is pressed
         /// </summary>
@@ -94,6 +118,16 @@ namespace NeerbyyWindowsPhone
                 {
 
                 });
+        }
+
+        /// <summary>
+        /// Callback called to go to the settings
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GoLogin(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative));
         }
 
         /// <summary>

@@ -169,6 +169,11 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void WriteComment(object sender, RoutedEventArgs e)
         {
+            if (!WebApi.Singleton.IsUserAuthenticated())
+            {
+                ErrorDisplayer error = new ErrorDisplayer(e_err_status.LOGIN);
+                return;
+            }
             InputPrompt input = new InputPrompt();
             input.Completed += input_Completed;
             input.Title = "Poster un commentaire";
@@ -224,6 +229,11 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void VoteUp(object sender, RoutedEventArgs e)
         {
+            if (!WebApi.Singleton.IsUserAuthenticated())
+            {
+                ErrorDisplayer error = new ErrorDisplayer(e_err_status.LOGIN);
+                return;
+            }
             if (((App)Application.Current).currentPost.vote == null || ((App)Application.Current).currentPost.vote.value == false)
             {
                 WebApi.Singleton.SetVoteOnPostAsync((string responseMessage, VoteResult result) =>
@@ -259,6 +269,11 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void VoteDown(object sender, RoutedEventArgs e)
         {
+            if (!WebApi.Singleton.IsUserAuthenticated())
+            {
+                ErrorDisplayer error = new ErrorDisplayer(e_err_status.LOGIN);
+                return;
+            }
             if (((App)Application.Current).currentPost.vote == null || ((App)Application.Current).currentPost.vote.value == true)
             {
                 WebApi.Singleton.SetVoteOnPostAsync((string responseMessage, VoteResult result) =>

@@ -45,6 +45,11 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void Contact_Click(object sender, RoutedEventArgs e)
         {
+            if (!WebApi.Singleton.IsUserAuthenticated())
+            {
+                ErrorDisplayer error = new ErrorDisplayer(e_err_status.LOGIN);
+                return;
+            }
             NavigationService.Navigate(new Uri("/Messenger.xaml", UriKind.Relative));
         }
 
