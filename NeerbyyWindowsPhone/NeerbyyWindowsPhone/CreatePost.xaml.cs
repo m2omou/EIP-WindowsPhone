@@ -52,7 +52,7 @@ namespace NeerbyyWindowsPhone
                     }, (String responseMessage, Exception exception) =>
                     {
                         ErrorDisplayer error = new ErrorDisplayer();
-                    }, ((App)Application.Current).currentPlace, content.Text, "", ((App)Application.Current).myLongitude, ((App)Application.Current).myLatitude);
+                    }, ((App)Application.Current).currentPlace, content.Text, "", ((App)Application.Current).myLatitude, ((App)Application.Current).myLongitude);
                 }
                 else  // creation d'une image
                 {
@@ -62,7 +62,7 @@ namespace NeerbyyWindowsPhone
                     }, (String responseMessage, Exception exception) =>
                     {
                         ErrorDisplayer error = new ErrorDisplayer();
-                    }, ((App)Application.Current).currentPlace, content.Text, image_stream, preview_image.Name, ((App)Application.Current).myLongitude, ((App)Application.Current).myLatitude);
+                    }, ((App)Application.Current).currentPlace, content.Text, image_stream, preview_image.Name, ((App)Application.Current).myLatitude, ((App)Application.Current).myLongitude);
                 }
                 content.Text = "";
             }

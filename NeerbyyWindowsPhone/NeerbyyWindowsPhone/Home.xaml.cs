@@ -67,11 +67,11 @@ namespace NeerbyyWindowsPhone
         private async void getLocation()
         {
 
-            map_center = new GeoCoordinate(48.858093, 2.294694);
+            map_center = new GeoCoordinate(48.8581646494056, 2.294425964355468);
             target = new GeoCoordinate(-map_center.Latitude, -map_center.Longitude);
             HomeMap.Center = map_center;
             ((App)Application.Current).myLatitude = map_center.Latitude;
-            ((App)Application.Current).myLatitude = map_center.Longitude;
+            ((App)Application.Current).myLongitude = map_center.Longitude;
             return;
             // temporary hack to center on Paris
             try
@@ -94,7 +94,7 @@ namespace NeerbyyWindowsPhone
                 HomeMap.Center = map_center;
 
                 ((App)Application.Current).myLatitude = geoposition.Coordinate.Latitude;
-                ((App)Application.Current).myLatitude = geoposition.Coordinate.Longitude;
+                ((App)Application.Current).myLongitude = geoposition.Coordinate.Longitude;
             }
             catch (Exception ex)
             {

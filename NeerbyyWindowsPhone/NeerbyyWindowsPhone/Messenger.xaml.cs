@@ -147,6 +147,7 @@ namespace NeerbyyWindowsPhone
             if (e.Result != "")
                 WebApi.Singleton.SendMessageAsync((string responseMessage, MessageResult result) =>
                 {
+                    this.conversation = result.conversation;
                     this.NewMessages();
                 }, (String responseMessage, Exception exception) =>
                 {
