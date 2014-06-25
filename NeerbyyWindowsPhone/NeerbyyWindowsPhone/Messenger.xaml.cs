@@ -39,13 +39,15 @@ namespace NeerbyyWindowsPhone
             UI.Message display_message = new UI.Message();
 
             display_message.content.Text = message.content;
-            if (message.sender_id == ((App)Application.Current).currentUser.id)
+            //MessageBox.Show(String.Format("{0} {1}", message.sender_id, ((App)Application.Current).currentUser.id));
+            if (message.sender.id == ((App)Application.Current).currentUser.id)
             {
-                display_message.LayoutRoot.Background = new SolidColorBrush(Color.FromArgb(0xFF, 166, 209, 168));
+                display_message.LayoutRoot.Background = new SolidColorBrush(Color.FromArgb(0xFF, 209, 226, 226));
                 display_message.Margin = new Thickness(10, 0, 0, 0);
             }
             else
             {
+                display_message.LayoutRoot.Background = new SolidColorBrush(Color.FromArgb(0xFF, 166, 209, 168));
                 display_message.Margin = new Thickness(-10, 0, 0, 0);
             }
             if (first)
@@ -168,12 +170,12 @@ namespace NeerbyyWindowsPhone
                         since_id = msg.id;
                         first = true;
                     }
-                    this.AddMessage(msg, true);
+                    this.AddMessage(msg, false);
                 }
             }, (String responseMessage, Exception exception) =>
             {
 
-            }, this.conversation, this.since_id, null, this.count);
+            }, this.conversation, this.last_id, this.since_id, this.count);
         }
     }
 }

@@ -55,14 +55,46 @@ namespace NeerbyyWindowsPhone
         }
 
         /// <summary>
+        /// Display New conversations
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void New_Conversations()
+        {
+            WebApi.Singleton.ConversationsAsync((string responseMessage, ConversationListResult result) =>
+            {
+                bool first = false;
+                foreach (Conversation conversation in result.conversations)
+                {
+                    if (!first)
+                    {
+                        this.since_id = conversation.id;
+                        first = true;
+                    }
+
+                    this.AddConversation(conversation, true);
+                }
+            }, (String responseMessage, Exception exception) =>
+            {
+                ErrorDisplayer edisp = new ErrorDisplayer();
+            }, null, this.since_id, 0, count);
+
+        }
+
+        /// <summary>
         /// view will appear
         /// </summary>
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            count = 5;
-            max_id = 0;
-            since_id = 0;
+            if (e.NavigationMode == NavigationMode.Back)
+            {
+                this.New_Conversations();
+                return;
+            }
+                count = 5;
+                max_id = 0;
+                since_id = 0;
             WebApi.Singleton.ConversationsAsync((string responseMessage, ConversationListResult result) =>
             {
                 bool first = false;
@@ -79,7 +111,7 @@ namespace NeerbyyWindowsPhone
             }, (String responseMessage, Exception exception) =>
             {
                 ErrorDisplayer edisp = new ErrorDisplayer();
-            });
+            }, null, since_id, max_id, count);
         }
 
         /// <summary>
@@ -99,7 +131,7 @@ namespace NeerbyyWindowsPhone
             }, (String responseMessage, Exception exception) =>
             {
                 ErrorDisplayer edisp = new ErrorDisplayer();
-            }, null, 0, this.max_id, count);
+            }, null, this.since_id, this.max_id, count);
 
         }
     }

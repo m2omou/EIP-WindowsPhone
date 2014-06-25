@@ -94,6 +94,7 @@ namespace NeerbyyWindowsPhone
         {
             this.currentPost = PhoneApplicationService.Current.State["current_post"] as Post;
             this.currentPlace = PhoneApplicationService.Current.State["current_place"] as Place;
+            this.currentUser = PhoneApplicationService.Current.State["current_user"] as User;
             this.myLatitude =  (double)PhoneApplicationService.Current.State["my_latitude"];
             this.myLongitude = (double)PhoneApplicationService.Current.State["my_longitude"];
             WebApi.RestoreState(PhoneApplicationService.Current.State);
@@ -105,6 +106,7 @@ namespace NeerbyyWindowsPhone
         {
             PhoneApplicationService.Current.State["current_post"] = this.currentPost;
             PhoneApplicationService.Current.State["current_place"] = this.currentPlace;
+            PhoneApplicationService.Current.State["current_user"] = this.currentUser;
             PhoneApplicationService.Current.State["my_latitude"] = this.myLatitude;
             PhoneApplicationService.Current.State["my_longitude"] = this.myLongitude;
             WebApi.SaveState(PhoneApplicationService.Current.State);
