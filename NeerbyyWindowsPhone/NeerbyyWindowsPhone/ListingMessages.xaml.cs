@@ -38,6 +38,7 @@ namespace NeerbyyWindowsPhone
             display_message.preview.Text = conversation.messages.Last<Message>().content;
             display_message.username.Text = conversation.recipient.username;
             display_message.user = conversation.recipient;
+            display_message.date.Text = "";
             Uri uri = null;
             uri = new Uri(conversation.recipient.avatar, UriKind.Absolute);
             var bitmap = new BitmapImage(uri);
@@ -92,7 +93,7 @@ namespace NeerbyyWindowsPhone
                 this.New_Conversations();
                 return;
             }
-                count = 5;
+                count = 100;
                 max_id = 0;
                 since_id = 0;
             WebApi.Singleton.ConversationsAsync((string responseMessage, ConversationListResult result) =>

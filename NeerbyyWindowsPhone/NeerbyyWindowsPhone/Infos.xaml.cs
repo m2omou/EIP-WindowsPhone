@@ -29,10 +29,14 @@ namespace NeerbyyWindowsPhone
             cameraCapture.Completed += new EventHandler<PhotoResult>(this.cameraCaptureTask_Completed);
 
 
-            username.Text = WebApi.Singleton.AuthenticatedUser.username;
-            mail.Text = WebApi.Singleton.AuthenticatedUser.email;
-            lastname.Text = WebApi.Singleton.AuthenticatedUser.lastname;
-            firstname.Text = WebApi.Singleton.AuthenticatedUser.firstname;
+            if (WebApi.Singleton.AuthenticatedUser.username != null)
+                username.Text = WebApi.Singleton.AuthenticatedUser.username;
+            if (WebApi.Singleton.AuthenticatedUser.email != null)
+                mail.Text = WebApi.Singleton.AuthenticatedUser.email;
+            if (WebApi.Singleton.AuthenticatedUser.lastname != null)
+                lastname.Text = WebApi.Singleton.AuthenticatedUser.lastname;
+            if (WebApi.Singleton.AuthenticatedUser.firstname != null)
+                firstname.Text = WebApi.Singleton.AuthenticatedUser.firstname;
         }
 
         /// <summary>
@@ -57,6 +61,11 @@ namespace NeerbyyWindowsPhone
             }, mail.Text, username.Text, null, firstname.Text, lastname.Text, image, name);
         }
 
+        /// <summary>
+        /// Update the password
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         private void updatePassword(object sender, RoutedEventArgs args)
         {
             asynchronousDisplayer.Visibility = System.Windows.Visibility.Visible;
@@ -72,6 +81,27 @@ namespace NeerbyyWindowsPhone
             {
                 ErrorDisplayer error = new ErrorDisplayer();
             }, null, null, password2.Password, null, null, null, null);
+        }
+
+        private void deleteAccount(object sender, RoutedEventArgs args)
+        {
+            asynchronousDisplayer.Visibility = System.Windows.Visibility.Visible;
+            MessageBoxResult m = MessageBox.Show("Voulez vous vraiment supprimer votre compte ?", "Attention !", MessageBoxButton.OKCancel);
+            if (m == MessageBoxResult.Cancel)
+            {
+
+            }
+            else
+            {
+                WebApi.Singleton.DeleteUserAsync((string responseMessage, Result result) =>
+                {
+                    NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative));
+                }, (String responseMessage, Exception exception) =>
+                {
+                    ErrorDisplayer error = new ErrorDisplayer();
+                });
+            } 
+
         }
 
         /// <summary>

@@ -10,6 +10,7 @@ using Microsoft.Phone.Shell;
 using System.Windows.Media.Imaging;
 using Coding4Fun.Toolkit.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace NeerbyyWindowsPhone
 {
@@ -21,6 +22,7 @@ namespace NeerbyyWindowsPhone
         private int count;
         private int last_id;
         private int since_id;
+        private DispatcherTimer refresh;
         private Conversation conversation;
         /// <summary>
         ///  default constructor
@@ -28,6 +30,20 @@ namespace NeerbyyWindowsPhone
         public Messenger()
         {
             InitializeComponent();
+            refresh = new DispatcherTimer();
+            refresh.Interval = TimeSpan.FromMilliseconds(1000);
+            refresh.Tick += OnTimerRefresh;
+            refresh.Start();
+        }
+
+        /// <summary>
+        /// Refresh the messaging
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnTimerRefresh(object sender, EventArgs e)
+        {
+            this.NewMessages();
         }
 
         /// <summary>
@@ -59,6 +75,7 @@ namespace NeerbyyWindowsPhone
                 StackListing.Children.Add(display_message);
             }
             ScrollingView.UpdateLayout();
+            ScrollingView.ScrollToVerticalOffset(ScrollingView.Height);
         }
 
         /// <summary>
@@ -148,11 +165,19 @@ namespace NeerbyyWindowsPhone
                 WebApi.Singleton.SendMessageAsync((string responseMessage, MessageResult result) =>
                 {
                     this.conversation = result.conversation;
-                    this.NewMessages();
                 }, (String responseMessage, Exception exception) =>
                 {
                     ErrorDisplayer error = new ErrorDisplayer();
                 }, ((App)Application.Current).currentUser, e.Result);
+        }
+
+        /// <summary>
+        /// Stop the refresh
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            this.refresh.Stop();
         }
 
         /// <summary>
@@ -172,6 +197,7 @@ namespace NeerbyyWindowsPhone
                         first = true;
                     }
                     this.AddMessage(msg, false);
+                    this.last_id = msg.id;
                 }
             }, (String responseMessage, Exception exception) =>
             {

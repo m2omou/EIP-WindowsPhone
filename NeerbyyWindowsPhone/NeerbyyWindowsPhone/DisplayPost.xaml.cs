@@ -43,6 +43,9 @@ namespace NeerbyyWindowsPhone
             since_id = 0;
             count = 5;
 
+            if (((App)Application.Current).currentPost.user.id != WebApi.Singleton.AuthenticatedUser.id)
+                delete_button.Visibility = System.Windows.Visibility.Collapsed;
+
             this.DisplayVotes();
             //Title.Text = ((App)Application.Current).currentPost.;
             //this.text_content.Text = ((App)Application.Current).currentPost.content;
@@ -90,10 +93,9 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         private void AddComment(Comment comment, bool first)
         {
-            PostComment display_comment = new PostComment();
+            PostComment display_comment = new PostComment(comment);
 
             display_comment.Value.Text = comment.content;
-            display_comment.user = comment.user;
             String infos = string.Format("{0} le {1}", comment.user.username, comment.created_at);
             display_comment.Username.Text = infos;
             Uri uri = null;
@@ -109,8 +111,32 @@ namespace NeerbyyWindowsPhone
                 ListingComments.Children.Add(display_comment);
             }
             ScrollingView.UpdateLayout();
+            ScrollingView.ScrollToVerticalOffset(ScrollingView.Height);
         }
 
+        /// <summary>
+        /// DELETE A POST IF YOU ARE THE OWNER
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void delete_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult m = MessageBox.Show("Voulez vous vraiment supprimer votre publication ?", "Attention !", MessageBoxButton.OKCancel);
+            if (m == MessageBoxResult.Cancel)
+            {
+            }
+            else
+            {
+                WebApi.Singleton.DeletePostAsync((string responseMessage, Result result) =>
+                {
+                    this.NavigationService.GoBack();
+                }, (String responseMessage, Exception exception) =>
+                {
+                    ErrorDisplayer error = new ErrorDisplayer();
+                }, ((App)Application.Current).currentPost);
+            }
+
+        }
 
         /// <summary>
         /// Display all comments

@@ -58,7 +58,7 @@
                 <local:AsynchronousDisplay x:Name="asynchronousDisplayer"/>
                 <StackPanel Orientation="Horizontal">
                     <Image x:Name="preview_image" Tap="Image_Tap" Height="90" Width="90" RenderTransformOrigin="-1.435,0.52" Source="default.jpg"/>
-                    <Button  Content="SUPPRIMER" Background="Red" BorderBrush="#002C2C2C" Foreground="White" FontFamily="Segoe WP Semibold" Margin="0" Width="200" HorizontalAlignment="Right" Height="81" Click="RemovePicture" Visibility="Collapsed" x:Name="button_reset"/>
+                    <Button  Content="SUPPRIMER" Background="Red" BorderBrush="#002C2C2C" Foreground="White" FontFamily="Segoe WP Semibold" Margin="0" Width="200" HorizontalAlignment="Right" Height="81" Click="RemovePicture" x:Name="button_reset" Visibility="Collapsed"/>
                 </StackPanel>
                 <StackPanel Height="100" Width="458" Orientation="Horizontal">
                 	<StackPanel Width="227">
@@ -85,7 +85,10 @@
                 <PasswordBox Password="test"  x:Name="password" Background="#BFCBCBCB"/>
                 <TextBlock TextWrapping="Wrap" Text="Confirmation du mot de passe" Foreground="#FF151515"/>
                 <PasswordBox Password="test"  x:Name="password2" Background="#BFCBCBCB"/>
-                <Button Content="CHANGER DE MOT DE PASSE" Click="updatePassword" Foreground="White" BorderBrush="#002C2C2C" Background="#FFFF3B0F" FontFamily="Segoe WP Semibold"/>
+                <StackPanel Height="79" Width="439" HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,-20,0,0">
+                	<Button Content="CHANGER" Click="updatePassword" Foreground="White" BorderBrush="#002C2C2C" Background="#FF5AA3FB" FontFamily="Segoe WP Semibold" Margin="0" Width="243"/>
+                	<Button Content="SUPPRIMER" Click="deleteAccount" Foreground="White" BorderBrush="#002C2C2C" Background="#FFE40000" FontFamily="Segoe WP Semibold" Margin="0" Width="215"/>
+                </StackPanel>
             </StackPanel>
         </Grid>
 
