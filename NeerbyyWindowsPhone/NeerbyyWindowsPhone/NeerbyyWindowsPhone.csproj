@@ -136,6 +136,7 @@
     <Compile Include="Messenger.xaml.cs">
       <DependentUpon>Messenger.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Conversation.cs" />
     <Compile Include="Models\Message.cs" />

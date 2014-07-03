@@ -65,6 +65,17 @@ namespace NeerbyyWindowsPhone
     }
 
     /// <summary>
+    /// A List of Category Result
+    /// </summary>
+    public class CategoryListResult
+    {
+        /// <summary>
+        /// A List of Categories
+        /// </summary>
+        public List<Category> categories { get; set; }
+    }
+
+    /// <summary>
     /// A Post Result
     /// </summary>
     public class PostResult
@@ -211,6 +222,8 @@ namespace NeerbyyWindowsPhone
         private static readonly string sessionsPath = "sessions";
         private static readonly string passwordResetsPath = "password_resets";
         private static readonly string placesPath = "places";
+        private static readonly string categoriesPath = "categories";
+        private static readonly string searchPlacesPath = "search/places";
         private static readonly string postsPath = "publications";
         private static readonly string commentsPath = "comments";
         private static readonly string votesPath = "votes";
@@ -222,11 +235,14 @@ namespace NeerbyyWindowsPhone
         private static readonly string messagesPath = "messages";
         private static readonly string searchUsersPath = "search/users";
         private static readonly string settingsPath = "settings";
+        private static readonly string notificationsPath = "notifications";
 
         private static readonly string usersKey = "user";
         private static readonly string sessionsKey = "connection";
         private static readonly string passwordResetsKey = "";
         //private static readonly string placesKey = "place";
+        //private static readonly string categoriesKey = "category";
+        //private static readonly string searchPlacesKey = "search";
         private static readonly string postsKey = "publication";
         private static readonly string commentsKey = "comment";
         private static readonly string votesKey = "vote";
@@ -238,6 +254,7 @@ namespace NeerbyyWindowsPhone
         private static readonly string messagesKey = "message";
         //private static readonly string searchUsersKey = "search";
         private static readonly string settingsKey = "setting";
+        private static readonly string notificationsKey = "notification";
 
         private static readonly string webApiResultType = ".json";
 
@@ -716,7 +733,7 @@ namespace NeerbyyWindowsPhone
         }
 
         /// <summary>
-        /// Get a list of places
+        /// Get a list of places, it's possible to filter on a category
         /// </summary>
         /// <param name="resultDelegate"></param>
         /// <param name="errorDelegate"></param>
@@ -724,9 +741,10 @@ namespace NeerbyyWindowsPhone
         /// <param name="longitude"></param>
         /// <param name="user_latitude"></param>
         /// <param name="user_longitude"></param>
+        /// <param name="category"></param>
         /// <returns></returns>
         public async Task PlacesAsync(ResultDelegate<PlaceListResult> resultDelegate, ErrorDelegate errorDelegate,
-            double latitude, double longitude, double? user_latitude = null, double? user_longitude = null)
+            double latitude, double longitude, double? user_latitude = null, double? user_longitude = null, Category category = null)
         {
             try
             {
@@ -738,9 +756,70 @@ namespace NeerbyyWindowsPhone
                     args.Add("user_latitude", user_latitude.Value.ToString());
                     args.Add("user_longitude", user_longitude.Value.ToString());
                 }
+                if (category != null)
+                    args.Add("category_id", category.id.ToString());
 
                 HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(placesPath, args));
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
 
+        /// <summary>
+        /// Get the Categories that can be used for filtering
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <returns></returns>
+        public async Task CategoriesAsync(ResultDelegate<CategoryListResult> resultDelegate, ErrorDelegate errorDelegate)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(categoriesPath));
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        /// <summary>
+        /// Search for Places using a query and optionally a category
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <param name="query"></param>
+        /// <param name="user_latitude"></param>
+        /// <param name="user_longitude"></param>
+        /// <param name="category"></param>
+        /// <param name="count">The maximum number of results to be returned</param>
+        /// <returns></returns>
+        public async Task SearchPlacesAsync(ResultDelegate<PlaceListResult> resultDelegate, ErrorDelegate errorDelegate,
+            string query, double? user_latitude = null, double? user_longitude = null, Category category = null, int? count = null)
+        {
+            try
+            {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                args.Add("query", query);
+                if (user_latitude.HasValue && user_longitude.HasValue)
+                {
+                    args.Add("user_latitude", user_latitude.Value.ToString());
+                    args.Add("user_longitude", user_longitude.Value.ToString());
+                }
+                if (category != null)
+                    args.Add("category_id", category.id.ToString());
+                if (count.HasValue)
+                    args.Add("count", count.Value.ToString());
+
+                HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(searchPlacesPath, args));
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
             }
             catch (Exception e)
@@ -1330,28 +1409,6 @@ namespace NeerbyyWindowsPhone
         }
 
         /// <summary>
-        /// Get the User's Settings
-        /// </summary>
-        /// <param name="resultDelegate"></param>
-        /// <param name="errorDelegate"></param>
-        /// <returns></returns>
-        public async Task SettingsAsync(ResultDelegate<SettingsResult> resultDelegate, ErrorDelegate errorDelegate)
-        {
-            try
-            {
-                HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(settingsPath + "/" + AuthenticatedUser.settings_id));
-
-                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
-            }
-        }
-
-        /// <summary>
         /// Change the Settings
         /// </summary>
         /// <param name="resultDelegate"></param>
@@ -1376,6 +1433,35 @@ namespace NeerbyyWindowsPhone
                 FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(settingsKey, args));
 
                 HttpResponseMessage responseMessage = await client.PutAsync(MakeUri(settingsPath + "/" + AuthenticatedUser.settings_id), formContent);
+                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                string errorMessage = "Server Error";
+                errorDelegate(errorMessage, e);
+            }
+        }
+
+        /// <summary>
+        /// Send the Notification Token to the WS to be able to receive Push notifications
+        /// </summary>
+        /// <param name="resultDelegate"></param>
+        /// <param name="errorDelegate"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public async Task SetNotificationTokenAsync(ResultDelegate<Result> resultDelegate, ErrorDelegate errorDelegate,
+            string token)
+        {
+            try
+            {
+                SortedDictionary<string, string> args = new SortedDictionary<string, string>();
+                args.Add("token", token);
+                args.Add("platform", "wp");
+
+                FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(notificationsKey, args));
+
+                HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(notificationsPath), formContent);
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
             }
             catch (Exception e)
