@@ -422,23 +422,36 @@ namespace NeerbyyWindowsPhone
                 }
                 else
                 {
-                    Exception e = new Exception(responseMessage);
-                    errorDelegate(responseMessage, e);
+                    HandleException(errorDelegate, errorMessage: responseMessage);
                 }
             }
             catch (HttpRequestException e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
             return default(T);
+        }
+
+        private void HandleException(ErrorDelegate errorDelegate, Exception exception = null, string errorMessage = null)
+        {
+            if (errorMessage == null)
+            {
+                if (exception != null)
+                    errorMessage = exception.Message;
+                else
+                    errorMessage = "Server Error";
+            }
+            if (exception == null)
+            {
+                exception = new Exception(errorMessage);
+            }
+
+            Debug.WriteLine(exception.Message);
+            errorDelegate(errorMessage, exception);
         }
 
         /// <summary>
@@ -477,9 +490,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -500,9 +511,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -572,9 +581,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -651,9 +658,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -673,9 +678,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -697,9 +700,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -726,9 +727,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -764,9 +763,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -785,9 +782,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -824,9 +819,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -859,9 +852,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -898,9 +889,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -939,9 +928,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -962,9 +949,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -993,9 +978,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -1023,9 +1006,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -1046,9 +1027,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -1076,9 +1055,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -1099,9 +1076,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -1131,9 +1106,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -1163,9 +1136,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -1202,9 +1173,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -1230,9 +1199,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -1253,9 +1220,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -1282,9 +1247,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -1314,9 +1277,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -1345,9 +1306,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -1375,9 +1334,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -1402,9 +1359,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -1433,13 +1388,12 @@ namespace NeerbyyWindowsPhone
                 FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(settingsKey, args));
 
                 HttpResponseMessage responseMessage = await client.PutAsync(MakeUri(settingsPath + "/" + AuthenticatedUser.settings_id), formContent);
-                await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+                SettingsResult result = await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
+                this.AuthenticatedUser.settings = result.settings;
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
 
@@ -1466,9 +1420,7 @@ namespace NeerbyyWindowsPhone
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
-                string errorMessage = "Server Error";
-                errorDelegate(errorMessage, e);
+                HandleException(errorDelegate, e);
             }
         }
     }
