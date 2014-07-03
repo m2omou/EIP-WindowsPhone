@@ -30,7 +30,10 @@
 		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
           
 			<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="646">
-				<TextBlock x:Name="Title" TextWrapping="Wrap" Text="PARIS" Width="454" Foreground="#FF3EB88E" FontFamily="Segoe WP Black" FontSize="37.333" HorizontalAlignment="Center" Height="49"/>
+				<StackPanel Orientation="Horizontal">
+					<TextBlock x:Name="Title" TextWrapping="Wrap" Text="PARIS" Foreground="#FF3EB88E" FontFamily="Segoe WP Black" FontSize="37.333" HorizontalAlignment="Center"/>
+					<Button Click="delete_Click" x:Name="delete_button" Content="x" Background="#FFFF5E5E" BorderThickness="0" Padding="0" UseLayoutRounding="True" Width="53" VerticalAlignment="Top" HorizontalAlignment="Center" VerticalContentAlignment="Top" FontSize="16" Height="51"/>
+				</StackPanel>
 				<Image Tap="image_content_Tap" Margin="0,0,0,9" x:Name="image_content" Stretch="UniformToFill" Width="248" Height="247" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 				<StackPanel>
 					<StackPanel Height="70" Orientation="Horizontal" Margin="0,-10,0,0">
