@@ -1411,7 +1411,7 @@ namespace NeerbyyWindowsPhone
             {
                 SortedDictionary<string, string> args = new SortedDictionary<string, string>();
                 args.Add("token", token);
-                args.Add("platform", "wp");
+                args.Add("platform_id", "2");
 
                 FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(notificationsKey, args));
 
