@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using NeerbyyWindowsPhone;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace NeerbyyWindowsPhoneTest
 {
@@ -96,6 +97,32 @@ namespace NeerbyyWindowsPhoneTest
             {
                 Assert.Fail(responseMessage);
             }, "Effiel", userLatitude, userLongitude);
+        }
+
+        [TestMethod]
+        public async Task PlacesCategoryAsync()
+        {
+            List<Category> categories = null;
+
+            await WebApi.Singleton.CategoriesAsync((string responseMessage, CategoryListResult result) =>
+            {
+                Assert.AreNotEqual(0, result.categories.Count, 0, "The result is empty");
+
+                categories = result.categories;
+            },
+            (string responseMessage, Exception exception) =>
+            {
+                Assert.Fail(responseMessage);
+            });
+
+            await WebApi.Singleton.PlacesAsync((string responseMessage, PlaceListResult result) =>
+            {
+                Assert.AreNotEqual(0, result.places.Count, 0, "The result is empty");
+            },
+            (string responseMessage, Exception exception) =>
+            {
+                Assert.Fail(responseMessage);
+            }, userLatitude, userLongitude, userLatitude, userLongitude, categories[0]);
         }
 
         [TestMethod]
