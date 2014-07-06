@@ -107,6 +107,9 @@
     <Compile Include="Favorites.xaml.cs">
       <DependentUpon>Favorites.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FilterView.xaml.cs">
+      <DependentUpon>FilterView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Flux.xaml.cs">
       <DependentUpon>Flux.xaml</DependentUpon>
     </Compile>
@@ -151,8 +154,17 @@
     <Compile Include="Report.xaml.cs">
       <DependentUpon>Report.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SearchView.xaml.cs">
+      <DependentUpon>SearchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\AsynchronousDisplay.xaml.cs">
       <DependentUpon>AsynchronousDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CategoryPreview.xaml.cs">
+      <DependentUpon>CategoryPreview.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\ErrorDisplayer.xaml.cs">
       <DependentUpon>ErrorDisplayer.xaml</DependentUpon>
@@ -203,6 +215,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="FilterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Flux.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -247,7 +263,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="SearchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\AsynchronousDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CategoryPreview.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

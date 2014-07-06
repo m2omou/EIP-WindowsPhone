@@ -159,7 +159,7 @@ namespace NeerbyyWindowsPhone
             }, (String responseMessage, Exception e) =>
             {
                 ErrorDisplayer error = new ErrorDisplayer();
-            }, HomeMap.Center.Latitude, HomeMap.Center.Longitude);
+            }, HomeMap.Center.Latitude, HomeMap.Center.Longitude, null, null, ((App)Application.Current).currentCategory);
         }
 
         /// <summary>
@@ -259,13 +259,24 @@ namespace NeerbyyWindowsPhone
             ((App)Application.Current).setRefPlace(ref infos);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Search a palce
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Search(object sender, RoutedEventArgs e)
         {
+            NavigationService.Navigate(new Uri("/SearchView.xaml?query=" + search_input.Text, UriKind.Relative));
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Setup the filters
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Filter(object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new Uri("/FilterView.xaml", UriKind.Relative));
         }
 
         /// <summary>

@@ -137,6 +137,7 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void GoSettings(object sender, RoutedEventArgs e)
         {
+            NavigationService.Navigate(new Uri("/SettingsView.xaml", UriKind.Relative));
         }
 
     }

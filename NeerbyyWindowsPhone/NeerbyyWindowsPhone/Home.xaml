@@ -62,9 +62,9 @@
         <Grid x:Name="ContentPanel" Grid.Row="2" Margin="12,0,12,0">
             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
                 <StackPanel Height="77" Margin="0,0,1,0" Orientation="Horizontal">
-                    <TextBox TextWrapping="Wrap" Width="260" Height="74" Background="#BFCBCBCB"/>
-                    <Button Click="Button_Click"  Content="Détails" BorderBrush="Transparent" Background="#FF3EB88E" FontFamily="Segoe WP Light"  Width="120" Margin="-20,0,0,0"/>
-                    <Button Click="Button_Click_1"  Content="Filtrer" BorderBrush="Transparent" Background="#FF3EB88E" FontFamily="Segoe WP Light"  Width="120" Margin="-20,0,0,0"/>
+                    <TextBox x:Name="search_input" TextWrapping="Wrap" Width="240" Height="74" Background="#BFCBCBCB" Margin="0,2,0,1"/>
+                    <Button Click="Button_Search"  Content="Chercher" BorderBrush="Transparent" Background="#FF72D6B4" FontFamily="Segoe WP Light"  Width="141" Margin="-20,0,0,0"/>
+                    <Button Click="Button_Filter"  Content="Filtres" BorderBrush="Transparent" Background="#FF3EB88E" FontFamily="Segoe WP Light"  Width="120" Margin="-20,0,0,0"/>
                 </StackPanel>
 
             </StackPanel>

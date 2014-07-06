@@ -27,6 +27,9 @@ namespace NeerbyyWindowsPhone
             currentPlace = place;
         }
 
+        public CategoryListResult categories { get; set; }
+        public Category currentCategory { get; set; }
+
         public Post currentPost { get; set; }
 
         public User currentUser { get; set; }
@@ -92,6 +95,8 @@ namespace NeerbyyWindowsPhone
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
+            this.categories = PhoneApplicationService.Current.State["categories"] as CategoryListResult;
+            this.currentCategory = PhoneApplicationService.Current.State["current_category"] as Category;
             this.currentPost = PhoneApplicationService.Current.State["current_post"] as Post;
             this.currentPlace = PhoneApplicationService.Current.State["current_place"] as Place;
             this.currentUser = PhoneApplicationService.Current.State["current_user"] as User;
@@ -104,6 +109,8 @@ namespace NeerbyyWindowsPhone
         // This code will not execute when the application is closing
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
+            PhoneApplicationService.Current.State["categories"] = this.categories;
+            PhoneApplicationService.Current.State["current_category"] = this.currentCategory;
             PhoneApplicationService.Current.State["current_post"] = this.currentPost;
             PhoneApplicationService.Current.State["current_place"] = this.currentPlace;
             PhoneApplicationService.Current.State["current_user"] = this.currentUser;
