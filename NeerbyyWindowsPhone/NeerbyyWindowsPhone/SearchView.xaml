@@ -38,7 +38,6 @@
 				<ScrollViewer x:Name="ScrollingView" Height="557">
 					<StackPanel x:Name="StackListing" Orientation="Vertical"/>
 				</ScrollViewer>
-				<Button x:Name="button_load_more" Content="CHARGER PLUS DE RESULTATS" HorizontalAlignment="Right" Background="#FF3B76F5" BorderBrush="#FF3B76F5" Foreground="White" FontSize="13.333" BorderThickness="0,3,3,3" Click="LoadMore" Width="446" Visibility="Collapsed"/>
 			</StackPanel>
 		</Grid>
 	</Grid>

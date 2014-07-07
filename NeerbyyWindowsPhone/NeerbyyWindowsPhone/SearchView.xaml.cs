@@ -16,9 +16,7 @@ namespace NeerbyyWindowsPhone
     /// </summary>
     public partial class SearchView : PhoneApplicationPage
     {
-        private int max_id;
         private int count;
-        private int since_id;
         /// <summary>
         /// default constructor
         /// </summary>
@@ -37,8 +35,6 @@ namespace NeerbyyWindowsPhone
             {
                 return;
             }
-            this.max_id = 0;
-            this.since_id = 0;
             this.count = 5;
             if (NavigationContext.QueryString.ContainsKey("query"))
             {
@@ -46,16 +42,9 @@ namespace NeerbyyWindowsPhone
             StackListing.Children.Clear();
             WebApi.Singleton.SearchPlacesAsync((string responseMessage, PlaceListResult result) =>
             {
-                bool first = false;
                 foreach (Place place in result.places)
                 {
-                    if (!first)
-                    {
-                        this.since_id = place.followed_place_id.Value;
-                        first = true;
-                    }
                     this.AddPlaceToTheListing(place, false);
-                    this.max_id = place.followed_place_id.Value;
                 }
             }, (String responseMessage, Exception exception) =>
             {
@@ -78,26 +67,6 @@ namespace NeerbyyWindowsPhone
             display_place.number.Text = place.country;
             display_place.my_place = place;
             StackListing.Children.Add(display_place);
-        }
-
-        /// <summary>
-        /// Callback to load old posts
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void LoadMore(object sender, RoutedEventArgs e)
-        {
-            WebApi.Singleton.FollowedPlacesAsync((string responseMessage, PlaceListResult result) =>
-            {
-                foreach (Place place in result.places)
-                {
-                    this.AddPlaceToTheListing(place, false);
-                    this.max_id = place.followed_place_id.Value;
-                }
-            }, (String responseMessage, Exception exception) =>
-            {
-                ErrorDisplayer error = new ErrorDisplayer();
-            }, null, null, this.max_id, count);
         }
     }
 }
