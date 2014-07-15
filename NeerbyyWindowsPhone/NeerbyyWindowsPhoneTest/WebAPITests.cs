@@ -9,9 +9,9 @@ namespace NeerbyyWindowsPhoneTest
     [TestClass]
     public class WebAPITests
     {
-        public static string userLogin = "Callum";
+        public static string userLogin = "CallumOz";
         public static string userPassword = "toto";
-        public static string userEmail = "callum.henshall@gmail.com";
+        public static string userEmail = "callum.henshall@me.com";
 
         public static string testLogin = "TestToto";
         public static string testPassword = "toto";
@@ -28,12 +28,23 @@ namespace NeerbyyWindowsPhoneTest
             (string responseMessage, Exception exception) =>
             {
             }, userEmail, userPassword);
-        }
 
+            if (WebApi.Singleton.AuthenticatedUser == null)
+            {
+                await WebApi.Singleton.CreateUserAsync((string responseMessage, UserResult result) =>
+                {
+                },
+                (string responseMessage, Exception exception) =>
+                {
+                }, userEmail, userLogin, userPassword);
+            }
+        }
 
         [TestMethod]
         public async Task AuthenticateTestAsync()
         {
+            await this.AuthenticateAsync();
+
             await WebApi.Singleton.AuthenticateAsync((string responseMessage, UserResult result) =>
             {
                 Assert.IsNotNull(result.user.auth_token, "Authentication Token is null");
@@ -65,14 +76,26 @@ namespace NeerbyyWindowsPhoneTest
         [TestMethod]
         public async Task CreateAndDeleteUserAsync()
         {
-            await WebApi.Singleton.CreateUserAsync((string responseMessage, UserResult result) =>
+            await WebApi.Singleton.AuthenticateAsync((string responseMessage, UserResult result) =>
             {
-                Assert.IsNotNull(result.user.auth_token, "Authentication Token is null");
             },
             (string responseMessage, Exception exception) =>
             {
-                Assert.Fail(responseMessage);
-            }, testEmail, testLogin, testPassword);
+            }, testEmail, testPassword);
+
+            if (WebApi.Singleton.AuthenticatedUser == null)
+            {
+
+                await WebApi.Singleton.CreateUserAsync((string responseMessage, UserResult result) =>
+                {
+                    Assert.IsNotNull(result.user.auth_token, "Authentication Token is null");
+                },
+                (string responseMessage, Exception exception) =>
+                {
+                    Assert.Fail(responseMessage);
+                }, testEmail, testLogin, testPassword);
+
+            }
 
             await WebApi.Singleton.DeleteUserAsync((string responseMessage, Result result) =>
             {

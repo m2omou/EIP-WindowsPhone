@@ -68,11 +68,6 @@ namespace NeerbyyWindowsPhone
         public string avatar_thumb { get; set; }
 
         /// <summary>
-        /// The ID for the User's Settings
-        /// </summary>
-        public int? settings_id { get; set; }
-
-        /// <summary>
         /// The User's settings
         /// </summary>
         public Settings settings { get; set; }

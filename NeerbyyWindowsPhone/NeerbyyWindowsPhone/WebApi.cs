@@ -216,8 +216,11 @@ namespace NeerbyyWindowsPhone
     /// </summary>
     public sealed class WebApi
     {
+#if DEBUG
+        private static readonly string webApiUrl = "http://dev.neerbyy.com";
+#else
         private static readonly string webApiUrl = "http://api.neerbyy.com";
-
+#endif
         private static readonly string usersPath = "users";
         private static readonly string sessionsPath = "sessions";
         private static readonly string passwordResetsPath = "password_resets";
@@ -652,7 +655,7 @@ namespace NeerbyyWindowsPhone
                 if (result != null)
                 {
                     result.user.auth_token = AuthenticatedUser.auth_token;
-                    result.user.settings_id = AuthenticatedUser.settings_id;
+                    //result.user.settings_id = AuthenticatedUser.settings_id;
                     AuthenticatedUser = result.user;
                 }
             }
@@ -1387,7 +1390,7 @@ namespace NeerbyyWindowsPhone
 
                 FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(settingsKey, args));
 
-                HttpResponseMessage responseMessage = await client.PutAsync(MakeUri(settingsPath + "/" + AuthenticatedUser.settings_id), formContent);
+                HttpResponseMessage responseMessage = await client.PutAsync(MakeUri(settingsPath + "/" + AuthenticatedUser.settings.id.ToString()), formContent);
                 SettingsResult result = await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
                 this.AuthenticatedUser.settings = result.settings;
             }
