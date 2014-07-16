@@ -9,9 +9,9 @@ namespace NeerbyyWindowsPhoneTest
     [TestClass]
     public class WebAPITests
     {
-        public static string userLogin = "CallumOz";
+        public static string userLogin = "Callum";
         public static string userPassword = "toto";
-        public static string userEmail = "callum.henshall@me.com";
+        public static string userEmail = "callum.henshall@gmail.com";
 
         public static string testLogin = "TestToto";
         public static string testPassword = "toto";
@@ -71,6 +71,15 @@ namespace NeerbyyWindowsPhoneTest
             {
                 Assert.Fail(responseMessage);
             }, userEmail, userPassword);
+
+            await WebApi.Singleton.LogOutAsync((string responseMessage, Result result) =>
+            {
+
+            },
+            (string responseMessage, Exception exception) =>
+            {
+                Assert.Fail(responseMessage);
+            });
         }
 
         [TestMethod]
@@ -120,6 +129,15 @@ namespace NeerbyyWindowsPhoneTest
             {
                 Assert.Fail(responseMessage);
             }, "Effiel", userLatitude, userLongitude);
+
+            await WebApi.Singleton.LogOutAsync((string responseMessage, Result result) =>
+            {
+
+            },
+            (string responseMessage, Exception exception) =>
+            {
+                Assert.Fail(responseMessage);
+            });
         }
 
         [TestMethod]
@@ -161,12 +179,23 @@ namespace NeerbyyWindowsPhoneTest
             {
                 Assert.Fail(responseMessage);
             }, "Callum");
+
+            await WebApi.Singleton.LogOutAsync((string responseMessage, Result result) =>
+            {
+
+            },
+            (string responseMessage, Exception exception) =>
+            {
+                Assert.Fail(responseMessage);
+            });
         }
 
         [TestMethod]
         public async Task SetSettings()
         {
             await this.AuthenticateAsync();
+
+            Assert.IsNotNull(WebApi.Singleton.AuthenticatedUser.setting, "The Settings are missing");
 
             bool expectedAllowMessages = true;
 
@@ -187,6 +216,15 @@ namespace NeerbyyWindowsPhoneTest
             {
                 Assert.Fail(responseMessage);
             }, !expectedAllowMessages);
+
+            await WebApi.Singleton.LogOutAsync((string responseMessage, Result result) =>
+            {
+
+            },
+            (string responseMessage, Exception exception) =>
+            {
+                Assert.Fail(responseMessage);
+            });
         }
 
         [TestMethod]
@@ -201,6 +239,15 @@ namespace NeerbyyWindowsPhoneTest
             {
                 Assert.Fail(responseMessage);
             }, "0123456789abcdef");
+
+            await WebApi.Singleton.LogOutAsync((string responseMessage, Result result) =>
+            {
+
+            },
+            (string responseMessage, Exception exception) =>
+            {
+                Assert.Fail(responseMessage);
+            });
         }
     }
 }

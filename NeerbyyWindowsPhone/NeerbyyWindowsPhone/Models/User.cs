@@ -70,6 +70,6 @@ namespace NeerbyyWindowsPhone
         /// <summary>
         /// The User's settings
         /// </summary>
-        public Settings settings { get; set; }
+        public Settings setting { get; set; }
     }
 }

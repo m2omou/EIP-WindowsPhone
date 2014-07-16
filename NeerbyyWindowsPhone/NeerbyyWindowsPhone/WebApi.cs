@@ -218,6 +218,7 @@ namespace NeerbyyWindowsPhone
     {
 #if DEBUG
         private static readonly string webApiUrl = "http://dev.neerbyy.com";
+//        private static readonly string webApiUrl = "http://windows.neerbyy.com";
 #else
         private static readonly string webApiUrl = "http://api.neerbyy.com";
 #endif
@@ -1390,9 +1391,9 @@ namespace NeerbyyWindowsPhone
 
                 FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(settingsKey, args));
 
-                HttpResponseMessage responseMessage = await client.PutAsync(MakeUri(settingsPath + "/" + AuthenticatedUser.settings.id.ToString()), formContent);
+                HttpResponseMessage responseMessage = await client.PutAsync(MakeUri(settingsPath + "/" + AuthenticatedUser.setting.id.ToString()), formContent);
                 SettingsResult result = await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
-                this.AuthenticatedUser.settings = result.settings;
+                this.AuthenticatedUser.setting = result.settings;
             }
             catch (Exception e)
             {
