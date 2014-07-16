@@ -217,8 +217,8 @@ namespace NeerbyyWindowsPhone
     public sealed class WebApi
     {
 #if DEBUG
-        private static readonly string webApiUrl = "http://dev.neerbyy.com";
-//        private static readonly string webApiUrl = "http://windows.neerbyy.com";
+        //private static readonly string webApiUrl = "http://dev.neerbyy.com";
+        private static readonly string webApiUrl = "http://windows.neerbyy.com";
 #else
         private static readonly string webApiUrl = "http://api.neerbyy.com";
 #endif
@@ -344,9 +344,12 @@ namespace NeerbyyWindowsPhone
         /// <param name="state"></param>
         public static void RestoreState(IDictionary<string, object> state)
         {
-            User user = state[userStateKey] as User;
-            if (user != null)
-                WebApi.Singleton.AuthenticatedUser = user;
+            if (state.ContainsKey(userStateKey))
+            {
+                User user = state[userStateKey] as User;
+                if (user != null)
+                    WebApi.Singleton.AuthenticatedUser = user;
+            }
         }
 
         private string MakeUri(string path, IDictionary<string, string> args = null)
@@ -544,16 +547,16 @@ namespace NeerbyyWindowsPhone
                     MultipartFormDataContent dataContent = new MultipartFormDataContent();
 
                     StreamContent streamContent = new StreamContent(imageStream);
-                    dataContent.Add(streamContent, AddKey(postsKey, "avatar"), imagename);
+                    dataContent.Add(streamContent, AddKey(usersKey, "avatar"), imagename);
 
-                    dataContent.Add(new StringContent(email), AddKey(postsKey, "email"));
-                    dataContent.Add(new StringContent(username), AddKey(postsKey, "username"));
-                    dataContent.Add(new StringContent(password), AddKey(postsKey, "password"));
+                    dataContent.Add(new StringContent(email), AddKey(usersKey, "email"));
+                    dataContent.Add(new StringContent(username), AddKey(usersKey, "username"));
+                    dataContent.Add(new StringContent(password), AddKey(usersKey, "password"));
 
                     if (firstname != null)
-                        dataContent.Add(new StringContent(firstname), AddKey(postsKey, "firstname"));
+                        dataContent.Add(new StringContent(firstname), AddKey(usersKey, "firstname"));
                     if (lastname != null)
-                        dataContent.Add(new StringContent(lastname), AddKey(postsKey, "lastname"));
+                        dataContent.Add(new StringContent(lastname), AddKey(usersKey, "lastname"));
 
                     httpContent = dataContent;
                 }
@@ -614,18 +617,18 @@ namespace NeerbyyWindowsPhone
                     MultipartFormDataContent dataContent = new MultipartFormDataContent();
 
                     StreamContent streamContent = new StreamContent(imageStream);
-                    dataContent.Add(streamContent, AddKey(postsKey, "avatar"), imagename);
+                    dataContent.Add(streamContent, AddKey(usersKey, "avatar"), imagename);
 
                     if (email != null)
-                        dataContent.Add(new StringContent(email), AddKey(postsKey, "email"));
+                        dataContent.Add(new StringContent(email), AddKey(usersKey, "email"));
                     if (username != null)
-                        dataContent.Add(new StringContent(username), AddKey(postsKey, "username"));
+                        dataContent.Add(new StringContent(username), AddKey(usersKey, "username"));
                     if (password != null)
-                        dataContent.Add(new StringContent(password), AddKey(postsKey, "password"));
+                        dataContent.Add(new StringContent(password), AddKey(usersKey, "password"));
                     if (firstname != null)
-                        dataContent.Add(new StringContent(firstname), AddKey(postsKey, "firstname"));
+                        dataContent.Add(new StringContent(firstname), AddKey(usersKey, "firstname"));
                     if (lastname != null)
-                        dataContent.Add(new StringContent(lastname), AddKey(postsKey, "lastname"));
+                        dataContent.Add(new StringContent(lastname), AddKey(usersKey, "lastname"));
 
                     httpContent = dataContent;
                 }

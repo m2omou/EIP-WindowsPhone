@@ -234,6 +234,7 @@ namespace NeerbyyWindowsPhoneTest
 
             await WebApi.Singleton.SetNotificationTokenAsync((string responseMessage, Result result) =>
             {
+
             },
             (string responseMessage, Exception exception) =>
             {
