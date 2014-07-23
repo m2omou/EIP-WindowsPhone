@@ -28,12 +28,23 @@ namespace NeerbyyWindowsPhoneTest
             (string responseMessage, Exception exception) =>
             {
             }, userEmail, userPassword);
-        }
 
+            if (WebApi.Singleton.AuthenticatedUser == null)
+            {
+                await WebApi.Singleton.CreateUserAsync((string responseMessage, UserResult result) =>
+                {
+                },
+                (string responseMessage, Exception exception) =>
+                {
+                }, userEmail, userLogin, userPassword);
+            }
+        }
 
         [TestMethod]
         public async Task AuthenticateTestAsync()
         {
+            await this.AuthenticateAsync();
+
             await WebApi.Singleton.AuthenticateAsync((string responseMessage, UserResult result) =>
             {
                 Assert.IsNotNull(result.user.auth_token, "Authentication Token is null");
@@ -60,19 +71,40 @@ namespace NeerbyyWindowsPhoneTest
             {
                 Assert.Fail(responseMessage);
             }, userEmail, userPassword);
+
+            await WebApi.Singleton.LogOutAsync((string responseMessage, Result result) =>
+            {
+
+            },
+            (string responseMessage, Exception exception) =>
+            {
+                Assert.Fail(responseMessage);
+            });
         }
 
         [TestMethod]
         public async Task CreateAndDeleteUserAsync()
         {
-            await WebApi.Singleton.CreateUserAsync((string responseMessage, UserResult result) =>
+            await WebApi.Singleton.AuthenticateAsync((string responseMessage, UserResult result) =>
             {
-                Assert.IsNotNull(result.user.auth_token, "Authentication Token is null");
             },
             (string responseMessage, Exception exception) =>
             {
-                Assert.Fail(responseMessage);
-            }, testEmail, testLogin, testPassword);
+            }, testEmail, testPassword);
+
+            if (WebApi.Singleton.AuthenticatedUser == null)
+            {
+
+                await WebApi.Singleton.CreateUserAsync((string responseMessage, UserResult result) =>
+                {
+                    Assert.IsNotNull(result.user.auth_token, "Authentication Token is null");
+                },
+                (string responseMessage, Exception exception) =>
+                {
+                    Assert.Fail(responseMessage);
+                }, testEmail, testLogin, testPassword);
+
+            }
 
             await WebApi.Singleton.DeleteUserAsync((string responseMessage, Result result) =>
             {
@@ -97,6 +129,15 @@ namespace NeerbyyWindowsPhoneTest
             {
                 Assert.Fail(responseMessage);
             }, "Effiel", userLatitude, userLongitude);
+
+            await WebApi.Singleton.LogOutAsync((string responseMessage, Result result) =>
+            {
+
+            },
+            (string responseMessage, Exception exception) =>
+            {
+                Assert.Fail(responseMessage);
+            });
         }
 
         [TestMethod]
@@ -138,12 +179,23 @@ namespace NeerbyyWindowsPhoneTest
             {
                 Assert.Fail(responseMessage);
             }, "Callum");
+
+            await WebApi.Singleton.LogOutAsync((string responseMessage, Result result) =>
+            {
+
+            },
+            (string responseMessage, Exception exception) =>
+            {
+                Assert.Fail(responseMessage);
+            });
         }
 
         [TestMethod]
         public async Task SetSettings()
         {
             await this.AuthenticateAsync();
+
+            Assert.IsNotNull(WebApi.Singleton.AuthenticatedUser.setting, "The Settings are missing");
 
             bool expectedAllowMessages = true;
 
@@ -164,6 +216,15 @@ namespace NeerbyyWindowsPhoneTest
             {
                 Assert.Fail(responseMessage);
             }, !expectedAllowMessages);
+
+            await WebApi.Singleton.LogOutAsync((string responseMessage, Result result) =>
+            {
+
+            },
+            (string responseMessage, Exception exception) =>
+            {
+                Assert.Fail(responseMessage);
+            });
         }
 
         [TestMethod]
@@ -173,11 +234,21 @@ namespace NeerbyyWindowsPhoneTest
 
             await WebApi.Singleton.SetNotificationTokenAsync((string responseMessage, Result result) =>
             {
+
             },
             (string responseMessage, Exception exception) =>
             {
                 Assert.Fail(responseMessage);
             }, "0123456789abcdef");
+
+            await WebApi.Singleton.LogOutAsync((string responseMessage, Result result) =>
+            {
+
+            },
+            (string responseMessage, Exception exception) =>
+            {
+                Assert.Fail(responseMessage);
+            });
         }
     }
 }

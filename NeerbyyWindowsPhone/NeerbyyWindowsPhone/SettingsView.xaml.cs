@@ -29,17 +29,17 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (WebApi.Singleton.AuthenticatedUser.settings != null) {
-               if ((WebApi.Singleton).AuthenticatedUser.settings.allow_messages.HasValue)
-                if ((bool)(WebApi.Singleton).AuthenticatedUser.settings.allow_messages)
+            if (WebApi.Singleton.AuthenticatedUser.setting != null) {
+               if ((WebApi.Singleton).AuthenticatedUser.setting.allow_messages.HasValue)
+                if ((bool)(WebApi.Singleton).AuthenticatedUser.setting.allow_messages)
                     allow_messages_checkbox.IsChecked = true;
 
-               if ((WebApi.Singleton).AuthenticatedUser.settings.send_notification_for_comments.HasValue)
-                if ((bool)(WebApi.Singleton).AuthenticatedUser.settings.send_notification_for_comments)
+               if ((WebApi.Singleton).AuthenticatedUser.setting.send_notification_for_comments.HasValue)
+                if ((bool)(WebApi.Singleton).AuthenticatedUser.setting.send_notification_for_comments)
                     notify_comment.IsChecked = true;
 
-               if ((WebApi.Singleton).AuthenticatedUser.settings.send_notification_for_messages.HasValue)
-                if ((bool)(WebApi.Singleton).AuthenticatedUser.settings.send_notification_for_messages)
+               if ((WebApi.Singleton).AuthenticatedUser.setting.send_notification_for_messages.HasValue)
+                if ((bool)(WebApi.Singleton).AuthenticatedUser.setting.send_notification_for_messages)
                     notify_message.IsChecked = true;
             }
         }

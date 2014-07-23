@@ -63,28 +63,28 @@
                 <StackPanel Height="100" Width="458" Orientation="Horizontal">
                 	<StackPanel Width="227">
                 		<TextBlock TextWrapping="Wrap" FontFamily="Segoe WP" Text="Pseudonyme" Foreground="#FF151515" Margin="0,0,56,0" Height="27"/>
-                		<TextBox Text="titi" TextWrapping="Wrap" InputScope="LogOnName" x:Name="username" Background="#BFCBCBCB" Height="72"/>
+                		<TextBox Text="" TextWrapping="Wrap" InputScope="LogOnName" x:Name="username" Background="#BFCBCBCB" Height="72"/>
                 	</StackPanel>
                 	<StackPanel Width="225">
                 		<TextBlock TextWrapping="Wrap" Foreground="#FF151515" Text="Mail" Margin="0,0,-109,0"/>
-                		<TextBox Text="titi42@gmail.com"  x:Name="mail" Height="72" TextWrapping="Wrap" Background="#BFCBCBCB" Margin="0,0,-109,0"/>
+                		<TextBox Text=""  x:Name="mail" Height="72" TextWrapping="Wrap" Background="#BFCBCBCB" Margin="0,0,-109,0"/>
                 	</StackPanel>
                 </StackPanel>
                 <StackPanel Height="100" Width="458" Orientation="Horizontal">
                 	<StackPanel Width="227">
                 		<TextBlock TextWrapping="Wrap" FontFamily="Segoe WP" Text="Nom" Foreground="#FF151515" Margin="0,0,56,0" Height="27"/>
-                		<TextBox Text="titi" TextWrapping="Wrap" InputScope="LogOnName" x:Name="lastname" Background="#BFCBCBCB" Height="72"/>
+                		<TextBox Text="" TextWrapping="Wrap" InputScope="LogOnName" x:Name="lastname" Background="#BFCBCBCB" Height="72"/>
                 	</StackPanel>
                 	<StackPanel Width="225">
                 		<TextBlock TextWrapping="Wrap" Foreground="#FF151515" Text="Prénom" Margin="0,0,-109,0"/>
-                		<TextBox Text="titi42@gmail.com"  x:Name="firstname" Height="72" TextWrapping="Wrap" Background="#BFCBCBCB" Margin="0,0,-109,0"/>
+                		<TextBox Text=""  x:Name="firstname" Height="72" TextWrapping="Wrap" Background="#BFCBCBCB" Margin="0,0,-109,0"/>
                 	</StackPanel>
                 </StackPanel>
                 <Button Content="METTRE A JOUR" Click="register" Foreground="White" BorderBrush="#002C2C2C" Background="#FF3EB88E" FontFamily="Segoe WP Semibold"/>
                 <TextBlock TextWrapping="Wrap" Text="Mot de passe" Foreground="#FF151515"/>
-                <PasswordBox Password="test"  x:Name="password" Background="#BFCBCBCB"/>
+                <PasswordBox Password=""  x:Name="password" Background="#BFCBCBCB"/>
                 <TextBlock TextWrapping="Wrap" Text="Confirmation du mot de passe" Foreground="#FF151515"/>
-                <PasswordBox Password="test"  x:Name="password2" Background="#BFCBCBCB"/>
+                <PasswordBox Password=""  x:Name="password2" Background="#BFCBCBCB"/>
                 <StackPanel Height="79" Width="439" HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,-20,0,0">
                 	<Button Content="CHANGER" Click="updatePassword" Foreground="White" BorderBrush="#002C2C2C" Background="#FF5AA3FB" FontFamily="Segoe WP Semibold" Margin="0" Width="243"/>
                 	<Button Content="SUPPRIMER" Click="deleteAccount" Foreground="White" BorderBrush="#002C2C2C" Background="#FFE40000" FontFamily="Segoe WP Semibold" Margin="0" Width="215"/>

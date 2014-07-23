@@ -49,7 +49,7 @@ namespace NeerbyyWindowsPhone
             }, (String responseMessage, Exception exception) =>
             {
                 ErrorDisplayer error = new ErrorDisplayer();
-            }, query_str, null, null, ((App)Application.Current).currentCategory, count);
+            }, query_str, ((App)Application.Current).myLatitude, ((App)Application.Current).myLongitude, ((App)Application.Current).currentCategory, count);
             }
         }
 

@@ -57,13 +57,13 @@
 			<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
                 <local:AsynchronousDisplay x:Name="asynchronousDisplayer"/>
                 <TextBlock TextWrapping="Wrap" FontFamily="Segoe WP" Text="Nom d'utilisateur" Foreground="#FF151515"/>
-                <TextBox Text="titi" Height="72" TextWrapping="Wrap" Width="456" InputScope="LogOnName" x:Name="username" TextChanged="username_TextChanged" Background="#BFCBCBCB"/>
+                <TextBox Text="" Height="72" TextWrapping="Wrap" Width="456" InputScope="LogOnName" x:Name="username" TextChanged="username_TextChanged" Background="#BFCBCBCB"/>
 				<TextBlock TextWrapping="Wrap" Text="Mail" Foreground="#FF151515"/>
-                <TextBox Text="titi42@gmail.com"  x:Name="mail" Height="72" TextWrapping="Wrap" Width="456" InputScope="EmailUserName" Background="#BFCBCBCB"/>
+                <TextBox Text=""  x:Name="mail" Height="72" TextWrapping="Wrap" Width="456" InputScope="EmailUserName" Background="#BFCBCBCB"/>
 				<TextBlock TextWrapping="Wrap" Text="Mot de passe" Foreground="#FF151515"/>
-                <PasswordBox Password="test"  x:Name="password" Background="#BFCBCBCB"/>
+                <PasswordBox Password=""  x:Name="password" Background="#BFCBCBCB"/>
 				<TextBlock TextWrapping="Wrap" Text="Confirmation du mot de passe" Foreground="#FF151515"/>
-                <PasswordBox Password="test"  x:Name="password2" Background="#BFCBCBCB"/>
+                <PasswordBox Password=""  x:Name="password2" Background="#BFCBCBCB"/>
 				<Button Content="REJOINDRE NEERBY" Click="register" Foreground="White" BorderBrush="#002C2C2C" Background="#FF3EB88E" FontFamily="Segoe WP Semibold"/>
 			</StackPanel>
 		</Grid>
