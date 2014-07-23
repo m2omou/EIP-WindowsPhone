@@ -57,7 +57,7 @@ namespace NeerbyyWindowsPhone
                 MessageBox.Show("Informations bien prises en compte");
             }, (String responseMessage, Exception exception) =>
             {
-                ErrorDisplayer error = new ErrorDisplayer();
+                MessageBox.Show(responseMessage);
             }, mail.Text, username.Text, null, firstname.Text, lastname.Text, image, name);
         }
 
@@ -79,7 +79,7 @@ namespace NeerbyyWindowsPhone
                 MessageBox.Show("Informations bien prises en compte");
             }, (String responseMessage, Exception exception) =>
             {
-                ErrorDisplayer error = new ErrorDisplayer();
+                MessageBox.Show(responseMessage);
             }, null, null, password2.Password, null, null, null, null);
         }
 
@@ -98,7 +98,7 @@ namespace NeerbyyWindowsPhone
                     NavigationService.Navigate(new Uri("/Login.xaml", UriKind.Relative));
                 }, (String responseMessage, Exception exception) =>
                 {
-                    ErrorDisplayer error = new ErrorDisplayer();
+                    MessageBox.Show(responseMessage);
                 });
             } 
 

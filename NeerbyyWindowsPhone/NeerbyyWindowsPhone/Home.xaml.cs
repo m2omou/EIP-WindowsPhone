@@ -101,7 +101,7 @@ namespace NeerbyyWindowsPhone
                 if ((uint)ex.HResult == 0x80004004)
                 {
                     // the application does not have the right capability or the location master switch is off
-                    MessageBox.Show("Location is disabled in phone settings.");
+                    MessageBox.Show("Pour decouvrir les lieux, activez la geolocalisation dans vos options.");
                 }
                 else
                 {
@@ -158,7 +158,7 @@ namespace NeerbyyWindowsPhone
                 }
             }, (String responseMessage, Exception e) =>
             {
-                ErrorDisplayer error = new ErrorDisplayer();
+                MessageBox.Show(responseMessage);
             }, HomeMap.Center.Latitude, HomeMap.Center.Longitude, null, null, ((App)Application.Current).currentCategory);
         }
 
