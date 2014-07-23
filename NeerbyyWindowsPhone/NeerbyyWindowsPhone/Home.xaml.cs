@@ -66,8 +66,8 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         private async void getLocation()
         {
-
-            map_center = new GeoCoordinate(48.8581646494056, 2.294425964355468);
+            map_center = new GeoCoordinate(48.81529956035847, 2.3629510402679443);
+            //map_center = new GeoCoordinate(48.8581646494056, 2.294425964355468);
             target = new GeoCoordinate(-map_center.Latitude, -map_center.Longitude);
             HomeMap.Center = map_center;
             ((App)Application.Current).myLatitude = map_center.Latitude;
@@ -101,7 +101,7 @@ namespace NeerbyyWindowsPhone
                 if ((uint)ex.HResult == 0x80004004)
                 {
                     // the application does not have the right capability or the location master switch is off
-                    MessageBox.Show("Pour decouvrir les lieux, activez la geolocalisation dans vos options.");
+                    MessageBox.Show("Location is disabled in phone settings.");
                 }
                 else
                 {
@@ -158,8 +158,8 @@ namespace NeerbyyWindowsPhone
                 }
             }, (String responseMessage, Exception e) =>
             {
-                MessageBox.Show(responseMessage);
-            }, HomeMap.Center.Latitude, HomeMap.Center.Longitude, null, null, ((App)Application.Current).currentCategory);
+                ErrorDisplayer error = new ErrorDisplayer();
+            }, HomeMap.Center.Latitude, HomeMap.Center.Longitude, ((App)Application.Current).myLatitude, ((App)Application.Current).myLongitude, ((App)Application.Current).currentCategory);
         }
 
         /// <summary>
