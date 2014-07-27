@@ -38,7 +38,6 @@ namespace NeerbyyWindowsPhone
         public Home()
         {
             InitializeComponent();
-            this.getLocation();
 
             map_zoom = 14;
             HomeMap.ZoomLevel = map_zoom;
@@ -54,6 +53,8 @@ namespace NeerbyyWindowsPhone
             timer_zoom.Interval = TimeSpan.FromMilliseconds(200);
             timer_zoom.Tick += OnTimerZoomTick;
 
+            HomeMap.Center = new GeoCoordinate(48.8582, 2.2945);
+
             layer = new MapLayer();
             HomeMap.Layers.Add(layer);
 
@@ -66,13 +67,10 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         private async void getLocation()
         {
-            map_center = new GeoCoordinate(48.81529956035847, 2.3629510402679443);
+           // map_center = new GeoCoordinate(48.81529956035847, 2.3629510402679443);
             //map_center = new GeoCoordinate(48.8581646494056, 2.294425964355468);
-            target = new GeoCoordinate(-map_center.Latitude, -map_center.Longitude);
-            HomeMap.Center = map_center;
-            ((App)Application.Current).myLatitude = map_center.Latitude;
-            ((App)Application.Current).myLongitude = map_center.Longitude;
-            return;
+            //target = new GeoCoordinate(-map_center.Latitude, -map_center.Longitude);
+            //return;
             // temporary hack to center on Paris
             try
             {
@@ -91,10 +89,8 @@ namespace NeerbyyWindowsPhone
                     );
                 map_center = new GeoCoordinate(geoposition.Coordinate.Latitude, geoposition.Coordinate.Longitude);
                 target = new GeoCoordinate(-map_center.Latitude, -map_center.Longitude);
-                HomeMap.Center = map_center;
-
-                ((App)Application.Current).myLatitude = geoposition.Coordinate.Latitude;
-                ((App)Application.Current).myLongitude = geoposition.Coordinate.Longitude;
+                
+                this.UpdatePlaces();
             }
             catch (Exception ex)
             {
@@ -117,7 +113,6 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
-            this.UpdatePlaces();
             if (IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent"))
             {
                 // User has opted in or out of Location
@@ -140,7 +135,9 @@ namespace NeerbyyWindowsPhone
                 }
 
                 IsolatedStorageSettings.ApplicationSettings.Save();
-            } 
+            }
+            this.getLocation();
+            this.UpdatePlaces();
         }
 
         /// <summary>
@@ -148,6 +145,9 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         private void UpdatePlaces()
         {
+
+            ((App)Application.Current).myLatitude = HomeMap.Center.Latitude;
+            ((App)Application.Current).myLongitude = HomeMap.Center.Longitude;
             WebApi.Singleton.PlacesAsync((String responseMessage, PlaceListResult result) =>
             {
                 layer.Clear();
@@ -160,6 +160,7 @@ namespace NeerbyyWindowsPhone
             {
                 ErrorDisplayer error = new ErrorDisplayer();
             }, HomeMap.Center.Latitude, HomeMap.Center.Longitude, ((App)Application.Current).myLatitude, ((App)Application.Current).myLongitude, ((App)Application.Current).currentCategory);
+            MessageBox.Show(String.Format("{0} {1}", ((App)Application.Current).myLatitude, ((App)Application.Current).myLongitude));
         }
 
         /// <summary>
