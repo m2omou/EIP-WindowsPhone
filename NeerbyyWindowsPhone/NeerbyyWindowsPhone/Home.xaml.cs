@@ -160,7 +160,7 @@ namespace NeerbyyWindowsPhone
             {
                 ErrorDisplayer error = new ErrorDisplayer();
             }, HomeMap.Center.Latitude, HomeMap.Center.Longitude, ((App)Application.Current).myLatitude, ((App)Application.Current).myLongitude, ((App)Application.Current).currentCategory);
-            MessageBox.Show(String.Format("{0} {1}", ((App)Application.Current).myLatitude, ((App)Application.Current).myLongitude));
+            //MessageBox.Show(String.Format("{0} {1}", ((App)Application.Current).myLatitude, ((App)Application.Current).myLongitude));
         }
 
         /// <summary>
