@@ -217,8 +217,8 @@ namespace NeerbyyWindowsPhone
     public sealed class WebApi
     {
 #if DEBUG
-        //private static readonly string webApiUrl = "http://dev.neerbyy.com";
-        private static readonly string webApiUrl = "http://windows.neerbyy.com";
+        private static readonly string webApiUrl = "http://dev.neerbyy.com";
+        //private static readonly string webApiUrl = "http://windows.neerbyy.com";
 #else
         private static readonly string webApiUrl = "http://api.neerbyy.com";
 #endif

@@ -42,7 +42,7 @@ namespace NeerbyyWindowsPhone
                     this.Visibility = System.Windows.Visibility.Collapsed;
                 }, (String responseMessage, Exception exception) =>
                 {
-                    ErrorDisplayer error = new ErrorDisplayer();
+                    MessageBox.Show(responseMessage);
                 }, comment);
             } 
 

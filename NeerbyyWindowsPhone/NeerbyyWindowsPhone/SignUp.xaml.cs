@@ -40,7 +40,7 @@ namespace NeerbyyWindowsPhone
             WebApi.Singleton.CreateUserAsync((String responseMessage, UserResult result) =>
                 {
                     asynchronousDisplayer.Visibility = System.Windows.Visibility.Collapsed;
-                    MessageBox.Show("Compte crée.");
+                    NavigationService.Navigate(new Uri("/Home.xaml", UriKind.Relative));
                 }, (String responseMessage, Exception e) =>
                 {
                     asynchronousDisplayer.Visibility = System.Windows.Visibility.Collapsed;

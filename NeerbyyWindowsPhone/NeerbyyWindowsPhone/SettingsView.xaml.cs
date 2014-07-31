@@ -60,7 +60,7 @@ namespace NeerbyyWindowsPhone
                 MessageBox.Show("Vos préférences ont bien été sauvegardées !");
             }, (String responseMessage, Exception exception) =>
             {
-                ErrorDisplayer edisp = new ErrorDisplayer();
+                MessageBox.Show(responseMessage);
             }, allow_messages_checkbox.IsChecked, notify_comment.IsChecked, notify_message.IsChecked);
         }
     }
