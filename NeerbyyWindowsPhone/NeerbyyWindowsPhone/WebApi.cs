@@ -410,16 +410,14 @@ namespace NeerbyyWindowsPhone
         {
             try
             {
-                httpResponseMessage.EnsureSuccessStatusCode();
-
                 string responseString = await httpResponseMessage.Content.ReadAsStringAsync();
-                Debug.WriteLine(responseString);
+                //Debug.WriteLine(responseString);
 
                 JObject jobject = JObject.Parse(responseString);
 
                 int responseCode = (int)jobject["responseCode"];
                 string responseMessage = (string)jobject["responseMessage"];
-                if (responseCode == 0)
+                if (responseCode == 0 && httpResponseMessage.IsSuccessStatusCode)
                 {
                     JToken jToken = jobject["result"];
                     T result = jToken.ToObject<T>();

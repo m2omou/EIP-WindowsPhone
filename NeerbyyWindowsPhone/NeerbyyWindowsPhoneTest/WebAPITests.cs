@@ -227,7 +227,6 @@ namespace NeerbyyWindowsPhoneTest
             });
         }
 
-        [TestMethod]
         public async Task SetNotificationsAsync()
         {
             await this.AuthenticateAsync();
