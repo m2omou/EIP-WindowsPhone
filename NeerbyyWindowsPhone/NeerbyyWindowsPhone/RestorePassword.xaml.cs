@@ -41,7 +41,7 @@ namespace NeerbyyWindowsPhone
             WebApi.Singleton.RestorePasswordAsync((String responseMessage, Result result) =>
             {
                 asynchronousDisplayer.display_status.Text = "Envoi du mail";
-                asynchronousDisplayer.Visibility = System.Windows.Visibility.Collapsed;
+                asynchronousDisplayer.Visibility = System.Windows.Visibility.Visible;
             }, (String responseMessage, Exception exception) =>
             {
                 asynchronousDisplayer.Visibility = System.Windows.Visibility.Collapsed;

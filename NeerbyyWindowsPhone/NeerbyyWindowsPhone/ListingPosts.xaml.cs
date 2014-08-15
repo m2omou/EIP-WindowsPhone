@@ -108,15 +108,12 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.NavigationMode == NavigationMode.Back)
+           /* if (e.NavigationMode == NavigationMode.Back)
             {
                 this.LoadNewPosts();
                 return;
-            }
-            else
-            {
-                StackListing.Children.Clear();
-            }
+            }*/
+           StackListing.Children.Clear();
             since_id = 0;
             max_id = 0;
             count = 5;

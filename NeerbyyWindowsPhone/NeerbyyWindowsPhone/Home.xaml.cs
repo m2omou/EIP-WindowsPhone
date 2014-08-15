@@ -31,6 +31,7 @@ namespace NeerbyyWindowsPhone
         private DispatcherTimer timer_center;
         private DispatcherTimer timer_zoom;
         private List<Place> places;
+        private Boolean isCentering = false;
 
         /// <summary>
         /// View constructor
@@ -46,11 +47,11 @@ namespace NeerbyyWindowsPhone
             HomeMap.ViewChanged += HomeMap_ViewChanged;
 
             timer_center = new DispatcherTimer();
-            timer_center.Interval = TimeSpan.FromMilliseconds(200);
+            timer_center.Interval = TimeSpan.FromMilliseconds(400);
             timer_center.Tick += OnTimerCenterTick;
 
             timer_zoom = new DispatcherTimer();
-            timer_zoom.Interval = TimeSpan.FromMilliseconds(200);
+            timer_zoom.Interval = TimeSpan.FromMilliseconds(400);
             timer_zoom.Tick += OnTimerZoomTick;
 
             HomeMap.Center = new GeoCoordinate(48.8582, 2.2945);
@@ -89,7 +90,7 @@ namespace NeerbyyWindowsPhone
                     );
                 map_center = new GeoCoordinate(geoposition.Coordinate.Latitude, geoposition.Coordinate.Longitude);
                 target = new GeoCoordinate(-map_center.Latitude, -map_center.Longitude);
-                
+                HomeMap.SetView(map_center, HomeMap.ZoomLevel, MapAnimationKind.Linear);
                 this.UpdatePlaces();
             }
             catch (Exception ex)
@@ -113,12 +114,9 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
-            if (IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent"))
-            {
-                // User has opted in or out of Location
-                return;
-            }
-            else
+            this.isCentering = true;
+            this.infoDisplayer.Visibility = System.Windows.Visibility.Collapsed;
+            if (!IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent") || IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent") == false)
             {
                 MessageBoxResult result =
                     MessageBox.Show("Do you want to allow this app to access your phone's current location?",
@@ -159,7 +157,7 @@ namespace NeerbyyWindowsPhone
             }, (String responseMessage, Exception e) =>
             {
                 ErrorDisplayer error = new ErrorDisplayer();
-            }, HomeMap.Center.Latitude, HomeMap.Center.Longitude, ((App)Application.Current).myLatitude, ((App)Application.Current).myLongitude, ((App)Application.Current).currentCategory);
+            }, ((App)Application.Current).myLatitude,((App)Application.Current).myLongitude, null, null, ((App)Application.Current).currentCategory);
             //MessageBox.Show(String.Format("{0} {1}", ((App)Application.Current).myLatitude, ((App)Application.Current).myLongitude));
         }
 
@@ -169,7 +167,9 @@ namespace NeerbyyWindowsPhone
         /// 
         void HomeMap_ViewChanged(object sender, MapViewChangedEventArgs e)
         {
-            infoDisplayer.Visibility = System.Windows.Visibility.Visible;
+            if (isCentering == false)
+                infoDisplayer.Visibility = System.Windows.Visibility.Visible;
+            isCentering = false;
         }
 
 
@@ -287,6 +287,8 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void CenterMap(object sender, RoutedEventArgs e)
         {
+            this.isCentering = true;
+            this.infoDisplayer.Visibility = System.Windows.Visibility.Collapsed;
             this.getLocation();
         }
 
