@@ -405,6 +405,27 @@ namespace NeerbyyWindowsPhone
             return dict;
         }
 
+        private string ExtractErrorMessage(JObject jobject)
+        {
+            JToken resultToken;
+            JToken responseMessageToken;
+
+            if (jobject.TryGetValue("result", out resultToken) && resultToken.Type == JTokenType.Object)
+            {
+                JObject resultObject = (JObject)resultToken;
+                JToken errorToken;
+                if (resultObject.TryGetValue("error", out errorToken))
+                {
+                    return (string)errorToken;
+                }
+            }
+            if (jobject.TryGetValue("responseMessage", out responseMessageToken))
+            {
+                return (string)responseMessageToken;
+            }
+            return null;
+        }
+
         private async Task<T> HandleResponseMessageAsync<T>(HttpResponseMessage httpResponseMessage, ResultDelegate<T> resultDelegate, ErrorDelegate errorDelegate)
         {
             try
@@ -426,7 +447,7 @@ namespace NeerbyyWindowsPhone
                 }
                 else
                 {
-                    HandleException(errorDelegate, errorMessage: responseMessage);
+                    HandleException(errorDelegate, errorMessage: this.ExtractErrorMessage(jobject));
                 }
             }
             catch (HttpRequestException e)
