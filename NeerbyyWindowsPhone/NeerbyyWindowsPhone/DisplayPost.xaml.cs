@@ -43,7 +43,7 @@ namespace NeerbyyWindowsPhone
             since_id = 0;
             count = 5;
 
-            if (((App)Application.Current).currentPost.user.id != WebApi.Singleton.AuthenticatedUser.id)
+            if (!WebApi.Singleton.IsUserAuthenticated() || ((App)Application.Current).currentPost.user.id != WebApi.Singleton.AuthenticatedUser.id)
                 delete_button.Visibility = System.Windows.Visibility.Collapsed;
 
             this.DisplayVotes();

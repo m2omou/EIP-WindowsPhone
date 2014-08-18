@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Threading.Tasks;
+using System.Globalization;
+using System.Threading;
 
 namespace NeerbyyWindowsPhone
 {
@@ -349,6 +351,11 @@ namespace NeerbyyWindowsPhone
                 if (user != null)
                     WebApi.Singleton.AuthenticatedUser = user;
             }
+        }
+
+        private string ToString(double number)
+        {
+            return number.ToString(CultureInfo.InvariantCulture);
         }
 
         private string MakeUri(string path, IDictionary<string, string> args = null)
@@ -773,12 +780,13 @@ namespace NeerbyyWindowsPhone
             try
             {
                 SortedDictionary<string, string> args = new SortedDictionary<string, string>();
-                args.Add("latitude", latitude.ToString());
-                args.Add("longitude", longitude.ToString());
+                args.Add("latitude", this.ToString(latitude));
+                args.Add("longitude", this.ToString(longitude));
+
                 if (user_latitude.HasValue && user_longitude.HasValue)
                 {
-                    args.Add("user_latitude", user_latitude.Value.ToString());
-                    args.Add("user_longitude", user_longitude.Value.ToString());
+                    args.Add("user_latitude", this.ToString(user_latitude.Value));
+                    args.Add("user_longitude", this.ToString(user_longitude.Value));
                 }
                 if (category != null)
                     args.Add("category_id", category.id.ToString());
@@ -831,8 +839,8 @@ namespace NeerbyyWindowsPhone
                 args.Add("query", query);
                 if (user_latitude.HasValue && user_longitude.HasValue)
                 {
-                    args.Add("user_latitude", user_latitude.Value.ToString());
-                    args.Add("user_longitude", user_longitude.Value.ToString());
+                    args.Add("user_latitude", this.ToString(user_latitude.Value));
+                    args.Add("user_longitude", this.ToString(user_longitude.Value));
                 }
                 if (category != null)
                     args.Add("category_id", category.id.ToString());
@@ -901,11 +909,11 @@ namespace NeerbyyWindowsPhone
                 args.Add("place_id", place.id.ToString());
                 args.Add("content", content);
                 args.Add("link", url);
-                args.Add("user_latitude", latitude.ToString());
-                args.Add("user_longitude", longitude.ToString());
+                args.Add("user_latitude", this.ToString(latitude));
+                args.Add("user_longitude", this.ToString(longitude));
 
-                args.Add("latitude", latitude.ToString());
-                args.Add("longitude", longitude.ToString());
+                args.Add("latitude", this.ToString(latitude));
+                args.Add("longitude", this.ToString(longitude));
 
                 FormUrlEncodedContent formContent = new FormUrlEncodedContent(AddKey(postsKey, args));
 
@@ -942,11 +950,11 @@ namespace NeerbyyWindowsPhone
 
                 dataContent.Add(new StringContent(place.id), AddKey(postsKey, "place_id"));
                 dataContent.Add(new StringContent(content), AddKey(postsKey, "content"));
-                dataContent.Add(new StringContent(latitude.ToString()), AddKey(postsKey, "user_latitude"));
-                dataContent.Add(new StringContent(longitude.ToString()), AddKey(postsKey, "user_longitude"));
+                dataContent.Add(new StringContent(this.ToString(latitude)), AddKey(postsKey, "user_latitude"));
+                dataContent.Add(new StringContent(this.ToString(longitude)), AddKey(postsKey, "user_longitude"));
 
-                dataContent.Add(new StringContent(latitude.ToString()), AddKey(postsKey, "latitude"));
-                dataContent.Add(new StringContent(longitude.ToString()), AddKey(postsKey, "longitude"));
+                dataContent.Add(new StringContent(this.ToString(latitude)), AddKey(postsKey, "latitude"));
+                dataContent.Add(new StringContent(this.ToString(longitude)), AddKey(postsKey, "longitude"));
 
                 HttpResponseMessage responseMessage = await client.PostAsync(MakeUri(postsPath), dataContent);
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
@@ -1188,8 +1196,8 @@ namespace NeerbyyWindowsPhone
                 AddListOptions(args, since_id, max_id, count);
                 if (user_latitude.HasValue && user_longitude.HasValue)
                 {
-                    args.Add("user_latitude", user_latitude.Value.ToString());
-                    args.Add("user_longitude", user_longitude.Value.ToString());
+                    args.Add("user_latitude", this.ToString(user_latitude.Value));
+                    args.Add("user_longitude", this.ToString(user_longitude.Value));
                 }
 
                 HttpResponseMessage responseMessage = await client.GetAsync(MakeUri(followedPlacesPath, args));
