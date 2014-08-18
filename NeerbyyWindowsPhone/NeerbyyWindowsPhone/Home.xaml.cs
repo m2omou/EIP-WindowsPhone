@@ -68,10 +68,10 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         private async void getLocation()
         {
-            map_center = new GeoCoordinate(48.81529956035847, 2.3629510402679443);
-            map_center = new GeoCoordinate(48.8581646494056, 2.294425964355468);
-            target = new GeoCoordinate(-map_center.Latitude, -map_center.Longitude);
-            return;
+            //map_center = new GeoCoordinate(48.81529956035847, 2.3629510402679443);
+            //map_center = new GeoCoordinate(48.8581646494056, 2.294425964355468);
+            //target = new GeoCoordinate(-map_center.Latitude, -map_center.Longitude);
+            //return;
             // temporary hack to center on Paris
             try
             {
