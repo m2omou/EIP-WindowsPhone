@@ -219,7 +219,7 @@ namespace NeerbyyWindowsPhone
     public sealed class WebApi
     {
 #if DEBUG
-        private static readonly string webApiUrl = "http://dev.neerbyy.com";
+        private static readonly string webApiUrl = "http://api.neerbyy.com";
 #else
         private static readonly string webApiUrl = "http://api.neerbyy.com";
 #endif
@@ -438,24 +438,35 @@ namespace NeerbyyWindowsPhone
             try
             {
                 string responseString = await httpResponseMessage.Content.ReadAsStringAsync();
-                //Debug.WriteLine(responseString);
+                Debug.WriteLine("Debug Response : " + responseString);
 
-                JObject jobject = JObject.Parse(responseString);
-
-                int responseCode = (int)jobject["responseCode"];
-                string responseMessage = (string)jobject["responseMessage"];
-                if (responseCode == 0 && httpResponseMessage.IsSuccessStatusCode)
+                if (responseString.Length > 0)
                 {
-                    JToken jToken = jobject["result"];
-                    T result = jToken.ToObject<T>();
+                    JObject jobject = JObject.Parse(responseString);
 
-                    resultDelegate(responseMessage, result);
-                    return result;
+                    int responseCode = (int)jobject["responseCode"];
+                    string responseMessage = (string)jobject["responseMessage"];
+                    if (responseCode == 0 && httpResponseMessage.IsSuccessStatusCode)
+                    {
+                        JToken jToken = jobject["result"];
+                        T result = jToken.ToObject<T>();
+
+                        resultDelegate(responseMessage, result);
+                        return result;
+                    }
+                    else
+                    {
+                        HandleException(errorDelegate, errorMessage: this.ExtractErrorMessage(jobject));
+                    }
                 }
                 else
                 {
-                    HandleException(errorDelegate, errorMessage: this.ExtractErrorMessage(jobject));
+                    HandleException(errorDelegate, errorMessage: "No Internet Connection");
                 }
+            }
+            catch (Newtonsoft.Json.JsonReaderException e)
+            {
+                HandleException(errorDelegate, errorMessage: "An unknown error occured");
             }
             catch (HttpRequestException e)
             {

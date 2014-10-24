@@ -109,6 +109,8 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            GoogleAnalytics.EasyTracker.GetTracker().SendView("Feed");
+
             if (e.NavigationMode == NavigationMode.Back)
             {
                 this.LoadNewPosts();

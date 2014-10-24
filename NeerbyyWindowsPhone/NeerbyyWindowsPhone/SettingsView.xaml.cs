@@ -29,6 +29,8 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            GoogleAnalytics.EasyTracker.GetTracker().SendView("Settings");
+
             if (WebApi.Singleton.AuthenticatedUser.setting != null) {
                if ((WebApi.Singleton).AuthenticatedUser.setting.allow_messages.HasValue)
                 if ((bool)(WebApi.Singleton).AuthenticatedUser.setting.allow_messages)

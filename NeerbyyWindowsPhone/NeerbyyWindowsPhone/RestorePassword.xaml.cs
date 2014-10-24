@@ -22,6 +22,15 @@ namespace NeerbyyWindowsPhone
         }
 
         /// <summary>
+        /// View will appear
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            GoogleAnalytics.EasyTracker.GetTracker().SendView("RestorePassword");
+        }
+
+        /// <summary>
         /// Callback called to send the procedure mail
         /// </summary>
         private void restorePassword(object sender, RoutedEventArgs e)
