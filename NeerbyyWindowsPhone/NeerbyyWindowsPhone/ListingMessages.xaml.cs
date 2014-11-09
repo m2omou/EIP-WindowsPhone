@@ -88,6 +88,8 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            GoogleAnalytics.EasyTracker.GetTracker().SendView("Conversation");
+
             if (e.NavigationMode == NavigationMode.Back)
             {
                 this.New_Conversations();

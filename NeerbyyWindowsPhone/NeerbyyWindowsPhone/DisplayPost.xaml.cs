@@ -38,6 +38,7 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            GoogleAnalytics.EasyTracker.GetTracker().SendView("DisplaySouvenir");
 
             max_id = 0;
             since_id = 0;

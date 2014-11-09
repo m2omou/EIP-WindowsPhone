@@ -57,8 +57,7 @@ namespace NeerbyyWindowsPhone
             HomeMap.Center = new GeoCoordinate(48.8582, 2.2945);
 
             layer = new MapLayer();
-            HomeMap.Layers.Add(layer);
-
+            HomeMap.Layers.Add(layer);            
         }
 
        
@@ -114,6 +113,8 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
+            GoogleAnalytics.EasyTracker.GetTracker().SendView("Home");
+
             this.isCentering = true;
             this.infoDisplayer.Visibility = System.Windows.Visibility.Collapsed;
             if (!IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent") || IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent") == false)

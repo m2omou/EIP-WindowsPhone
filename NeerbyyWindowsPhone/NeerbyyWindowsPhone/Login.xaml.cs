@@ -33,6 +33,15 @@ namespace NeerbyyWindowsPhone
         }
 
         /// <summary>
+        /// View will appear
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            GoogleAnalytics.EasyTracker.GetTracker().SendView("Login");
+        }
+
+        /// <summary>
         /// Do nothing when back button is pressed
         /// </summary>
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)

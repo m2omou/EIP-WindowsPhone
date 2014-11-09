@@ -32,6 +32,13 @@ namespace NeerbyyWindowsPhone
             cameraCapture.Completed += this.cameraCaptureTask_Completed;
         }
 
+        /// <summary>
+        /// View will appear
+        /// </summary>
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            GoogleAnalytics.EasyTracker.GetTracker().SendView("CreateSouvenir");
+        }
 
         /// <summary>
         /// Button pressed to create the post

@@ -40,6 +40,15 @@ namespace NeerbyyWindowsPhone
         }
 
         /// <summary>
+        /// View will appear
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            GoogleAnalytics.EasyTracker.GetTracker().SendView("CurrentUserInfo");
+        }
+
+        /// <summary>
         /// Callback appelé pour mettre a jour les informations
         /// </summary>
         private void register(object sender, RoutedEventArgs args)

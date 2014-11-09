@@ -30,6 +30,15 @@ namespace NeerbyyWindowsPhone
         }
 
         /// <summary>
+        /// View will appear
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            GoogleAnalytics.EasyTracker.GetTracker().SendView("SignUp");
+        }
+
+        /// <summary>
         /// Callback appelé pour créer le compte
         /// </summary>
         private void register(object sender, RoutedEventArgs args)

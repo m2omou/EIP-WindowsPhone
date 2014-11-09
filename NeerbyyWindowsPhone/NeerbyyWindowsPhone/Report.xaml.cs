@@ -24,6 +24,15 @@ namespace NeerbyyWindowsPhone
         }
 
         /// <summary>
+        /// View will appear
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            GoogleAnalytics.EasyTracker.GetTracker().SendView("Report");
+        }
+
+        /// <summary>
         /// Send the report to the server
         /// </summary>
         /// <param name="sender"></param>
