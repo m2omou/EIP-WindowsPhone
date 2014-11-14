@@ -84,7 +84,6 @@ namespace NeerbyyWindowsPhone
             }
 
             GoogleAnalytics.EasyTracker.GetTracker().SendEvent("Test", "AppLaunch", null, 0);
-
         }
 
         // Code to execute when the application is launching (eg, from Start)
