@@ -218,6 +218,9 @@ namespace NeerbyyWindowsPhone
     /// </summary>
     public sealed class WebApi
     {
+        public static readonly string usernameKey = "usernameKey";
+        public static readonly string passwordKey = "passwordKey";
+
 #if DEBUG
         private static readonly string webApiUrl = "http://api.neerbyy.com";
 #else
@@ -513,15 +516,22 @@ namespace NeerbyyWindowsPhone
         /// <param name="errorDelegate"></param>
         /// <param name="email"></param>
         /// <param name="password"></param>
+        /// <param name="token"></param>
         /// <returns></returns>
         public async Task AuthenticateAsync(ResultDelegate<UserResult> resultDelegate, ErrorDelegate errorDelegate,
-            string email, string password)
+            string email, string password, string token = null)
         {
             try
             {
                 SortedDictionary<string, string> args = new SortedDictionary<string, string>();
                 args.Add("email", email);
                 args.Add("password", password);
+
+                if (token != null)
+                {
+                    args.Add("device_token", token);
+                    args.Add("platform_id", "2");
+                }
 
                 FormUrlEncodedContent content = new FormUrlEncodedContent(AddKey(sessionsKey, args));
             
@@ -551,6 +561,8 @@ namespace NeerbyyWindowsPhone
 
                 await HandleResponseMessageAsync(responseMessage, resultDelegate, errorDelegate);
                 AuthenticatedUser = null;
+                ApplicationSettings.RemoveSetting(usernameKey);
+                ApplicationSettings.RemoveSetting(passwordKey);
             }
             catch (Exception e)
             {

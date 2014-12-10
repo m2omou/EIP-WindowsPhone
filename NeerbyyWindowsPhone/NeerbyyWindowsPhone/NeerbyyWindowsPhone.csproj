@@ -98,6 +98,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ApplicationSettings.cs" />
     <Compile Include="CreatePost.xaml.cs">
       <DependentUpon>CreatePost.xaml</DependentUpon>
     </Compile>

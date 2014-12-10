@@ -57,7 +57,7 @@ namespace NeerbyyWindowsPhone
             HomeMap.Center = new GeoCoordinate(48.8582, 2.2945);
 
             layer = new MapLayer();
-            HomeMap.Layers.Add(layer);            
+            HomeMap.Layers.Add(layer);
         }
 
        
@@ -296,6 +296,6 @@ namespace NeerbyyWindowsPhone
         private void GoToListing(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/ListingPosts.xaml", UriKind.Relative));
-        }        
+        }
     }
 }
