@@ -5,7 +5,7 @@
     <Language code="fr" />
     <Language code="qps-ploc" />
   </Languages>
-  <App xmlns="" ProductID="{c5a148b1-e795-47aa-be39-e7f4c80a4f0e}" Title="Neerbyy" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Neerbyy EIP Group" Description="Donnez vie à un lieu !" Publisher="Neerbyy" PublisherID="{ca8dbcd7-e1d7-4dc0-bb03-66d7007d1d25}">
+  <App xmlns="" ProductID="{c5a148b1-e795-47aa-be39-e7f4c80a4f0e}" Title="Neerbyy" RuntimeType="Silverlight" Version="2.0" Genre="apps.normal" Author="Neerbyy EIP Group" Description="Donnez vie à un lieu !" Publisher="Neerbyy" PublisherID="{ca8dbcd7-e1d7-4dc0-bb03-66d7007d1d25}">
     <IconPath IsRelative="true" IsResource="false">Images\icon152.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
