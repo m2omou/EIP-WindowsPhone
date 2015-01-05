@@ -65,8 +65,10 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         private void LoadNewPosts()
         {
+            loading_bar.IsIndeterminate = true;
             WebApi.Singleton.FeedAsync((string responseMessage, PostListResult result) =>
             {
+                loading_bar.IsIndeterminate = false;
                 bool first = false;
                 foreach (Post post in result.publications)
                 {
@@ -79,6 +81,7 @@ namespace NeerbyyWindowsPhone
                 }
             }, (String responseMessage, Exception exception) =>
             {
+                loading_bar.IsIndeterminate = false;
                 ErrorDisplayer error = new ErrorDisplayer();
             }, this.since_id, null, this.count);
         }
@@ -90,8 +93,10 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void LoadMore(object sender, RoutedEventArgs e)
         {
+            loading_bar.IsIndeterminate = true;
             WebApi.Singleton.FeedAsync((string responseMessage, PostListResult result) =>
             {
+                loading_bar.IsIndeterminate = false;
                 foreach (Post post in result.publications)
                 {
                     this.AddAPostToTheListing(post, false);
@@ -99,6 +104,7 @@ namespace NeerbyyWindowsPhone
                 }
             }, (String responseMessage, Exception exception) =>
             {
+                loading_bar.IsIndeterminate = false;
                 ErrorDisplayer error = new ErrorDisplayer();
             }, null, this.max_id, this.count);
         }
@@ -120,8 +126,10 @@ namespace NeerbyyWindowsPhone
             max_id = 0;
             since_id = 0;
             count = 5;
+            loading_bar.IsIndeterminate = true;
             WebApi.Singleton.FeedAsync((string responseMessage, PostListResult result) =>
             {
+                loading_bar.IsIndeterminate = false;
                 bool first = false;
                 foreach (Post post in result.publications)
                 {
@@ -135,6 +143,7 @@ namespace NeerbyyWindowsPhone
                 }
             }, (String responseMessage, Exception exception) =>
             {
+                loading_bar.IsIndeterminate = false;
                 ErrorDisplayer error = new ErrorDisplayer();
             }, null, null, this.count);
         }

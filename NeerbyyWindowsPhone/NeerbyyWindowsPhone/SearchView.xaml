@@ -25,12 +25,14 @@
         <!--ContentPanel - place additional content here-->
 		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
           
-			<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="646">
-				<StackPanel Height="59" Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Center">
+			<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="700">
+				
+                <StackPanel Height="59" Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Center">
 					<TextBlock x:Name="Title" TextWrapping="Wrap" Text="RESULTAT DE LA RECHERCHE :" Width="420" Foreground="#FF76807C" FontFamily="Segoe WP Semibold" FontSize="21.333" HorizontalAlignment="Center"/>
 				</StackPanel>
+                <ProgressBar Height="18" Width="343" x:Name="loading_bar" IsIndeterminate="True" Background="#1900AEFF" Foreground="#FF4C54FF"/>
 
-				<ScrollViewer x:Name="ScrollingView" Height="557">
+                <ScrollViewer x:Name="ScrollingView" Height="609">
 					<StackPanel x:Name="StackListing" Orientation="Vertical"/>
 				</ScrollViewer>
 			</StackPanel>

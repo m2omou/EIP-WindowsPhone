@@ -48,8 +48,10 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void LoadMore(object sender, RoutedEventArgs e)
         {
+            loading_bar.IsIndeterminate = true;
             WebApi.Singleton.FollowedPlacesAsync((string responseMessage, PlaceListResult result) =>
             {
+                loading_bar.IsIndeterminate = false;
                 foreach (Place place in result.places)
                 {
                     this.AddPlaceToTheListing(place, false);
@@ -57,6 +59,7 @@ namespace NeerbyyWindowsPhone
                 }
             }, (String responseMessage, Exception exception) =>
             {
+                loading_bar.IsIndeterminate = false;
                 ErrorDisplayer error = new ErrorDisplayer();
             }, null, null, this.max_id, count);
         }
@@ -77,8 +80,10 @@ namespace NeerbyyWindowsPhone
             this.since_id = 0;
             this.count = 5;
             StackListing.Children.Clear();
+            loading_bar.IsIndeterminate = true;
             WebApi.Singleton.FollowedPlacesAsync((string responseMessage, PlaceListResult result) =>
             {
+                loading_bar.IsIndeterminate = false;
                 bool first = false;
                 foreach (Place place in result.places)
                 {
@@ -92,6 +97,7 @@ namespace NeerbyyWindowsPhone
                 }
             }, (String responseMessage, Exception exception) =>
             {
+                loading_bar.IsIndeterminate = false;
                 ErrorDisplayer error = new ErrorDisplayer();
             }, null, null, null, count);
         }

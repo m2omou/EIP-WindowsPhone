@@ -50,7 +50,9 @@
         <!--ContentPanel - place additional content here-->
 		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 			<StackPanel HorizontalAlignment="Left" Height="720" VerticalAlignment="Top" Width="456">
-				<ScrollViewer x:Name="ScrollViewer" Height="658">
+                <ProgressBar Height="18" Width="343" x:Name="loading_bar" IsIndeterminate="True" Background="#1900AEFF" Foreground="#FF4C54FF"/>
+
+                <ScrollViewer x:Name="ScrollViewer" Height="640">
 					<StackPanel x:Name="StackListing" Width="456" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 				</ScrollViewer>
 				<Button Content="CHARGER PLUS DE MESSAGES" Background="#FF398D6E" Margin="0,-10,0,0" Click="Load_More"/>

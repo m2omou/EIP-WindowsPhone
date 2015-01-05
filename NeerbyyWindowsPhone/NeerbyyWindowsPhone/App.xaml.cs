@@ -34,6 +34,8 @@ namespace NeerbyyWindowsPhone
 
         public User currentUser { get; set; }
 
+        public Conversation currentConversation { get; set; }
+
         /// <summary>
         /// Pass  the current post as a reference
         /// </summary>

@@ -42,14 +42,18 @@ namespace NeerbyyWindowsPhone
             {
                 string query_str = NavigationContext.QueryString["query"];
             StackListing.Children.Clear();
+
+            loading_bar.IsIndeterminate = true;
             WebApi.Singleton.SearchPlacesAsync((string responseMessage, PlaceListResult result) =>
             {
+                loading_bar.IsIndeterminate = false;
                 foreach (Place place in result.places)
                 {
                     this.AddPlaceToTheListing(place, false);
                 }
             }, (String responseMessage, Exception exception) =>
             {
+                loading_bar.IsIndeterminate = false;
                 ErrorDisplayer error = new ErrorDisplayer();
             }, query_str, ((App)Application.Current).myLatitude, ((App)Application.Current).myLongitude, ((App)Application.Current).currentCategory, count);
             }

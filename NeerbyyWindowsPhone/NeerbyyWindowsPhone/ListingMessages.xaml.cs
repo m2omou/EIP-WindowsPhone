@@ -39,6 +39,7 @@ namespace NeerbyyWindowsPhone
             display_message.preview.Text = conversation.messages.Last<Message>().content;
             display_message.username.Text = conversation.recipient.username;
             display_message.user = conversation.recipient;
+            display_message.conversation = conversation;
             display_message.date.Text = "";
             Uri uri = null;
             uri = new Uri(conversation.recipient.avatar, UriKind.Absolute);
@@ -90,7 +91,7 @@ namespace NeerbyyWindowsPhone
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             GoogleAnalytics.EasyTracker.GetTracker().SendView("Conversation");
-
+            loading_bar.IsIndeterminate = true;
             if (e.NavigationMode == NavigationMode.Back)
             {
                 this.New_Conversations();
@@ -102,6 +103,7 @@ namespace NeerbyyWindowsPhone
             WebApi.Singleton.ConversationsAsync((string responseMessage, ConversationListResult result) =>
             {
                 bool first = false;
+                loading_bar.IsIndeterminate = false;
                 foreach (Conversation conversation in result.conversations)
                 {
                         if (!first)
@@ -114,6 +116,7 @@ namespace NeerbyyWindowsPhone
                 }
             }, (String responseMessage, Exception exception) =>
             {
+                loading_bar.IsIndeterminate = false;
                 ErrorDisplayer edisp = new ErrorDisplayer();
             }, null, since_id, max_id, count);
         }
@@ -125,8 +128,10 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void Load_More(object sender, RoutedEventArgs e)
         {
+            loading_bar.IsIndeterminate = true;
             WebApi.Singleton.ConversationsAsync((string responseMessage, ConversationListResult result) =>
             {
+                loading_bar.IsIndeterminate = false;
                 foreach (Conversation conversation in result.conversations)
                 {
                     this.AddConversation(conversation, false);
@@ -134,6 +139,7 @@ namespace NeerbyyWindowsPhone
                 }
             }, (String responseMessage, Exception exception) =>
             {
+                loading_bar.IsIndeterminate = false;
                 ErrorDisplayer edisp = new ErrorDisplayer();
             }, null, this.since_id, this.max_id, count);
 

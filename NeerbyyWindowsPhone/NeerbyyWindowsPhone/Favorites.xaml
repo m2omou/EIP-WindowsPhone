@@ -33,7 +33,8 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 
             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="720" Width="456">
-                
+                <ProgressBar Height="18" Width="343" x:Name="loading_bar" IsIndeterminate="True" Background="#1900AEFF" Foreground="#FF4C54FF"/>
+
                 <ScrollViewer x:Name="ScrollingView" Height="656">
                     <StackPanel x:Name="StackListing" Orientation="Vertical"/>
                 </ScrollViewer>

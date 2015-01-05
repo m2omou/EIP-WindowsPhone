@@ -19,9 +19,8 @@ namespace NeerbyyWindowsPhone
     /// </summary>
     public partial class Messenger : PhoneApplicationPage
     {
-        private int count;
-        private int last_id;
-        private int since_id;
+        private int count = 20;
+        private int since_id = -1;
         private DispatcherTimer refresh;
         private Conversation conversation;
         /// <summary>
@@ -106,10 +105,8 @@ namespace NeerbyyWindowsPhone
         {
             GoogleAnalytics.EasyTracker.GetTracker().SendView("ConversationList");
 
-            count = 5;
-            last_id = 0;
-            since_id = 0;
-            this.conversation = null;
+            since_id = -1;
+            this.conversation = ((App)Application.Current).currentConversation;
 
             username.Text = ((App)Application.Current).currentUser.username;
             fullname.Text = String.Format("{0} {1}", ((App)Application.Current).currentUser.firstname, ((App)Application.Current).currentUser.lastname);
@@ -117,28 +114,7 @@ namespace NeerbyyWindowsPhone
             uri = new Uri(((App)Application.Current).currentUser.avatar, UriKind.Absolute);
             var bitmap = new BitmapImage(uri);
             avatar.Source = bitmap;
-
-            WebApi.Singleton.ConversationsAsync((string responseMessage, ConversationListResult result) =>
-                {
-                    foreach (Conversation conversation in result.conversations)
-                    {
-                        this.conversation = conversation;
-                        bool first = false;
-                        foreach (Message msg in this.conversation.messages)
-                        {
-                            if (!first)
-                            {
-                                since_id = msg.id;
-                                first = true;
-                            }
-                            this.AddMessage(msg, false);
-                            this.last_id = msg.id;
-                        }
-                    }
-                }, (String responseMessage, Exception exception) =>
-                    {
-                        ErrorDisplayer edisp = new ErrorDisplayer();
-                    }, ((App)Application.Current).currentUser);
+            this.NewMessages();
         }
 
         /// <summary>
@@ -188,23 +164,26 @@ namespace NeerbyyWindowsPhone
         /// <param name="message"></param>
         private void NewMessages()
         {
-            bool first = false;
+            int? since = null;
+            if (this.since_id != -1)
+                since = this.since_id;
+  
             WebApi.Singleton.MessagesAsync((string responseMessage, MessageListResult result) =>
             {
-                foreach (Message msg in result.messages)
+                this.since_id = result.messages.First<Message>().id;
+
+                List<Message> messages = result.messages;
+                messages.Reverse();
+
+                foreach (Message msg in messages)
                 {
-                    if (!first)
-                    {
-                        since_id = msg.id;
-                        first = true;
-                    }
+//                    MessageBox.Show(msg.content);
                     this.AddMessage(msg, false);
-                    this.last_id = msg.id;
                 }
             }, (String responseMessage, Exception exception) =>
             {
 
-            }, this.conversation, this.last_id, this.since_id, this.count);
+            }, this.conversation, since, null, this.count);
         }
     }
 }

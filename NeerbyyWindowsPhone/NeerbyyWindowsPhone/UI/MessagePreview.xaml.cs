@@ -16,6 +16,8 @@ namespace NeerbyyWindowsPhone.UI
     public partial class MessagePreview : UserControl
     {
         public User user;
+        public Conversation conversation;
+
         /// <summary>
         ///  default constructor
         /// </summary>
@@ -33,6 +35,7 @@ namespace NeerbyyWindowsPhone.UI
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             ((App)Application.Current).currentUser = this.user;
+            ((App)Application.Current).currentConversation = this.conversation;
 
             (Application.Current.RootVisual as PhoneApplicationFrame).Navigate(new Uri("/Messenger.xaml", UriKind.Relative));
         }
