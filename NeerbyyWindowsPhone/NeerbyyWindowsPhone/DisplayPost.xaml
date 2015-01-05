@@ -21,33 +21,36 @@
 		<!--TitlePanel contains the name of the application and page title-->
 
         <!--ContentPanel - place additional content here-->
-		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,12,0" Background="#FF3EB88E">
-			<TextBlock Text="Neerby" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0,0,4" FontFamily="Segoe WP Black" HorizontalAlignment="Left" Width="432"/>
-			<TextBlock Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="GeosansLight" FontSize="48" Height="62" Text="Souvenir"/>
+
+        <!--ContentPanel - place additional content here-->
+		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="0" Background="#FF3EB88E">
+			<TextBlock Text="Neerby" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0,12,5" FontFamily="Segoe WP Black" FontSize="32"/>
 		</StackPanel>
 
         <!--ContentPanel - place additional content here-->
-		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-          
-			<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="646">
-				<StackPanel Orientation="Horizontal">
-					<TextBlock x:Name="Title" TextWrapping="Wrap" Text="PARIS" Foreground="#FF3EB88E" FontFamily="Segoe WP Black" FontSize="37.333" HorizontalAlignment="Center"/>
-					<Button Click="delete_Click" x:Name="delete_button" Content="x" Background="#FFFF5E5E" BorderThickness="0" Padding="0" UseLayoutRounding="True" Width="53" VerticalAlignment="Top" HorizontalAlignment="Center" VerticalContentAlignment="Top" FontSize="16" Height="51"/>
-				</StackPanel>
-				<Image Tap="image_content_Tap" Margin="0,0,0,9" x:Name="image_content" Stretch="UniformToFill" Width="248" Height="247" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-				<StackPanel>
-					<StackPanel Height="70" Orientation="Horizontal" Margin="0,-10,0,0">
-						<Button Content="SIGNALER" Background="#FFF33232" FontSize="18.667" Width="216" Click="ReportPost" BorderThickness="0,3,3,3"/>
-						<Button x:Name="button_vote_up" Click="VoteUp" Content="745" Background="#FF3EB88E" FontSize="18.667" Width="120" BorderBrush="#FF2D8969"/>
-                        <Button x:Name="button_vote_down" Click="VoteDown"  Content="012" Background="#FFF38A32" FontSize="18.667" Width="120" BorderBrush="#FFD47B2F"/>
+		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="0">
+			<ScrollViewer HorizontalAlignment="Left" Height="720" VerticalAlignment="Top" Width="480">
+				<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="720" Width="480">
+					<phone:WebBrowser x:Name="web_browser" Height="252"/>
+					<Image Tap="image_content_Tap" Margin="0,0,0,0" x:Name="image_content" Stretch="UniformToFill" Width="480" Height="247" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+					<StackPanel Orientation="Horizontal" Background="#FF205B46" Height="52">
+						<TextBlock x:Name="Title" TextWrapping="Wrap" Text="PARIS" Foreground="White" FontFamily="Segoe WP SemiLight" FontSize="24" HorizontalAlignment="Center" Width="423" VerticalAlignment="Center" Margin="10,0,0,0"/>
+						<Button Click="delete_Click" x:Name="delete_button" Content="x" Background="#FFFF5E5E" BorderThickness="0" Padding="0" UseLayoutRounding="True" Width="53" VerticalAlignment="Top" HorizontalAlignment="Center" VerticalContentAlignment="Top" FontSize="16" Height="51"/>
 					</StackPanel>
+					<StackPanel Margin="0,5,0,0">
+						<StackPanel Height="70" Orientation="Horizontal" Margin="0,-10,0,0">
+							<Button Content="SIGNALER" Background="#FFF33232" FontSize="18.667" Width="236" Click="ReportPost" BorderThickness="0,3,3,3"/>
+							<Button x:Name="button_vote_up" Click="VoteUp" Content="745" Background="#FF3EB88E" FontSize="18.667" Width="120" BorderBrush="#FF2D8969"/>
+							<Button x:Name="button_vote_down" Click="VoteDown"  Content="012" Background="#FFF38A32" FontSize="18.667" Width="120" BorderBrush="#FFD47B2F"/>
+						</StackPanel>
+					</StackPanel>
+					<ScrollViewer x:Name="ScrollingView" Height="257" Margin="0,-10,0,0">
+						<StackPanel x:Name="ListingComments"/>
+					</ScrollViewer>
 					<Button Content="COMMENTER" Background="#FF444444" FontSize="18.667" Height="70" Click="WriteComment" Margin="0,-20,0,0"/>
+					<Button Content="CHARGER PLUS DE COMMENTAIRES" Background="#FF3B76F5" FontSize="14.667" Height="55" Click="MoreComments" BorderBrush="#FF3B76F5" Margin="0,-10,0,0" BorderThickness="0"/>
 				</StackPanel>
-                <ScrollViewer x:Name="ScrollingView" Height="209" Margin="0,-10,0,0">
-					<StackPanel x:Name="ListingComments"/>
-				</ScrollViewer>
-                <Button Content="CHARGER PLUS DE COMMENTAIRES" Background="#FF3B76F5" FontSize="14.667" Height="55" Click="MoreComments" BorderBrush="#FF3B76F5" Margin="0,-10,0,0" BorderThickness="0"/>
-			</StackPanel>
+			</ScrollViewer>
 		</Grid>
 	</Grid>
 

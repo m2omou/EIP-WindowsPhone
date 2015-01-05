@@ -45,14 +45,10 @@
             Before shipping remove this XAML and the image itself.-->
 		<!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
     <!--TitlePanel contains the name of the application and page title-->
-		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,74,28" Background="#FF3EB88E">
-			<TextBlock Text="Neerby" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0" FontFamily="Segoe WP Black"/>
-			<TextBlock Text="Messagerie" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="GeosansLight"/>
-		</StackPanel>
 
         <!--ContentPanel - place additional content here-->
-		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-			<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="607">
+		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,10,12,0">
+			<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="710">
 				<StackPanel Height="127" Width="455" Orientation="Horizontal" Background="#FFEAEAEA">
 					<Image x:Name="avatar" Width="132" Source="default.jpg" Margin="0"/>
 					<StackPanel Width="305">
@@ -61,12 +57,15 @@
 					</StackPanel>
 				</StackPanel>
 				<Button Content="SUPPRIMER LE FIL DE MESSAGE" BorderBrush="#00F73939" Background="#FFF73939" Height="59" BorderThickness="0" FontSize="18.667" Margin="0,-4,0,0"/>
-				<ScrollViewer x:Name="ScrollingView" HorizontalAlignment="Left" Height="386" VerticalAlignment="Top" Width="454" Margin="0,-6,0,0">
+				<ScrollViewer x:Name="ScrollingView" HorizontalAlignment="Left" Height="471" VerticalAlignment="Top" Width="454" Margin="0,-6,0,0">
 					<StackPanel x:Name="StackListing" Width="454" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 				</ScrollViewer>
 				<Button Content="ENVOYER UN MESSAGE" Width="454" Background="#FF5396BB" BorderBrush="Transparent" Height="67" Margin="0,-6,0,0" FontSize="18.667" Click="SendMessage"/>
 			</StackPanel>
 		</Grid>
+		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="0" Background="#FF3EB88E">
+			<TextBlock Text="Neerby" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0,12,5" FontFamily="Segoe WP Black" FontSize="32"/>
+		</StackPanel>
 
 	</Grid>
 

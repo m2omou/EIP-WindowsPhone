@@ -6,8 +6,8 @@
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}" Height="186" Width="450" Margin="0,0,0,10" Background="White">
-	<Grid x:Name="LayoutRoot1" Background="#FFE6E6E6" Margin="0,0,0,19">
+    Foreground="{StaticResource PhoneForegroundBrush}" Height="185.333" Width="450" Margin="0,0,0,4" Background="White">
+	<Grid x:Name="LayoutRoot1" Background="#FFECECEC" Margin="0,0,0,5">
 		<StackPanel HorizontalAlignment="Left" Height="166" VerticalAlignment="Top" Width="456" Orientation="Horizontal">
 			<Image x:Name="avatar" Width="120" Margin="10,10,0,10" Source="/NeerbyyWindowsPhone;component/default.jpg" Height="120"/>
 			<StackPanel Margin="10,1,0,0" Width="316">

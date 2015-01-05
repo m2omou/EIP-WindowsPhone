@@ -51,7 +51,7 @@ namespace NeerbyyWindowsPhone
             //Title.Text = ((App)Application.Current).currentPost.;
             //this.text_content.Text = ((App)Application.Current).currentPost.content;
             this.Title.Text = ((App)Application.Current).currentPost.place.name;
-            if (((App)Application.Current).currentPost.url != null && ((App)Application.Current).currentPost.url != "")
+            if (((App)Application.Current).currentPost.url != null && ((App)Application.Current).currentPost.url != "" && ((App)Application.Current).currentPost.type == "2")
             {
                 Uri uri = null;
                 if (((App)Application.Current).currentPost.url.StartsWith("http://"))
@@ -65,6 +65,16 @@ namespace NeerbyyWindowsPhone
             else
             {
                 this.image_content.Visibility = System.Windows.Visibility.Collapsed;
+            }
+            if (((App)Application.Current).currentPost.url != null && ((App)Application.Current).currentPost.url != "" && ((App)Application.Current).currentPost.type == "0")
+            {
+                web_browser.Visibility = System.Windows.Visibility.Visible;
+                String url = ((App)Application.Current).currentPost.url;
+                web_browser.NavigateToString(url);
+            }
+            else
+            {
+                web_browser.Visibility = System.Windows.Visibility.Collapsed;
             }
             this.DisplayComments();
         }

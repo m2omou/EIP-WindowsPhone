@@ -931,7 +931,8 @@ namespace NeerbyyWindowsPhone
                 SortedDictionary<string, string> args = new SortedDictionary<string, string>();
                 args.Add("place_id", place.id.ToString());
                 args.Add("content", content);
-                args.Add("link", url);
+                if (url != null)
+                    args.Add("link", url);
                 args.Add("user_latitude", this.ToString(latitude));
                 args.Add("user_longitude", this.ToString(longitude));
 

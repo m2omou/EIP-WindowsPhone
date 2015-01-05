@@ -23,30 +23,35 @@
         <!--TitlePanel contains the name of the application and page title-->
 
         <!--ContentPanel - place additional content here-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,12,28" Background="#FF3EB88E">
-        	<TextBlock Text="Neerby" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0,0,4" FontFamily="Segoe WP Black" HorizontalAlignment="Left" Width="432"/>
-        	<TextBlock Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="GeosansLight" FontSize="48" Height="62">
-        		<Run Text="Listing des "/>
-        		<Run Text="souvenirs"/>
-        	</TextBlock>
+
+        <!--ContentPanel - place additional content here-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="0" Background="#FF3EB88E">
+        	<TextBlock Text="Neerby" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0,12,5" FontFamily="Segoe WP Black" FontSize="32"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
           
-        	<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="646">
+        	<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="720">
         		<StackPanel Height="59" Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Center">
-        			<TextBlock x:Name="Title" TextWrapping="Wrap" Text="PARIS" Width="253" Foreground="#FF3EB88E" FontFamily="Segoe WP Black" FontSize="37.333" HorizontalAlignment="Center"/>
-        			<Button x:Name="button_post" Content="POSTER UN SOUVENIR" HorizontalAlignment="Right" Width="193" Background="#FFFF6666" BorderBrush="#FFFF6666" Foreground="White" FontSize="13.333" BorderThickness="0,3,3,3" Click="GoToCreatePost"/>
+        			<TextBlock x:Name="Title" TextWrapping="Wrap" Text="PARIS" Width="436" Foreground="#FF3EB88E" FontFamily="Segoe WP Black" FontSize="26.667" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,20,0,0"/>
                 </StackPanel>
-                <Button x:Name="button_follow" Content="SUIVRE LE LIEU" HorizontalAlignment="Right" Background="#FFF5B13B" BorderBrush="#FFF5B13B" Foreground="White" FontSize="13.333" BorderThickness="0,3,3,3" Click="FollowPlace" Width="446"/>
+                <Grid>
+                	<Grid.ColumnDefinitions>
+                		<ColumnDefinition/>
+                		<ColumnDefinition/>
+                	</Grid.ColumnDefinitions>
+                	<Button x:Name="button_follow" Content="SUIVRE LE LIEU" Background="#FFF5B13B" BorderBrush="#FFF5B13B" Foreground="White" FontSize="13.333" BorderThickness="0,3,3,3" Click="FollowPlace"  Margin="0,0,4,0" HorizontalAlignment="Right" Width="214"/>
 
-                <ScrollViewer x:Name="ScrollingView" Height="449">
-                    <StackPanel x:Name="StackListing" Orientation="Vertical">
-                    </StackPanel>
+                	<Button x:Name="button_load_more" Content="CHARGER PLUS DE SOUVENIRS" HorizontalAlignment="Right" Background="#FF3B76F5" BorderBrush="#FF3B76F5" Foreground="White" FontSize="13.333" BorderThickness="0,3,3,3" Click="LoadMore" Margin="0" Grid.Column="1"/>
+                </Grid>
+                <ProgressBar Height="18" Width="343" x:Name="loading_bar" IsIndeterminate="True" Background="#1900AEFF" Foreground="#FF4C54FF"/>
+
+                <ScrollViewer x:Name="ScrollingView" Height="530">
+                    <StackPanel x:Name="StackListing" Orientation="Vertical"/>
                 </ScrollViewer>
-                <Button x:Name="button_load_more" Content="CHARGER PLUS DE SOUVENIRS" HorizontalAlignment="Right" Background="#FF3B76F5" BorderBrush="#FF3B76F5" Foreground="White" FontSize="13.333" BorderThickness="0,3,3,3" Click="LoadMore" Width="446"/>
             </StackPanel>
+        	<Button x:Name="button_post" Content="POSTER UN SOUVENIR" HorizontalAlignment="Right" Width="443" Background="#FFFF6666" BorderBrush="#FFFF6666" Foreground="White" FontSize="13.333" BorderThickness="0,3,3,3" Click="GoToCreatePost" Margin="0,658,10,3"/>
         </Grid>
     </Grid>
 

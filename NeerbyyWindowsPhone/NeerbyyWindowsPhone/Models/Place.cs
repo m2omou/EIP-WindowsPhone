@@ -75,5 +75,10 @@ namespace NeerbyyWindowsPhone
         /// A Boolean to know if the User can publish in a Place
         /// </summary>
         public Boolean? can_publish { get; set; }
+
+        /// <summary>
+        /// The number of posts at this place
+        /// </summary>
+        public int? publications { get; set; }
     }
 }

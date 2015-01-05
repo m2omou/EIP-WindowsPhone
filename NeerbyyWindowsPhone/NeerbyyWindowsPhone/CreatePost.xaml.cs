@@ -53,13 +53,16 @@ namespace NeerbyyWindowsPhone
             {
                 if (preview_image.Source == null) // creation de texte
                 {
+                    String link_str = link.Text;
+                    if (link_str == "")
+                        link_str = null;
                     WebApi.Singleton.CreatePostWithUrlAsync((string responseMessage, PostResult result) =>
                     {
                         MessageBox.Show("Votre souvenir a bien été créé");
                     }, (String responseMessage, Exception exception) =>
                     {
                         MessageBox.Show(responseMessage);
-                    }, ((App)Application.Current).currentPlace, content.Text, "", ((App)Application.Current).myLatitude, ((App)Application.Current).myLongitude);
+                    }, ((App)Application.Current).currentPlace, content.Text, link_str, ((App)Application.Current).myLatitude, ((App)Application.Current).myLongitude);
                 }
                 else  // creation d'une image
                 {
@@ -136,6 +139,15 @@ namespace NeerbyyWindowsPhone
             photo_uploader.Visibility = System.Windows.Visibility.Collapsed;
             preview_image.Source = null;
             image_stream = null;
+            link_stack.Visibility = Visibility.Collapsed;
+        }
+
+        private void SendLink(object sender, RoutedEventArgs e)
+        {
+            photo_uploader.Visibility = System.Windows.Visibility.Collapsed;
+            preview_image.Source = null;
+            image_stream = null;
+            link_stack.Visibility = Visibility.Visible;
         }
     }
 }

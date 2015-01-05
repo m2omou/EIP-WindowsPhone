@@ -21,18 +21,13 @@
 		<!--TitlePanel contains the name of the application and page title-->
 
         <!--ContentPanel - place additional content here-->
-		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,12,28" Background="#FF3EB88E">
-			<TextBlock Text="Neerby" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0,0,4" FontFamily="Segoe WP Black" HorizontalAlignment="Left" Width="432"/>
-			<TextBlock Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="GeosansLight" FontSize="40" Height="62" Text="Résultat de la recherche">
-			</TextBlock>
-		</StackPanel>
 
         <!--ContentPanel - place additional content here-->
 		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
           
 			<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="646">
 				<StackPanel Height="59" Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Center">
-					<TextBlock x:Name="Title" TextWrapping="Wrap" Text="PARIS" Width="420" Foreground="#FF76807C" FontFamily="Segoe WP Semibold" FontSize="21.333" HorizontalAlignment="Center"/>
+					<TextBlock x:Name="Title" TextWrapping="Wrap" Text="RESULTAT DE LA RECHERCHE :" Width="420" Foreground="#FF76807C" FontFamily="Segoe WP Semibold" FontSize="21.333" HorizontalAlignment="Center"/>
 				</StackPanel>
 
 				<ScrollViewer x:Name="ScrollingView" Height="557">
@@ -40,6 +35,9 @@
 				</ScrollViewer>
 			</StackPanel>
 		</Grid>
+		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="0,0,0,10" Background="#FF3EB88E">
+			<TextBlock Text="Neerby" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0,12,5" FontFamily="Segoe WP Black" FontSize="32"/>
+		</StackPanel>
 	</Grid>
 
     <!--LayoutRoot is the root grid where all page content is placed-->

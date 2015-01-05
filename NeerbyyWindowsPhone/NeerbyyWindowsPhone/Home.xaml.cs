@@ -32,6 +32,7 @@ namespace NeerbyyWindowsPhone
         private DispatcherTimer timer_zoom;
         private List<Place> places;
         private Boolean isCentering = false;
+        private Boolean isMoving = false;
 
         /// <summary>
         /// View constructor
@@ -40,7 +41,7 @@ namespace NeerbyyWindowsPhone
         {
             InitializeComponent();
 
-            map_zoom = 14;
+            map_zoom = 16;
             HomeMap.ZoomLevel = map_zoom;
 
             HomeMap.CenterChanged += HomeMap_CenterChanged;
@@ -60,7 +61,20 @@ namespace NeerbyyWindowsPhone
             HomeMap.Layers.Add(layer);
         }
 
-       
+       /// <summary>
+       /// Display HUD
+       /// </summary>
+        private void displayHUD(Boolean showHUD)
+        {
+            if (showHUD)
+            {
+                infoDisplayer.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                infoDisplayer.Visibility = System.Windows.Visibility.Collapsed;
+            }
+        }
 
         /// <summary>
         /// Get the user position
@@ -116,14 +130,12 @@ namespace NeerbyyWindowsPhone
             GoogleAnalytics.EasyTracker.GetTracker().SendView("Home");
 
             this.isCentering = true;
-            this.infoDisplayer.Visibility = System.Windows.Visibility.Collapsed;
             if (!IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent") || IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent") == false)
             {
                 MessageBoxResult result =
                     MessageBox.Show("Do you want to allow this app to access your phone's current location?",
                     "Location",
                     MessageBoxButton.OKCancel);
-
                 if (result == MessageBoxResult.OK)
                 {
                     IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = true;
@@ -144,7 +156,6 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         private void UpdatePlaces()
         {
-
             ((App)Application.Current).myLatitude = HomeMap.Center.Latitude;
             ((App)Application.Current).myLongitude = HomeMap.Center.Longitude;
             WebApi.Singleton.PlacesAsync((String responseMessage, PlaceListResult result) =>
@@ -168,9 +179,10 @@ namespace NeerbyyWindowsPhone
         /// 
         void HomeMap_ViewChanged(object sender, MapViewChangedEventArgs e)
         {
-            if (isCentering == false)
-                infoDisplayer.Visibility = System.Windows.Visibility.Visible;
-            isCentering = false;
+            if (!isMoving)
+            {
+                displayHUD(false);
+            }
         }
 
 
@@ -180,7 +192,14 @@ namespace NeerbyyWindowsPhone
         private void CreatePushpin(Place infos)
         {
             Pushpin pp = new Pushpin();
-            pp.Background = new SolidColorBrush(Color.FromArgb(160, 62, 184, 142));
+            Color pinColor;
+            if (infos.publications == 0)
+                pinColor = Color.FromArgb(80, 243, 40, 40);
+            else if (infos.publications < 10)
+                pinColor = Color.FromArgb(120, 255, 195, 65);
+            else
+                pinColor = Color.FromArgb(160, 62, 184, 142);
+            pp.Background = new SolidColorBrush(pinColor);
             pp.Content = infos.name;
             pp.Tag = infos;
             pp.Tap += Pushpin_Tap;
@@ -197,7 +216,8 @@ namespace NeerbyyWindowsPhone
         /// 
         private void HomeMap_CenterChanged(object sender, MapCenterChangedEventArgs e)
         {
-            infoDisplayer.Visibility = System.Windows.Visibility.Collapsed;
+            if (!isMoving)
+                displayHUD(false);
             timer_center.Start();
         }
 
@@ -208,7 +228,7 @@ namespace NeerbyyWindowsPhone
         {
             timer_center.Stop();
             //MessageBox.Show("lol");
-
+            isMoving = false;
             this.UpdatePlaces();
         }
 
@@ -257,8 +277,10 @@ namespace NeerbyyWindowsPhone
             infoDisplayer.Visibility = System.Windows.Visibility.Collapsed;
             popup_title.Text = infos.name;
             popup_description.Text = String.Format("{2}\n{0}({1})", infos.city, infos.country, infos.address);
-
+            button_close.Content = "VOIR PLUS...";
             ((App)Application.Current).setRefPlace(ref infos);
+            isMoving = true;
+            displayHUD(true);
         }
 
         /// <summary>
@@ -295,6 +317,11 @@ namespace NeerbyyWindowsPhone
 
         private void GoToListing(object sender, RoutedEventArgs e)
         {
+            if (((App)Application.Current).currentPlace == null)
+            {
+                this.infoDisplayer.Visibility = System.Windows.Visibility.Collapsed;
+                return;
+            }
             NavigationService.Navigate(new Uri("/ListingPosts.xaml", UriKind.Relative));
         }
     }

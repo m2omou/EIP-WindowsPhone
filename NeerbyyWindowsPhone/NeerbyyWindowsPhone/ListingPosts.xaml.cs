@@ -121,8 +121,10 @@ namespace NeerbyyWindowsPhone
             count = 5;
             this.DisplayFollowButton();
             Title.Text = ((App)Application.Current).currentPlace.name;
+            loading_bar.IsIndeterminate = true;
             WebApi.Singleton.PostsForPlaceAsync((string responseMessage, PostListResult result) =>
             {
+                loading_bar.IsIndeterminate = false;
                 StackListing.Children.Clear();
                 bool first = false;
                 foreach (Post post in result.publications)
@@ -137,6 +139,7 @@ namespace NeerbyyWindowsPhone
                 }
             }, (String responseMessage, Exception exception) =>
             {
+                loading_bar.IsIndeterminate = false;
                 ErrorDisplayer error = new ErrorDisplayer();
             }, ((App)Application.Current).currentPlace, null, null, null, this.count);
         }
@@ -164,8 +167,10 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void LoadMore(object sender, RoutedEventArgs e)
         {
+            loading_bar.IsIndeterminate = true;
             WebApi.Singleton.PostsForPlaceAsync((string responseMessage, PostListResult result) =>
             {
+                loading_bar.IsIndeterminate = false;
                 foreach (Post post in result.publications)
                 {
                     this.AddAPostToTheListing(post, false);
@@ -173,6 +178,7 @@ namespace NeerbyyWindowsPhone
                 }
             }, (String responseMessage, Exception exception) =>
             {
+                loading_bar.IsIndeterminate = false;
                 ErrorDisplayer error = new ErrorDisplayer();
             }, ((App)Application.Current).currentPlace, null, null, this.max_id, this.count);
         }

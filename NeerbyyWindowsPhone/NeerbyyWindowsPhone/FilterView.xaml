@@ -47,20 +47,19 @@
             Before shipping remove this XAML and the image itself.-->
 		<!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
         <!--TitlePanel contains the name of the application and page title-->
-		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,12,28" Background="#FF3EB88E">
-			<TextBlock Text="Neerby" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0" FontFamily="Segoe WP Black"/>
-			<TextBlock Margin="9,-7,10,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="GeosansLight" Text="Filtre de navigation" FontSize="56"/>
-		</StackPanel>
 
         <!--ContentPanel - place additional content here-->
 		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 			<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
 				<TextBlock x:Name="actual_filter" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Filtre Actuel : Aucun" VerticalAlignment="Top" Foreground="#FF2B2B2B" Height="39" Width="457" FontWeight="Bold" FontFamily="Segoe WP Black" FontSize="24"/>
-				<ScrollViewer Tap="scrollViewer_Tap" x:Name="scrollViewer" Height="589" Width="456" HorizontalAlignment="Left" VerticalAlignment="Top">
+				<ScrollViewer Tap="scrollViewer_Tap" x:Name="scrollViewer" Height="677" Width="456" HorizontalAlignment="Left" VerticalAlignment="Top">
 					<StackPanel x:Name="listingCategories"/>
 				</ScrollViewer>
 			</StackPanel>
 		</Grid>
+		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="0" Background="#FF3EB88E">
+			<TextBlock Text="Neerby" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0,12,5" FontFamily="Segoe WP Black" FontSize="32"/>
+		</StackPanel>
 
 	</Grid>
 

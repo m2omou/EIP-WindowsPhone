@@ -21,25 +21,35 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,229,38" Background="#FF3EB88E">
-        	<TextBlock Text="Neerby" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0" FontFamily="Segoe WP Black"/>
-        	<TextBlock Text="Menu" Margin="9,-7,12,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="GeosansLight"/>
-        </StackPanel>
 
         <!--TitlePanel contains the name of the application and page title-->
 
         <!--ContentPanel - place additional content here-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="0" Background="#FF3EB88E">
+        	<TextBlock Text="Neerby" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0,12,5" FontFamily="Segoe WP Black" FontSize="32"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-        	<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Width="456">
-        		<Button Click="GoMap" Content="CARTE" Background="#FF3EB88E" BorderBrush="#002C2C2C" Foreground="White" FontFamily="Segoe WP Semibold"/>
-        		<Button x:Name="button_flux" Click="GoMyFlux" Foreground="White" BorderBrush="#002C2C2C" Background="#FF3EB88E" FontFamily="Segoe WP Semibold" Content="MON FLUX"/>
-                <Button x:Name="button_fav" Click="GoMyFavorites" Foreground="White" BorderBrush="#002C2C2C" Background="#FF3EB88E" FontFamily="Segoe WP Semibold" Content="MES FAVORIS"/>
-                <Button x:Name="button_msg" Click="GoMessages"  Content="MES MESSAGES" BorderBrush="Transparent" Background="#FF3EB88E" FontFamily="Segoe WP Semibold"/>
-                <Button x:Name="button_infos" Click="GoMyInformation"  Content="MES INFOS" BorderBrush="Transparent" Background="#FF3EB88E" FontFamily="Segoe WP Semibold"/>
-                <Button x:Name="button_connect" Click="GoLogin"  Content="CONNEXION" BorderBrush="Transparent" Background="#FF3EB88E" FontFamily="Segoe WP Semibold"/>
-                <Button x:Name="button_disc" Click="Disconnect"  Content="DECONNEXION" BorderBrush="Transparent" Background="#FFF5582A" FontFamily="Segoe WP Semibold"/>
-                <Button x:Name="button_settings" Click="GoSettings"  Content="OPTIONS" BorderBrush="Transparent" Background="#FF3EB88E" FontFamily="Segoe WP Semibold"/>
-        	</StackPanel>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+        		<Button Grid.Column="0" Grid.Row="0" Click="GoMap" Content="CARTE" Background="#FF3EB88E" BorderBrush="#002C2C2C" Foreground="White" FontFamily="Segoe WP Semibold"/>
+            <Button Grid.Column="1" Grid.Row="0" x:Name="button_flux" Click="GoMyFlux" Foreground="White" BorderBrush="#002C2C2C" Background="#FF3EB88E" FontFamily="Segoe WP Semibold" Content="MON FLUX"/>
+            <Button Grid.Column="0" Grid.Row="1" x:Name="button_fav" Click="GoMyFavorites" Foreground="White" BorderBrush="#002C2C2C" Background="#FF3EB88E" FontFamily="Segoe WP Semibold" Content="MES FAVORIS"/>
+            <Button Grid.Column="1" Grid.Row="1" x:Name="button_msg" Click="GoMessages"  Content="MES MESSAGES" BorderBrush="Transparent" Background="#FF3EB88E" FontFamily="Segoe WP Semibold"/>
+            <Button Grid.Column="0" Grid.Row="2" x:Name="button_infos" Click="GoMyInformation"  Content="MES INFOS" BorderBrush="Transparent" Background="#FF3EB88E" FontFamily="Segoe WP Semibold"/>
+            <Button Grid.Column="0" Grid.Row="3" x:Name="button_connect" Click="GoLogin"  Content="CONNEXION" BorderBrush="Transparent" Background="#FF3EB88E" FontFamily="Segoe WP Semibold"/>
+            <Button Grid.Column="1" Grid.Row="3" x:Name="button_disc" Click="Disconnect"  Content="DECONNEXION" BorderBrush="Transparent" Background="#FFF5582A" FontFamily="Segoe WP Semibold"/>
+            <Button Grid.Column="1" Grid.Row="2" x:Name="button_settings" Click="GoSettings"  Content="OPTIONS" BorderBrush="Transparent" Background="#FF3EB88E" FontFamily="Segoe WP Semibold"/>
         </Grid>
     </Grid>
 

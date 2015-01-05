@@ -52,33 +52,36 @@
             Before shipping remove this XAML and the image itself.-->
         <!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,229,28" Background="#FF3EB88E">
-            <TextBlock Text="Neerby" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0" FontFamily="Segoe WP Black"/>
-            <TextBlock Text="Carte" Margin="9,-7,12,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="GeosansLight"/>
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="0" Background="#FF3EB88E">
+        	<TextBlock Text="Neerby" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0,12,5" FontFamily="Segoe WP Black" FontSize="32"/>
         </StackPanel>
-        <Button Content="CENTRER" Click="CenterMap" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="2.833,1.263" Margin="328,41,0,0" Background="#FF3EB88E" BorderBrush="#FF3EB88E" FontSize="12"/>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="2" Margin="12,0,12,0">
+        <Grid x:Name="ContentPanel" Grid.Row="2" Margin="0">
             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
                 <StackPanel Height="77" Margin="0,0,1,0" Orientation="Horizontal">
-                    <TextBox x:Name="search_input" TextWrapping="Wrap" Width="240" Height="74" Background="#BFCBCBCB" Margin="0,2,0,1"/>
+                    <TextBox x:Name="search_input" TextWrapping="Wrap" Width="256" Height="74" Background="#BFCBCBCB" Margin="0,2,0,1"/>
                     <Button Click="Button_Search"  Content="Chercher" BorderBrush="Transparent" Background="#FF72D6B4" FontFamily="Segoe WP Light"  Width="141" Margin="-20,0,0,0"/>
                     <Button Click="Button_Filter"  Content="Filtres" BorderBrush="Transparent" Background="#FF3EB88E" FontFamily="Segoe WP Light"  Width="120" Margin="-20,0,0,0"/>
                 </StackPanel>
 
             </StackPanel>
 
-            <maps:Map CenterChanged="HomeMap_CenterChanged" ZoomLevelChanged="HomeMap_ZoomLevelChanged" x:Name="HomeMap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,80,0,0" Width="456" Height="600">
-
-            </maps:Map>
-            <Grid x:Name="infoDisplayer"  Background="#8D303030" Margin="75,193,51,239" Visibility="collapsed">
-                <StackPanel>
-                    <TextBlock x:Name="popup_title" FontSize="26" HorizontalAlignment="Center" Margin="28,10,23,0" TextWrapping="Wrap" Text="Title" VerticalAlignment="Top" Width="279" TextAlignment="Center"/>
-                    <TextBlock x:Name="popup_description" HorizontalAlignment="Left" Margin="10,43,0,0" TextWrapping="Wrap" Text="Description" VerticalAlignment="Top" Height="59" Width="310" FontSize="20"/>
+            <maps:Map CenterChanged="HomeMap_CenterChanged" ZoomLevelChanged="HomeMap_ZoomLevelChanged" x:Name="HomeMap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,80,0,0" Height="640" Width="480"/>
+            <Grid x:Name="infoDisplayer"  Background="#993EB88E" Margin="10,193,10,209" Visibility="Collapsed">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock x:Name="popup_title" FontSize="24" HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="Bonjour !" VerticalAlignment="Top" Width="354" TextAlignment="Center" FontFamily="Segoe WP Semibold" Height="32" UseLayoutRounding="False"/>
+                    <TextBlock x:Name="popup_description" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="89" Width="440" FontSize="20" FontFamily="Segoe WP SemiLight" FontStyle="Italic">
+                    	<Run Text="D"/>
+                    	<Run Text="écouvrez les souvenir des autres en sélectionnant les lieux qui vous intéressent"/>
+                    	<Run Text="."/>
+                    	<LineBreak/>
+                    	<Run Text="Venez également poster vos propres souvenirs !"/>
+                    </TextBlock>
+                    <Button x:Name="button_close" Content="FERMER&#xD;&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Height="68" Width="460" Background="#FF1A5742" BorderBrush="Transparent" FontSize="13.333" Click="GoToListing" Padding="10"/>
                 </StackPanel>
-                <Button Content="VOIR PLUS..." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="187,131,0,-4" Height="58" Width="143" Background="#FF3EB88E" BorderBrush="Transparent" FontSize="13.333" Click="GoToListing"/>
             </Grid>
+            <Button Content="CENTRER LA CARTE" Click="CenterMap" HorizontalAlignment="Center" VerticalAlignment="Bottom" RenderTransformOrigin="2.833,1.263" Background="#FF3EB88E" BorderBrush="#FF3EB88E" FontSize="16" Width="480"/>
         </Grid>
         <Popup/>
 
