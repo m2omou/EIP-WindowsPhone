@@ -57,8 +57,8 @@
 					</StackPanel>
 				</StackPanel>
 				<Button Content="SUPPRIMER LE FIL DE MESSAGE" BorderBrush="#00F73939" Background="#FFF73939" Height="59" BorderThickness="0" FontSize="18.667" Margin="0,-4,0,0"/>
-				<ScrollViewer x:Name="ScrollingView" HorizontalAlignment="Left" Height="471" VerticalAlignment="Top" Width="454" Margin="0,-6,0,0">
-					<StackPanel x:Name="StackListing" Width="454" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+				<ScrollViewer x:Name="ScrollingView" HorizontalAlignment="Left" Height="471" VerticalAlignment="Top" Width="479" Margin="0,-6,0,0">
+					<StackPanel x:Name="StackListing" Width="454" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 				</ScrollViewer>
 				<Button Content="ENVOYER UN MESSAGE" Width="454" Background="#FF5396BB" BorderBrush="Transparent" Height="67" Margin="0,-6,0,0" FontSize="18.667" Click="SendMessage"/>
 			</StackPanel>

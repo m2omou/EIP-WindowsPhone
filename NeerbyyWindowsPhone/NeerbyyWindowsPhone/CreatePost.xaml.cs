@@ -37,8 +37,21 @@ namespace NeerbyyWindowsPhone
         /// </summary>
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
+            object content;
+
+            if (this.State.TryGetValue("content", out content))
+            {
+                this.content.Text = content as string;
+            }
+
             GoogleAnalytics.EasyTracker.GetTracker().SendView("CreateSouvenir");
         }
+
+        protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            this.State["content"] = content.Text;
+        }
+
 
         /// <summary>
         /// Button pressed to create the post
@@ -85,6 +98,8 @@ namespace NeerbyyWindowsPhone
         /// <param name="e"></param>
         private void TakePhoto(object sender, RoutedEventArgs e)
         {
+            link_stack.Visibility = Visibility.Collapsed;
+
            IAsyncResult result = Microsoft.Xna.Framework.GamerServices.Guide.BeginShowMessageBox(
                 "Photo",
                 "D'où souhaitez-vous prendre la photo ?",

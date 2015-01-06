@@ -41,17 +41,17 @@
                 		<ColumnDefinition/>
                 		<ColumnDefinition/>
                 	</Grid.ColumnDefinitions>
-                	<Button x:Name="button_follow" Content="SUIVRE LE LIEU" Background="#FFF5B13B" BorderBrush="#FFF5B13B" Foreground="White" FontSize="13.333" BorderThickness="0,3,3,3" Click="FollowPlace"  Margin="0,0,4,0" HorizontalAlignment="Right" Width="214"/>
+                    <Button x:Name="button_follow" Content="SUIVRE LE LIEU" Background="#FFF5B13B" BorderBrush="#FFF5B13B" Foreground="White" FontSize="13.333" BorderThickness="0,3,3,3" Click="FollowPlace"  Margin="0,0,4,0" Width="214" Grid.Column="0"/>
 
-                	<Button x:Name="button_load_more" Content="CHARGER PLUS DE SOUVENIRS" HorizontalAlignment="Right" Background="#FF3B76F5" BorderBrush="#FF3B76F5" Foreground="White" FontSize="13.333" BorderThickness="0,3,3,3" Click="LoadMore" Margin="0" Grid.Column="1"/>
+                    <Button x:Name="button_post" Content="POSTER UN SOUVENIR" Background="#FFFF6666" BorderBrush="#FFFF6666" Foreground="White" FontSize="13.333" BorderThickness="0,3,3,3" Click="GoToCreatePost" Margin="0" Grid.Column="1"/>
                 </Grid>
                 <ProgressBar Height="18" Width="343" x:Name="loading_bar" IsIndeterminate="True" Background="#1900AEFF" Foreground="#FF4C54FF"/>
 
-                <ScrollViewer x:Name="ScrollingView" Height="530">
+                <ScrollViewer x:Name="ScrollingView" Height="514" Width="455">
                     <StackPanel x:Name="StackListing" Orientation="Vertical"/>
                 </ScrollViewer>
             </StackPanel>
-        	<Button x:Name="button_post" Content="POSTER UN SOUVENIR" HorizontalAlignment="Right" Width="443" Background="#FFFF6666" BorderBrush="#FFFF6666" Foreground="White" FontSize="13.333" BorderThickness="0,3,3,3" Click="GoToCreatePost" Margin="0,658,10,3"/>
+            <Button x:Name="button_load_more" Content="CHARGER PLUS DE SOUVENIRS" HorizontalAlignment="Right" Width="443" Background="#FF3B76F5" BorderBrush="#FF3B76F5" Foreground="White" FontSize="13.333" BorderThickness="0,3,3,3" Click="LoadMore" Margin="0,658,10,3"/>
         </Grid>
     </Grid>
 

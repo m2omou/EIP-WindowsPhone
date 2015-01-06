@@ -21,6 +21,7 @@ namespace NeerbyyWindowsPhone
     {
         private int count = 20;
         private int since_id = -1;
+        private bool refreshing;
         private DispatcherTimer refresh;
         private Conversation conversation;
         /// <summary>
@@ -58,12 +59,12 @@ namespace NeerbyyWindowsPhone
             if (message.sender.id == ((App)Application.Current).currentUser.id)
             {
                 display_message.LayoutRoot.Background = new SolidColorBrush(Color.FromArgb(0xFF, 209, 226, 226));
-                display_message.Margin = new Thickness(10, 0, 0, 0);
+                display_message.Margin = new Thickness(0, 0, 30, 0);
             }
             else
             {
                 display_message.LayoutRoot.Background = new SolidColorBrush(Color.FromArgb(0xFF, 166, 209, 168));
-                display_message.Margin = new Thickness(-10, 0, 0, 0);
+                display_message.Margin = new Thickness(30, 0, 0, 0);
             }
             if (first)
             {
@@ -74,7 +75,8 @@ namespace NeerbyyWindowsPhone
                 StackListing.Children.Add(display_message);
             }
             ScrollingView.UpdateLayout();
-            ScrollingView.ScrollToVerticalOffset(ScrollingView.Height);
+//            ScrollingView.ScrollToVerticalOffset(ScrollingView.Height);
+            ScrollingView.ScrollToVerticalOffset(double.MaxValue);
         }
 
         /// <summary>
@@ -105,7 +107,8 @@ namespace NeerbyyWindowsPhone
         {
             GoogleAnalytics.EasyTracker.GetTracker().SendView("ConversationList");
 
-            since_id = -1;
+            this.since_id = -1;
+            this.refreshing = false;
             this.conversation = ((App)Application.Current).currentConversation;
 
             username.Text = ((App)Application.Current).currentUser.username;
@@ -164,10 +167,14 @@ namespace NeerbyyWindowsPhone
         /// <param name="message"></param>
         private void NewMessages()
         {
+            if (this.refreshing)
+                return;
+
             int? since = null;
             if (this.since_id != -1)
                 since = this.since_id;
-  
+
+            refreshing = true;
             WebApi.Singleton.MessagesAsync((string responseMessage, MessageListResult result) =>
             {
                 this.since_id = result.messages.First<Message>().id;
@@ -177,12 +184,12 @@ namespace NeerbyyWindowsPhone
 
                 foreach (Message msg in messages)
                 {
-//                    MessageBox.Show(msg.content);
                     this.AddMessage(msg, false);
                 }
+                refreshing = false;
             }, (String responseMessage, Exception exception) =>
             {
-
+                refreshing = false;
             }, this.conversation, since, null, this.count);
         }
     }
