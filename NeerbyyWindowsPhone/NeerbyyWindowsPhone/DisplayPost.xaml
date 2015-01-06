@@ -31,7 +31,7 @@
 		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="0">
 			<ScrollViewer HorizontalAlignment="Left" Height="720" VerticalAlignment="Top" Width="480">
 				<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="720" Width="480">
-					<phone:WebBrowser x:Name="web_browser" Height="252"/>
+					<HyperlinkButton Click="web_browser_Click" x:Name="web_browser" Content="LINK" Foreground="#FF1763B0" FontFamily="Segoe WP Semibold" Margin="0,10"/>
 					<Image Tap="image_content_Tap" Margin="0,0,0,0" x:Name="image_content" Stretch="UniformToFill" Width="480" Height="247" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 					<StackPanel Orientation="Horizontal" Background="#FF205B46" Height="52">
 						<TextBlock x:Name="Title" TextWrapping="Wrap" Text="PARIS" Foreground="White" FontFamily="Segoe WP SemiLight" FontSize="24" HorizontalAlignment="Center" Width="423" VerticalAlignment="Center" Margin="10,0,0,0"/>

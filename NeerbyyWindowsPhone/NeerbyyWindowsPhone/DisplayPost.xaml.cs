@@ -50,7 +50,7 @@ namespace NeerbyyWindowsPhone
             this.DisplayVotes();
             //Title.Text = ((App)Application.Current).currentPost.;
             //this.text_content.Text = ((App)Application.Current).currentPost.content;
-            this.Title.Text = ((App)Application.Current).currentPost.place.name;
+            this.Title.Text = ((App)Application.Current).currentPost.content;
             if (((App)Application.Current).currentPost.url != null && ((App)Application.Current).currentPost.url != "" && ((App)Application.Current).currentPost.type == "2")
             {
                 Uri uri = null;
@@ -70,7 +70,7 @@ namespace NeerbyyWindowsPhone
             {
                 web_browser.Visibility = System.Windows.Visibility.Visible;
                 String url = ((App)Application.Current).currentPost.url;
-                web_browser.NavigateToString(url);
+                web_browser.Content = url;
             }
             else
             {
@@ -360,6 +360,20 @@ namespace NeerbyyWindowsPhone
         {
             NavigationService.Navigate(new Uri("/Report.xaml", UriKind.RelativeOrAbsolute));
 
+        }
+
+        /// <summary>
+        /// Handle web browser click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void web_browser_Click(object sender, RoutedEventArgs e)
+        {
+            String url = ((App)Application.Current).currentPost.url;
+            if (url.Contains("http://"))
+                Windows.System.Launcher.LaunchUriAsync(new Uri(url));
+            else
+                Windows.System.Launcher.LaunchUriAsync(new Uri("http://" + url));
         }
 
     }
